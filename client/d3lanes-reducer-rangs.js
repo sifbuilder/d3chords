@@ -13,6 +13,14 @@ if (typeof require === "function") {
   (factory((global.d3lanesReducerRangs = global.d3lanesReducerRangs || {})));
 }(this, function (exports) { 'use strict';
 
+// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
+function guid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
 
 // _____________ adapted from redux combineReducers	
 function combineReducers(reducers) {
@@ -60,6 +68,19 @@ function reducerThis(state = initialStateThis, action) {
 	if (action == null) return state
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
+		
+       case ActionTypes.DELETE_RANG:
+ 						console.log('DELETE_RANG')
+						var rangs = state.rangs
+						var items = rangs.filter(function( obj ) {
+								return obj.id !== action.rang.id;
+							});
+		
+						 var r = Object.assign({}, state,
+							{rangs: items},
+							{rangsIndex: items.length}
+							);
+							return r
 
        case ActionTypes.INIT_RANGS:
  						console.log('INIT_RANGS')

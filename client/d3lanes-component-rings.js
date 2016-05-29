@@ -59,7 +59,7 @@ var intransition = false
 									.selectAll("circle")
 									.data(state.reducerRings.rings)
 											.attr('cx', function(d, i, a) { 
-													// console.log( "ring d", JSON.stringify(d, null, 2))
+													console.log( "ring d", JSON.stringify(d, null, 2))
 													return d.x + d.vector[0]})
 											.attr('cy', function(d, i, a) { return d.y  + d.vector[1]})
 											.attr('r', function(d, i, a) { return ringsRadio })

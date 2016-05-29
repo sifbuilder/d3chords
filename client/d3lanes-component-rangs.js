@@ -11,6 +11,17 @@ if (typeof require === "function") {
   (factory((global.d3lanesComponentRangs = global.d3lanesComponentRangs || {})));
 }(this, function (exports) { 'use strict';
 
+
+// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
+function guid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
+
+
 // _____________ context
 var stateRangs = {
 	reducerRangs: {}
@@ -118,7 +129,7 @@ var rangGroups = svgContainer.select("g.rangs")
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
 							function(d, i) { 
-									return d.id || (d.id = ++i); })
+									return d.id || (d.id = guid()); })
 							
 var newRangGroups = 	rangGroups						
             .enter()
@@ -173,28 +184,6 @@ rangGroups.exit()
 				return 0
 			})
 			.remove(function(){})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

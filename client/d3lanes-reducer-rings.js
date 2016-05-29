@@ -94,7 +94,8 @@ function reducerThis(state = initialStateRings, action) {
 									var xh = action.rangs[j].x + action.rangs[j].width
 									var yl = action.rangs[j].y
 									var yh = action.rangs[j].y + action.rangs[j].height
-									
+									var rid = action.rangs[j].id
+								
 									// console.log(x0, xl, xh, y0, yl, yh)
 									if (x0  > xl && 
 											x0  < xh && 
@@ -106,6 +107,7 @@ function reducerThis(state = initialStateRings, action) {
 											for (i = 0; i < action.N; i++) {
 													var ring = {
 																id: guid(),
+																rid: rid,
 																x: x0,
 																y: y0,
 																xl: xl,
