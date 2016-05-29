@@ -13,6 +13,14 @@
   (factory((global.d3lanesReducerRings = global.d3lanesReducerRings || {})));
 }(this, function (exports) { 'use strict';
 
+// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
+function guid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
 
 // _____________ adapted from redux combineReducers	
 function combineReducers(reducers) {
@@ -97,7 +105,7 @@ function reducerThis(state = initialStateRings, action) {
 												
 											for (i = 0; i < action.N; i++) {
 													var ring = {
-																id: ++idx,
+																id: guid(),
 																x: x0,
 																y: y0,
 																xl: xl,
