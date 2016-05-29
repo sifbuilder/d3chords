@@ -1,5 +1,5 @@
 /* 														*/
-/*    d3lanes-reducer.js      */
+/*    d3lanes-reducer-particles.js      */
 /* 														*/
 
 	if (typeof require === "function") {
@@ -53,7 +53,7 @@ var initialStateParticles = {
 			particleIndex: 0,
 			particlesGenerating: false,
 			particlesIntroduced: false,
-			particlesPerTick: 33,
+			particlesPerTick: 3,
 			particleRadio: 9,
 }
 function reducerParticles(state = initialStateParticles, action) {
