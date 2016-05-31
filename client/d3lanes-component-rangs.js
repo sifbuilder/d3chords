@@ -12,15 +12,6 @@ if (typeof require === "function") {
 }(this, function (exports) { 'use strict';
 
 
-// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
-function guid() {
-    function _p8(s) {
-        var p = (Math.random().toString(16)+"000000000").substr(2,8);
-        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
-    }
-    return _p8() + _p8(true) + _p8(true) + _p8();
-}
-
 
 // _____________ context
 var stateRangs = {
@@ -34,7 +25,7 @@ var intransition = false
 		if (intransition == true) {
 			return
 		}
-
+console.log("_____________ render rangs _____________")
 		// DATA
 		// store previous - will not change during render
 		var _messages0 = stateRangs.reducerRangs.records || []
@@ -101,7 +92,6 @@ var gen = function(n, l, h, s) {
   var data = []
   for (var i = n; i; i--) {
 		var id = guid()
-		var rig = state.reducerRangs.rangsIndex
     data.push({
       x: Math.random() * l | 0,
       y: Math.random() * h | 0,
@@ -132,7 +122,7 @@ var rangGroups = svgContainer.select("g.rangs")
             .data(gen(_n, _width, _height, _s), 
 								function(d) { 
 										var rangsIndex = state.reducerRangs.rangsIndex
-										console.log('____ data rang', JSON.stringify(d, null, 2))
+										console.log('rangsIndex rangsIndex', rangsIndex)
 							
 									return rangsIndex
 								})
@@ -152,15 +142,14 @@ var newRangGroups = 	rangGroups
 												}
 
 												store.dispatch(actions.setRang(item))				
-							console.log('____ add rang', JSON.stringify(item, null, 2))
+							// console.log('____ add rang', JSON.stringify(item, null, 2))
 								
 									return d.id; })
 
 
-var rangRects = newRangGroups.append('rect')
+var rectOnNewRang = newRangGroups.append('rect')
             .attr("rid", function (d) { 
-									console.log('____ append rect to rang id', JSON.stringify(d.id, d, 2))
-					
+									console.log('____ rect to RANG', JSON.stringify(d.id, d, 2))
 									return d.id; })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
@@ -171,33 +160,48 @@ var rangRects = newRangGroups.append('rect')
 						.attr("stroke", "grey")
 						.style("fill", "transparent")
 
-rangGroups.select("rect")	
- 						.attr("x", function (d) { return d.x; })
+var rectOnExistingRang = rangGroups.select("rect")	
+ 						.attr("id", function (d) { return d.id; })
+  					.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
             .attr("height", function (d) { return d.s; })
             .attr("width", function (d) { return d.s; })
 						.transition(elemsTransition)
-							.attr("height", function (d) { return 0 * d.s; })
-							.attr("width", function (d) { return 0 * d.s; })
-									.attrTween("s", function(d) {
-										return function (t) {
-											var item = {
-														id: d.id,
-														x: d.x,
-														y: d.y,
-														width: parseInt((1 - t) * d.s),
-														height: parseInt((1 - t) * d.s), 
-												}
-							console.log('____ update rang', JSON.stringify(item, null, 2))
-											store.dispatch(actions.setRang(item))				
-											return t
+							// .attr("height", function (d) { return 0 * d.s; })
+							// .attr("width", function (d) { return 0 * d.s; })
+							.attrTween("height", function(d) {
+								return function (t) {
+									var r = parseInt((1 - t) * d.s)
+									return r
+								}
+							})
+							.attrTween("width", function(d) {
+								return function (t) {
+									var r = parseInt((1 - t) * d.s)
+									return r
+								}
+							})
+
+							.attrTween("s", function(d) {
+								return function (t) {
+									var r = parseInt((1 - t) * d.s)
+									var item = {
+												id: d.id,
+												x: d.x,
+												y: d.y,
+												width: r,
+												height: r, 
 										}
-									})
+					// console.log('____ update rang', JSON.stringify(item, null, 2))
+									store.dispatch(actions.setRang(item))				
+									return r
+								}
+							})
 							.on("start", function start() {		
 									intransition = true
 								})
 							.on("end", function end(d) {	
-							console.log('____ delete rang', JSON.stringify(d, null, 2))
+							// console.log('____ delete rang', JSON.stringify(d, null, 2))
 												store.dispatch(actions.deleteRang(d))				
 								intransition = false
 							})								

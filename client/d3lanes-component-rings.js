@@ -70,7 +70,7 @@ var intransition = false
 												for (i=0; i<state.reducerRangs.rangs.length; ++i) {
 													if (state.reducerRangs.rangs[i].id == d.rid) {
 												
-															console.log("+++++++++++++++++", i)
+																					console.log("+++++++++++++++++", i)
 															r = Math.min( ringsRadio, state.reducerRangs.rangs[i].width)
 													}
 													
