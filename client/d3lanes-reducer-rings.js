@@ -59,7 +59,7 @@ var initialStateRings = {
 			rings: [],
 			ringsIndex: 0,
 			ringsIntroduced: false,
-			ringsPerTick: 2,
+			ringsPerTick: 1,
 			ringsRadio: 9,
 			generating: false,
 }
@@ -70,13 +70,13 @@ function reducerThis(state = initialStateRings, action) {
         case ActionTypes.START_RINGS:				// startRings
 					console.log("START_RINGS")		
           return Object.assign({}, state, {
-                ringsGenerating: true
+                generating: true
             })
 						
         case ActionTypes.STOP_RINGS:			// stopRings
 					console.log("STOP_RINGS")
             return Object.assign({}, state, {
-                ringsGenerating: false
+                generating: false
             });
 
 							
@@ -97,10 +97,14 @@ function reducerThis(state = initialStateRings, action) {
 									var rid = action.rangs[j].id
 								
 									// console.log(x0, xl, xh, y0, yl, yh)
-									if (x0  > xl && 
-											x0  < xh && 
-											y0  > yl && 
-											y0  < yh) {
+									function inSquare (x0, y0, xl, yl, xh, yh) {
+											if (x0  > xl && 
+													x0  < xh && 
+													y0  > yl && 
+													y0  < yh) return true
+											else 		return false											
+									}
+									if (inSquare (x0, y0, xl, yl, xh, yh)) {
 												
 											// console.log( "rang", j, JSON.stringify(action.rangs[j], null, 2))
 												

@@ -100,10 +100,12 @@ function guid() {
 var gen = function(n, l, h, s) {
   var data = []
   for (var i = n; i; i--) {
+		var id = guid()
+		var rig = state.reducerRangs.rangsIndex
     data.push({
       x: Math.random() * l | 0,
       y: Math.random() * h | 0,
-			id: i,
+			id: id,			// guid() // i
 			s: s
     })
   }
@@ -128,18 +130,38 @@ var _vsr = parseInt(_height/2)
 var rangGroups = svgContainer.select("g.rangs")
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
-							function(d, i) { 
-									return d.id || (d.id = guid()); })
+								function(d) { 
+										var rangsIndex = state.reducerRangs.rangsIndex
+										console.log('____ data rang', JSON.stringify(d, null, 2))
 							
+									return rangsIndex
+								})
+ 							
 var newRangGroups = 	rangGroups						
             .enter()
 							.append("g")
 							.attr("class", "rang")
-							.attr("id", function (d) { return d.id; })
+							.attr("id", function (d) { 
+
+											var item = {
+														id: d.id,
+														x: d.x,
+														y: d.y,
+														width: d.s,
+														height: d.s, 
+												}
+
+												store.dispatch(actions.setRang(item))				
+							console.log('____ add rang', JSON.stringify(item, null, 2))
+								
+									return d.id; })
 
 
 var rangRects = newRangGroups.append('rect')
-            .attr("id", function (d) { return d.id; })
+            .attr("rid", function (d) { 
+									console.log('____ append rect to rang id', JSON.stringify(d.id, d, 2))
+					
+									return d.id; })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
@@ -159,13 +181,14 @@ rangGroups.select("rect")
 							.attr("width", function (d) { return 0 * d.s; })
 									.attrTween("s", function(d) {
 										return function (t) {
-											var item = {id: d.id,
+											var item = {
 														id: d.id,
 														x: d.x,
 														y: d.y,
-														width: (1 - t) * d.s,
-														height: (1 - t) * d.s, 
+														width: parseInt((1 - t) * d.s),
+														height: parseInt((1 - t) * d.s), 
 												}
+							console.log('____ update rang', JSON.stringify(item, null, 2))
 											store.dispatch(actions.setRang(item))				
 											return t
 										}
@@ -173,17 +196,17 @@ rangGroups.select("rect")
 							.on("start", function start() {		
 									intransition = true
 								})
-							.on("end", function end() {	
-									intransition = false
+							.on("end", function end(d) {	
+							console.log('____ delete rang', JSON.stringify(d, null, 2))
+												store.dispatch(actions.deleteRang(d))				
+								intransition = false
 							})								
 						
 rangGroups.exit()
-		.transition(elemsTransition)
-			.style("opacity", function(d) {
+			.remove(function(){
+							console.log('____ delete rang', JSON.stringify(item, d, 2))
 							store.dispatch(actions.deleteRang(d))
-				return 0
-			})
-			.remove(function(){})
+					})
 
 
 

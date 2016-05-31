@@ -55,20 +55,34 @@ var intransition = false
 									.domain([0, 1])
  
 							var ringElements = svgContainer
-								.select("g.rings")
+									.select("g.rings")
 									.selectAll("circle")
 									.data(state.reducerRings.rings)
-											.attr('cx', function(d, i, a) { 
-													console.log( "ring d", JSON.stringify(d, null, 2))
-													return d.x + d.vector[0]})
-											.attr('cy', function(d, i, a) { return d.y  + d.vector[1]})
-											.attr('r', function(d, i, a) { return ringsRadio })
-					            .style("fill", function (d) {
+									.attr('cx', function(d, i, a) { 
+											return d.x + d.vector[0]})
+									.attr('cy', function(d, i, a) { return d.y  + d.vector[1]})
+									.attr('r', function(d, i, a) { 
+											console.log( "============ ring d", JSON.stringify(d, null, 2))
+											console.log( "============ rangs", JSON.stringify(state.reducerRangs.rangs, null, 2))
 											
-												return color( Math.random())
-											})
-											.style("fill-opacity", 0.2)
-					            .style("stroke", "none")
+											var i
+											var r = ringsRadio
+												for (i=0; i<state.reducerRangs.rangs.length; ++i) {
+													if (state.reducerRangs.rangs[i].id == d.rid) {
+												
+															console.log("+++++++++++++++++", i)
+															r = Math.min( ringsRadio, state.reducerRangs.rangs[i].width)
+													}
+													
+												}
+											
+												return r })
+									.style("fill", function (d) {
+									
+										return color( Math.random())
+									})
+									.style("fill-opacity", 0.2)
+									.style("stroke", "none")
 
 								
 							var newRingElements = ringElements

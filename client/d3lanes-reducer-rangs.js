@@ -57,8 +57,8 @@ function combineReducers(reducers) {
 // _____________ RANGS
 var initialStateThis = {
 			duration: 1000,
-			n: 2,
-			s: 50,
+			n: 3,
+			s: 200,
 			rangs: [],
 			rangsIndex: 0,
 			initRangs: false,
@@ -70,7 +70,7 @@ function reducerThis(state = initialStateThis, action) {
     switch (action.type) {
 		
        case ActionTypes.DELETE_RANG:
- 						console.log('DELETE_RANG')
+ 						console.log('DELETE_RANG', JSON.stringify(action, null, 2))
 						var rangs = state.rangs
 						var items = rangs.filter(function( obj ) {
 								return obj.id !== action.rang.id;

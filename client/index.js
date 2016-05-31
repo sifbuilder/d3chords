@@ -55,7 +55,7 @@ if (typeof require === "function") {
 							randNormal: store.getState().reducerConfig.randNormal,
 							randNormal2: store.getState().reducerConfig.randNormal2,
 							lanes: store.getState().reducerLanes.lanes,
-							generating: store.getState().reducerParticles.particlesGenerating,
+							generating: store.getState().reducerParticles.generating,
 				}}
 		
 		var createParticlesLauncher = store.compose(
@@ -126,7 +126,7 @@ if (typeof require === "function") {
 							randNormal2: store.getState().reducerConfig.randNormal2,
 							rings: store.getState().reducerRings.rings,
 							rangs: store.getState().reducerRangs.rangs,
-							generating: store.getState().reducerRings.ringsGenerating,
+							generating: store.getState().reducerRings.generating,
 				}}
 		
 			var createRingsLauncher = store.compose(

@@ -51,6 +51,8 @@ if (typeof require === "function") {
 								" - " + state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]] + 
 								" - " + parseInt(svg.style("width")) + " x " + parseInt(svg.style("height")) +
 								" - N: " + state.reducerParticles.particleIndex + 
+								" - R: " + state.reducerRangs.rangsIndex + 
+								" - M: " + state.reducerRings.ringsIndex + 
 								" - fps: " + state.reducerDebug.fps
 
 
