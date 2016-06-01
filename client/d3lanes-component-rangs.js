@@ -11,30 +11,51 @@ if (typeof require === "function") {
   (factory((global.d3lanesComponentRangs = global.d3lanesComponentRangs || {})));
 }(this, function (exports) { 'use strict';
 
+			
+// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
+function guid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
 
+// Adapted from https://github.com/tj/d3-dot
+var gen = function(n, l, h, s) {
+  var data = []
+  for (var i = n; i; i--) {
+		var id = guid()
+    data.push({
+      x: Math.random() * l | 0,
+      y: Math.random() * h | 0,
+			id: id,			// guid() // i
+			s: s
+    })
+  }
 
+  return data
+}
+		
 // _____________ context
 var stateRangs = {
 	reducerRangs: {}
 }
 var intransition = false
+
 	
 // _____________ render
 	function render(newState) {
 	
-		if (intransition == true) {
-			return
-		}
 console.log("_____________ render rangs _____________")
+
+		if (newState.reducerRangs.initRangs == false ) return
+		if (intransition == true) return
+console.log("=============== render rangs ============== ")
 		// DATA
 		// store previous - will not change during render
-		var _messages0 = stateRangs.reducerRangs.records || []
 		var state = stateRangs = newState
-		
-		if (state.reducerRangs.initRangs == false ) return
 
-		
-		var _messages1 = state.reducerRangs.records
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime		
 		var _itemProps = state.reducerConfig.itemProps
 		var _duration = state.reducerRangs.duration
@@ -43,7 +64,7 @@ console.log("_____________ render rangs _____________")
 		var _width = state.reducerCourt.svgWidth
 		var _height = state.reducerCourt.svgHeight
 		var _svgid = state.reducerConfig.container
-
+	
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
@@ -66,7 +87,7 @@ console.log("_____________ render rangs _____________")
 				.append("g")
 					.classed("rangs", true)	// items
 
-   // Some dummy text is needed so that we can get the text height before attaching text to any paths.
+   // http://bl.ocks.org/brattonc/b1abb535227b2f722b51.
   		var dummyText = svgContainer.select(".dummyText")
 			if (dummyText.node() == null) {
 					dummyText = svgContainer
@@ -77,79 +98,39 @@ console.log("_____________ render rangs _____________")
 			}
 			var textHeight = dummyText.node().getBBox().height				
 	
-			
-// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
-function guid() {
-    function _p8(s) {
-        var p = (Math.random().toString(16)+"000000000").substr(2,8);
-        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
-    }
-    return _p8() + _p8(true) + _p8(true) + _p8();
-}
-			
-// Adapted from https://github.com/tj/d3-dot
-var gen = function(n, l, h, s) {
-  var data = []
-  for (var i = n; i; i--) {
-		var id = guid()
-    data.push({
-      x: Math.random() * l | 0,
-      y: Math.random() * h | 0,
-			id: id,			// guid() // i
-			s: s
-    })
-  }
-
-  return data
-}
-	
-
-
-	// from svg to center
-	// get center, height, width
-	// transition to center
-var _hsr = parseInt(_width/2)
-var _vsr = parseInt(_height/2)
-
-								
-	// lane elems trasition
+	// elems trasition
 		var elemsTransition = d3.transition()
 			.duration(_duration)
 			.ease(d3.easeLinear)
+	
+
 	
 var rangGroups = svgContainer.select("g.rangs")
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
 								function(d) { 
-										var rangsIndex = state.reducerRangs.rangsIndex
-										console.log('rangsIndex rangsIndex', rangsIndex)
-							
-									return rangsIndex
+										var rangsId = state.reducerRangs.rangsIndex - 1
+										console.log('rangGroup id: rangsIndex:', rangsId)
+									return rangsId
 								})
  							
-var newRangGroups = 	rangGroups						
+var newRangGroups = rangGroups						
             .enter()
 							.append("g")
 							.attr("class", "rang")
-							.attr("id", function (d) { 
+								.attr("id", function (d) { 
 
-											var item = {
-														id: d.id,
-														x: d.x,
-														y: d.y,
-														width: d.s,
-														height: d.s, 
-												}
+													// pass data of rect that will be created !!!!!
+													// store.dispatch(actions.setRang(item))				
+									
+										return d.id; })
 
-												store.dispatch(actions.setRang(item))				
-							// console.log('____ add rang', JSON.stringify(item, null, 2))
-								
-									return d.id; })
-
+							
+// console.log('____ newRangGroups ____ ', JSON.stringify(newRangGroups, null, 2))
 
 var rectOnNewRang = newRangGroups.append('rect')
             .attr("rid", function (d) { 
-									console.log('____ rect to RANG', JSON.stringify(d.id, d, 2))
+									console.log('____ rect rid: ', d.id)
 									return d.id; })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
@@ -159,6 +140,24 @@ var rectOnNewRang = newRangGroups.append('rect')
 						.attr("stroke-width", 1)
 						.attr("stroke", "grey")
 						.style("fill", "transparent")
+							.transition(elemsTransition)
+								.on("start", function start(d) {		
+										intransition = true
+												var item = {
+															id: d.id,
+															x: d.x,
+															y: d.y,
+															width: d.s,
+															height: d.s, 
+													}
+										console.log('____ add rang', JSON.stringify(item, null, 2))
+										store.dispatch(actions.setRang(d))				
+
+									})
+								.on("end", function end(d) {	
+								// console.log('____ delete rang', JSON.stringify(d, null, 2))
+									intransition = false
+								})								
 
 var rectOnExistingRang = rangGroups.select("rect")	
  						.attr("id", function (d) { return d.id; })

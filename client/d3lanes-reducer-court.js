@@ -66,14 +66,14 @@ function reducerCourt(state = initialStateCourt, action) {
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
 				case ActionTypes.SET_KEYBKEY:
-						console.log('SET_KEYBKEY')
+						// console.log('SET_KEYBKEY')
 						var ks = state.keys
 						ks[action.keyCode] = true
             return Object.assign({}, state, {
                 keys: ks
             });
         case ActionTypes.RELEASE_KEYBKEY:
-						console.log('RELEASE_KEYBKEY')
+						// console.log('RELEASE_KEYBKEY')
  						var ks = state.keys
 						ks[action.keyCode] = false
             return Object.assign({}, state, {

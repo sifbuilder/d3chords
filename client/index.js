@@ -115,6 +115,11 @@ if (typeof require === "function") {
 			actions.initRangs
 		)
 			
+		var stopRangsLauncher = store.compose(
+			store.dispatch,
+			actions.stopRangs
+		)
+			
 	/* RINGS */
 				var createRingsPayload = function () { return {
 							ringsPerTick: store.getState().reducerRings.ringsPerTick,
@@ -155,6 +160,7 @@ if (typeof require === "function") {
 		var mouseUp = d3lanesControls.mouseUpControl(store).start(d3.select('svg'))
 		var touchEnd = d3lanesControls.touchEndControl(store).start(d3.select('svg'))
 		var mouseLeave = d3lanesControls.mouseLeaveControl(store).start(d3.select('svg'))
+		var mouseEnter = d3lanesControls.mouseEnterControl(store).start(d3.select('svg'))
 		var ticker = d3lanesControls.tickControls(store).start()
 		var stepper = d3lanesControls.stepControls(store).start()
 
@@ -177,11 +183,13 @@ if (typeof require === "function") {
 
 		} else if (mode == 'rings') {
 				mouseDown.subscribe(initRangsLauncher)
+				mouseLeave.subscribe(stopRangsLauncher)
 				mouseDown.subscribe(startRingsLauncher)
 				mouseDown.subscribe(createRingsLauncher)
 				mouseMove.subscribe(createRingsLauncher)
 				mouseUp.subscribe(stopRingsLauncher)
 				mouseLeave.subscribe(stopRingsLauncher)
+				mouseEnter.subscribe(initRangsLauncher)
 		
 		}
 

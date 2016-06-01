@@ -56,8 +56,8 @@ function combineReducers(reducers) {
 
 // _____________ RANGS
 var initialStateThis = {
-			duration: 1000,
-			n: 3,
+			duration: 500,
+			n: 1,
 			s: 200,
 			rangs: [],
 			rangsIndex: 0,
@@ -88,6 +88,12 @@ function reducerThis(state = initialStateThis, action) {
                 initRangs: true
             })
 
+       case ActionTypes.STOP_RANGS:
+ 						console.log('STOP_RANGS')
+            return Object.assign({}, state, {
+                initRangs: false
+            })
+
 			case ActionTypes.SET_RANG:		// setRang
 							// console.log('SET_RANG')
 			
@@ -100,11 +106,11 @@ function reducerThis(state = initialStateThis, action) {
 					if (result.length === 0) {			// add
 						items = {rangs: [
 							{
-											id: action.rang.id,
-											x: action.rang.x,
-											y: action.rang.y,
-											width: action.rang.width,
-											height: action.rang.height,
+								id: action.rang.id,
+								x: action.rang.x,
+								y: action.rang.y,
+								width: action.rang.width,
+								height: action.rang.height,
 							}, 
 							...rangs
 						]}

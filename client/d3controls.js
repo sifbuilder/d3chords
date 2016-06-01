@@ -546,7 +546,64 @@ if (typeof require === "function") {
 		return controlApi
 	}	
 		
-			
+/*  -------------       		   */
+/*    mouseEnterControls        */
+/*  -------------       		   */
+	function mouseEnterControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					svg.on('mouseenter', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}	
+					
 /*  -------------          */
 /*    kbdControls        */
 /*  -------------          */
@@ -1177,6 +1234,7 @@ exports.touchMoveControl = touchMoveControl
 exports.mouseUpControl = mouseUpControl
 exports.touchEndControl = touchEndControl
 exports.mouseLeaveControl = mouseLeaveControl
+exports.mouseEnterControl = mouseEnterControl
 
 exports.stepControls = stepControls
 exports.tickControls = tickControls
