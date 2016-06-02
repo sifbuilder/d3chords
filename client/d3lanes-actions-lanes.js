@@ -31,64 +31,20 @@ var cttsLanes = {
 	SET_LANES: '',
 	SET_MESSAGES: '',
 	SET_RECORDS: '',
-	WALK_DOWN_RECORDS: '',
-	WALK_UP_RECORDS: '',
 	SET_RECORDS_COLLECTION: '',
 	SET_RECORDS_FETCHED: '',
 	UPDATE_MESSAGES: '',
+	WALK_DOWN_RECORDS: '',
+	WALK_UP_RECORDS: '',
 }
-
 
 var ActionTypes = keyMirror(cttsLanes, '')
 
 // ____________________ actions LANES
 var ActionCreators = {
-	setRecordsFetched(areRecordsFetched) {
-    return {
-        type: ActionTypes.SET_RECORDS_FETCHED,
-        areRecordsFetched: areRecordsFetched,
-    }
-  },
-	setRecordsCollection(recordsCollection) {
-    return {
-        type: ActionTypes.SET_RECORDS_COLLECTION,
-        recordsCollection: recordsCollection,
-    }
-  },
-	setRecords(argObj) {	// SET_RECORDS
-    return {
-        type: ActionTypes.SET_RECORDS,
-        itemSpan: argObj.itemSpan,
-        mode: argObj.currentMode,
-    }
-  },
-	walkDownRecords(itemSpan, mode) {	// WALK_DOWN_RECORDS
-    return {
-        type: ActionTypes.WALK_DOWN_RECORDS,
-        itemSpan: itemSpan,
-        mode: mode,
-    }
-  },
-	walkUpRecords(itemSpan, mode) {	// WALK_UP_RECORDS
-    return {
-        type: ActionTypes.WALK_UP_RECORDS,
-        itemSpan: itemSpan,
-        mode: mode,
-    }
-  },
-	increaseCursorLow() {		// INCREASE_CURSOR_LOW
-    return {
-        type: ActionTypes.INCREASE_CURSOR_LOW,	
-		}
-  },
 	decreaseCursorLow() {
     return {
         type: ActionTypes.DECREASE_CURSOR_LOW,
-		}
-  },
-	increaseCursorHigh() {
-    return {
-        type: ActionTypes.INCREASE_CURSOR_HIGH,
 		}
   },
 	decreaseCursorHigh() {
@@ -101,6 +57,35 @@ var ActionCreators = {
         type: ActionTypes.DELETE_LANE,
         lane: lane,
 		}
+  },
+	increaseCursorLow() {		// INCREASE_CURSOR_LOW
+    return {
+        type: ActionTypes.INCREASE_CURSOR_LOW,	
+		}
+  },
+	increaseCursorHigh() {
+    return {
+        type: ActionTypes.INCREASE_CURSOR_HIGH,
+		}
+  },
+	setRecordsFetched(areRecordsFetched) {
+    return {
+        type: ActionTypes.SET_RECORDS_FETCHED,
+        areRecordsFetched: areRecordsFetched,
+    }
+  },
+	setRecords(argObj) {	// SET_RECORDS
+    return {
+        type: ActionTypes.SET_RECORDS,
+        itemSpan: argObj.itemSpan,
+        mode: argObj.currentMode,
+    }
+  },
+	setRecordsCollection(recordsCollection) {
+    return {
+        type: ActionTypes.SET_RECORDS_COLLECTION,
+        recordsCollection: recordsCollection,
+    }
   },
 	setLane(lane) {
     return {
@@ -126,6 +111,20 @@ var ActionCreators = {
        cursorLow: cursorLow,
        cursorHigh: cursorHigh,
 		}
+  },
+	walkDownRecords(itemSpan, mode) {	// WALK_DOWN_RECORDS
+    return {
+        type: ActionTypes.WALK_DOWN_RECORDS,
+        itemSpan: itemSpan,
+        mode: mode,
+    }
+  },
+	walkUpRecords(itemSpan, mode) {	// WALK_UP_RECORDS
+    return {
+        type: ActionTypes.WALK_UP_RECORDS,
+        itemSpan: itemSpan,
+        mode: mode,
+    }
   },
 }
 

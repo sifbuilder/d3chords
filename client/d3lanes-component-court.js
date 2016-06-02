@@ -59,8 +59,8 @@ if (typeof require === "function") {
 				var winWidthPixels = parseInt(svg.style("width"))
 				var winHeightPixels = parseInt(svg.style("height"))
 				
-				var fontSizeHw = 3 + "hw"
-				var fontSize = winWidthPixels * 3/100
+				var fontSizeHw = 2 + "hw"
+				var fontSize = winWidthPixels * 2/100
 				var fontname = 'sans-serif'
 						
 				var c=document.createElement('canvas');

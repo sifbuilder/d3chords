@@ -25,8 +25,8 @@ var keyMirror = function(obj, prefix) {
 }
 
 var cttsParticles = {
-	INTRODUCE_PARTICLES: '',
 	CREATE_PARTICLES: '',
+	INTRODUCE_PARTICLES: '',
 	START_PARTICLES: '',
 	START_TICKER: '',
 	STOP_PARTICLES: '',
@@ -39,9 +39,9 @@ var ActionTypes = keyMirror(cttsParticles, '')
 
 // ____________________ actions PARTICLES
 var ActionCreators = {
-	introduceParticles(obj) {
+	createParticles(obj) {
     return {
-        type: ActionTypes.INTRODUCE_PARTICLES,	// introduceParticles
+        type: ActionTypes.CREATE_PARTICLES,	// createParticles
         N: obj.particlesPerTick,
         x: obj.x,
         y: obj.y,
@@ -53,9 +53,9 @@ var ActionCreators = {
  				generating: obj.generating,
     }
   },
-	createParticles(obj) {
+	introduceParticles(obj) {
     return {
-        type: ActionTypes.CREATE_PARTICLES,	// createParticles
+        type: ActionTypes.INTRODUCE_PARTICLES,	// introduceParticles
         N: obj.particlesPerTick,
         x: obj.x,
         y: obj.y,
@@ -82,6 +82,11 @@ var ActionCreators = {
         type: ActionTypes.STOP_TICKER
     };
 	},
+	stopParticles() {
+    return {
+        type: ActionTypes.STOP_PARTICLES
+    }
+	},
 	tickParticles(arg) {
     return {
          type: ActionTypes.TICK_PARTICLES,		// tickParticles
@@ -89,11 +94,6 @@ var ActionCreators = {
 				 height: arg.height,
 				 gravity: arg.gravity,
 				 lanes: arg.lanes,
-    }
-	},
-	stopParticles() {
-    return {
-        type: ActionTypes.STOP_PARTICLES
     }
 	},
 }

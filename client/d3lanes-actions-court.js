@@ -65,15 +65,15 @@ var ActionCreators = {
         delta: width
 		}
   },
-	setKeybKey(keyCode) {
-    return {
-        type: ActionTypes.SET_KEYBKEY,
-        keyCode: keyCode,
-		}
-  },
 	releaseKeybKey(keyCode) {
     return {
         type: ActionTypes.RELEASE_KEYBKEY,
+        keyCode: keyCode,
+		}
+  },
+	setKeybKey(keyCode) {
+    return {
+        type: ActionTypes.SET_KEYBKEY,
         keyCode: keyCode,
 		}
   },
@@ -83,16 +83,16 @@ var ActionCreators = {
         currentMode: currentMode,
 		}
   },
-	setView(currentView) {
-    return {
-        type: ActionTypes.SET_VIEW,
-        currentView: currentView,
-		}
-  },
 	setNotice(notice) {
     return {
         type: ActionTypes.SET_NOTICE,
         notice: notice,
+		}
+  },
+	setView(currentView) {
+    return {
+        type: ActionTypes.SET_VIEW,
+        currentView: currentView,
 		}
   },
 	startKeybKeyEvents() {

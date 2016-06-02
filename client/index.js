@@ -64,18 +64,18 @@ if (typeof require === "function") {
 			createParticlesPayload
 		)
 
-		var initiateParticlesLauncher = store.compose(
+		var initParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
 			createParticlesPayload
 		)
 
-				var tickParticlesPayload = function () { return {
-						width: store.getState().reducerCourt.svgWidth,
-						height: store.getState().reducerCourt.svgHeight,
-						gravity: store.getState().reducerConfig.gravity,
-						lanes: store.getState().reducerLanes.lanes
-					}}
+			var tickParticlesPayload = function () { return {
+					width: store.getState().reducerCourt.svgWidth,
+					height: store.getState().reducerCourt.svgHeight,
+					gravity: store.getState().reducerConfig.gravity,
+					lanes: store.getState().reducerLanes.lanes
+				}}
 
 			var tickParticlesLauncher = store.compose(
 				store.dispatch,
@@ -163,14 +163,16 @@ if (typeof require === "function") {
 		var mouseEnter = d3lanesControls.mouseEnterControl(store).start(d3.select('svg'))
 		var ticker = d3lanesControls.tickControls(store).start()
 		var stepper = d3lanesControls.stepControls(store).start()
-
+		
+		
+		var keyDown = d3lanesControls.keyDownControl(store).start()
 			
 			
 		var mode = 'rings' // lanes, rings
 		if (mode == 'lanes') {
 				mouseDown.subscribe(startParticlesLauncher)
-				mouseDown.subscribe(createParticlesLauncher)
 				touchStart.subscribe(startParticlesLauncher)
+				mouseDown.subscribe(createParticlesLauncher)
 				touchStart.subscribe(createParticlesLauncher)
 				mouseMove.subscribe(createParticlesLauncher)
 				touchMove.subscribe(createParticlesLauncher)
@@ -179,17 +181,17 @@ if (typeof require === "function") {
 				mouseLeave.subscribe(stopParticlesLauncher)
 				ticker.subscribe(tickParticlesLauncher)
 				stepper.subscribe(setRecordsLauncher)
-				stepper.subscribe(initiateParticlesLauncher)
+				stepper.subscribe(initParticlesLauncher)
 
 		} else if (mode == 'rings') {
 				mouseDown.subscribe(initRangsLauncher)
+				mouseEnter.subscribe(initRangsLauncher)
 				mouseLeave.subscribe(stopRangsLauncher)
 				mouseDown.subscribe(startRingsLauncher)
 				mouseDown.subscribe(createRingsLauncher)
 				mouseMove.subscribe(createRingsLauncher)
 				mouseUp.subscribe(stopRingsLauncher)
 				mouseLeave.subscribe(stopRingsLauncher)
-				mouseEnter.subscribe(initRangsLauncher)
 		
 		}
 
