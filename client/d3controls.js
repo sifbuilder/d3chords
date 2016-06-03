@@ -12,7 +12,6 @@ if (typeof require === "function") {
   (factory((global.d3lanesControls = global.d3lanesControls || {})));
 }(this, function (exports) { 'use strict';
 
-
 /*  -------------          */
 /*    stepControls        */
 /*  -------------          */
@@ -61,15 +60,11 @@ if (typeof require === "function") {
 			if (typeof listener !== 'function') {
 				throw new Error('Expected listener to be a function.')
 			}
-
 			var isSubscribed = true
-
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-
 			return stepper
 		}
-		
 		return stepper
 }		
 
@@ -96,46 +91,41 @@ if (typeof require === "function") {
 		ticker.start = function start() {
 			// Anatomy of a video game
 			// Misuse of the requestAnimationFrme()
-					var started = false
-					var rfps = 60
-					var last = performance.now()
-					var timestamp = 0
-					var tickfn = function(timestamp) {
-						window.requestAnimationFrame(tickfn)
-						if (timestamp != undefined) rfps = rfps * 0.9 + (1000/(timestamp-last)) * 0.1
-						if (timestamp != undefined) last = timestamp						
-						while( performance.now() - timestamp < 17 ) {}
-						var fps = parseFloat(Math.round(rfps * 100) / 100).toFixed(0)							
-						store.dispatch(actions.setFps(fps))
-							
-						var listeners = currentListeners = nextListeners
-						for (var i = 0; i < listeners.length; i++) {
-							listeners[i]()
-						}
+				var started = false
+				var rfps = 60
+				var last = performance.now()
+				var timestamp = 0
+				var tickfn = function(timestamp) {
+					window.requestAnimationFrame(tickfn)
+					if (timestamp != undefined) rfps = rfps * 0.9 + (1000/(timestamp-last)) * 0.1
+					if (timestamp != undefined) last = timestamp						
+					while( performance.now() - timestamp < 17 ) {}
+					var fps = parseFloat(Math.round(rfps * 100) / 100).toFixed(0)							
+					store.dispatch(actions.setFps(fps))
+						
+					var listeners = currentListeners = nextListeners
+					for (var i = 0; i < listeners.length; i++) {
+						listeners[i]()
 					}
-					if (!started) {
-						started = true
-						tickfn()	
-					}
-					return ticker
+				}
+				if (!started) {
+					started = true
+					tickfn()	
+				}
+				return ticker
 			}
 		// ____________________ subscribe
 	 ticker.subscribe = function subscribe (listener) {
 			if (typeof listener !== 'function') {
 				throw new Error('Expected listener to be a function.')
 			}
-
 			var isSubscribed = true
-
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-
 			return ticker
 		}
-
 		return ticker
 }		
-		
 
 /*  -------------       		   */
 /*    mouseDownControls        */
@@ -161,17 +151,16 @@ if (typeof require === "function") {
 				}			
 
 		function controlAction(svg) {
-				var e = d3.event
-				pauseEvent(e);
+			var e = d3.event
+			pauseEvent(e);
 
-				var coords  = d3.mouse(svg);
-				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
-				
-				var listeners = currentListeners = nextListeners
-				for (var i = 0; i < listeners.length; i++) {
-					listeners[i]()
-				}	
+			var coords  = d3.mouse(svg);
+			store.dispatch(actions.updateMousePos(coords[0], coords[1]))
 			
+			var listeners = currentListeners = nextListeners
+			for (var i = 0; i < listeners.length; i++) {
+				listeners[i]()
+			}	
 		}
 
 		// ____________________ controlApi
@@ -183,7 +172,7 @@ if (typeof require === "function") {
 					return controlApi
 		}
 		// ____________________ subscribe
-	 controlApi.subscribe = function subscribe (listener) {
+		controlApi.subscribe = function subscribe (listener) {
 			if (typeof listener !== 'function') {
 				throw new Error('Expected listener to be a function.')
 			}
@@ -212,12 +201,12 @@ if (typeof require === "function") {
 		}			
 
 		function pauseEvent(e){
-						if(e.stopPropagation) e.stopPropagation();
-						if(e.preventDefault) e.preventDefault();
-						e.cancelBubble=true;
-						e.returnValue=false;
-						return false;
-				}			
+				if(e.stopPropagation) e.stopPropagation();
+				if(e.preventDefault) e.preventDefault();
+				e.cancelBubble=true;
+				e.returnValue=false;
+				return false;
+		}			
 
 		function controlAction(svg) {
 				var e = d3.event
@@ -254,8 +243,6 @@ if (typeof require === "function") {
 		return controlApi
 	}
 		
-
-
 
 /*  -------------       		   */
 /*    mouseMoveControls        */
@@ -604,11 +591,7 @@ if (typeof require === "function") {
 		return controlApi
 	}	
 					
-					
-					
-					
-					
-					
+
 					
 /*  -------------       		   */
 /*    keyDownControl        */
@@ -631,31 +614,135 @@ if (typeof require === "function") {
 						e.cancelBubble=true;
 						e.returnValue=false;
 						return false;
-				}			
+		}			
 
-		function controlAction(svg) {
-			var e = d3.event
+		var controlAction = function controlAction(e) {
 			pauseEvent(e);
-
 			store.dispatch(actions.setKeybKey(e.keyCode))
-			var keys = 	store.getState().reducerCourt.keys
-				
-				var listeners = currentListeners = nextListeners
-				for (var i = 0; i < listeners.length; i++) {
-					listeners[i]()
-				}									
+			var keys = store.getState().reducerCourt.keys
+			var listeners = currentListeners = nextListeners
+			for (var i = 0; i < listeners.length; i++) {
+				listeners[i]()
+			}									
 		}
 
 		// ____________________ controlApi
 		function controlApi() {}
 		
 		// ____________________ start
-		controlApi.start = function start(svg) {
-			document.addEventListener("keydown", controlAction, false);
+		controlApi.start = function start() {
+			document.addEventListener("keydown", controlAction, false)
 						return controlApi
 		}
 		// ____________________ subscribe
-	 controlApi.subscribe = function subscribe (listener) {
+		controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}	
+
+/*  -------------       		   */
+/*    keyReleaseControl        */
+/*  -------------       		   */
+	function keyReleaseControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+				if(e.stopPropagation) e.stopPropagation();
+				if(e.preventDefault) e.preventDefault();
+				e.cancelBubble=true;
+				e.returnValue=false;
+				return false;
+		}			
+
+		var controlAction = function controlAction(e) {
+			pauseEvent(e);
+			store.dispatch(actions.releaseKeybKey(e.keyCode))
+			var listeners = currentListeners = nextListeners
+			for (var i = 0; i < listeners.length; i++) {
+				listeners[i]()
+			}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start() {
+			document.addEventListener("keyup", controlAction, false)
+						return controlApi
+		}
+		// ____________________ subscribe
+		controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}						
+					
+/*  -------------       		   */
+/*    keyPressControl        */
+/*  -------------       		   */
+	function keyPressControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+				if(e.stopPropagation) e.stopPropagation();
+				if(e.preventDefault) e.preventDefault();
+				e.cancelBubble=true;
+				e.returnValue=false;
+				return false;
+		}			
+
+		var controlAction = function controlAction(e) {
+			pauseEvent(e);				
+			var listeners = currentListeners = nextListeners
+			for (var i = 0; i < listeners.length; i++) {
+				listeners[i]()
+			}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start() {
+			document.addEventListener("keypress", controlAction, false)
+						return controlApi
+		}
+		// ____________________ subscribe
+		controlApi.subscribe = function subscribe (listener) {
 			if (typeof listener !== 'function') {
 				throw new Error('Expected listener to be a function.')
 			}
@@ -668,154 +755,6 @@ if (typeof require === "function") {
 		return controlApi
 	}	
 		
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-/*  -------------          */
-/*    kbdControls        */
-/*  -------------          */
-function kbdControls(store) {
-		var store = store
-	
-		// ____________________ handleKeyDown
-		// https://www.kirupa.com/html5/keyboard_events_in_javascript.htm
-		// https://github.com/gaearon/redux-devtools-dock-monitor
-		var handleKeyDown = function handleKeyDown(e) {
-			e.stopPropagation();
-			e.preventDefault();			
-			
-			store.dispatch(actions.setKeybKey(e.keyCode))
-			var keys = 	store.getState().reducerCourt.keys
-			
-			// keys[e.keyCode] = true;
-			if (keys[70] && keys[17])										fKeyCtrl()		// change currentView
-				else if (keys[68] && keys[17])						dKeyCtrl()		// change debugMode
-				else if (e.keyCode == '37' && !keys[17]) leftArrow()		// change currentMode autoMode/walkMode
-				else if (e.keyCode == '37' &&  keys[17]) leftArrowCtrl() // change width
-				else if (e.keyCode == '39' && !keys[17]) rightArrow()		// change currentMode
-				else if (e.keyCode == '39' &&  keys[17]) rightArrowCtrl()	// change width
-				else if (e.keyCode == '38' && !keys[17]) upArrow()			// change currentMode nextWalk
-				else if (e.keyCode == '38' &&  keys[17]) upArrowCtrl()	// change height
-				else if (e.keyCode == '40' && !keys[17]) downArrow()		// change currentMode		
-				else if (e.keyCode == '40' &&  keys[17]) downArrowCtrl()	// change height	
-		}	
-		// ____________________ downArrowCtrl
-		var downArrowCtrl = function downArrowCtrl() {
-				store.dispatch(actions.resizeHeight(+10))
-		}
-			// ____________________ fKeyCtrl
-		var fKeyCtrl = function fKeyCtrl() {		// change view
-				// // Ctrl 17 + Shift 16  + f 70
-				var views = Object.keys(store.getState().reducerConfig.views)
-				var idx = views.indexOf(store.getState().reducerCourt.currentView)
-				var newIdx = idx + 1 % views.length
-				var newview = store.getState().reducerConfig.views[views[newIdx]]
-				store.dispatch(actions.setView(newview))
-		}
-			// ____________________ dKeyCtrl
-		var dKeyCtrl = function dKeyCtrl() {		// change debug mode
-				// // Ctrl 17 + Shift 16  + d 68
-				store.dispatch(actions.switchDebugMode())
-		}
-		// ____________________ matchesKey
-			function matchesKey(key, event) {
-				if (!key) return false
-				const charCode = event.keyCode || event.which;
-				const char = String.fromCharCode(charCode);
-				return key.name.toUpperCase() === char.toUpperCase() &&
-					key.alt === event.altKey &&
-					key.ctrl === event.ctrlKey &&
-					key.meta === event.metaKey &&
-					key.shift === event.shiftKey;
-			}
-		// ____________________ handleKeyPressed
-		var handleKeyPressed = function handleKeyPressed(e) {
-		}			
-		// ____________________ handleKeyReleased
-		var handleKeyReleased = function handleKeyReleased(e) {
-				store.dispatch(actions.releaseKeybKey(e.keyCode))
-		}	
-		// ____________________ keysEventsActions
-		// arrows up/down => currentMode walkMode
-		// arrow right => currentMode autoMode
-		// arrow left => currentMode walkMode
-		
-		// ____________________ leftArrow
-			var leftArrow = function leftArrow() { // set currentMode walkMode
-				var currentMode = 'walkMode'
-				store.dispatch(actions.setMode(currentMode))				
-		}
-		// ____________________ rightArrow
-		var rightArrow = function rightArrow() {	// set currentMode autoMode
-				var currentMode = 'autoMode'
-				store.dispatch(actions.setMode(currentMode))				
-		}
-		// ____________________ upArrow
-		var upArrow = function upArrow() {
-			var currentMode = store.getState().reducerCourt.currentMode
-			if (currentMode == 'autoMode') {
-				var newMode = 'walkMode'
-				store.dispatch(actions.setMode(newMode))
-			} else if (currentMode == 'walkMode') {
-
-						var itemSpan = store.getState().reducerConfig.itemSpan
-						store.dispatch(actions.walkUpRecords(itemSpan, currentMode))
-
-			}
-		}
-		// ____________________ downArrow
-		var downArrow = function downArrow() {
-			var currentMode = store.getState().reducerCourt.currentMode
-			if (currentMode == 'autoMode') {
-				var newMode = 'walkMode'
-				store.dispatch(actions.setMode(newMode))
-			} else if (currentMode == 'walkMode') {
-
-					var itemSpan = store.getState().reducerConfig.itemSpan
-					store.dispatch(actions.walkDownRecords(itemSpan, currentMode))
-
-			}
-		}
-		// ____________________ leftArrowCtrl
-		var leftArrowCtrl = function leftArrowCtrl() {
-			console.log("leftArrowCtrlFn")
-			store.dispatch(actions.resizeWidth(-10))
-		}
-		// ____________________ rightArrowCtrl
-		var rightArrowCtrl = function rightArrowCtrl() {
-			console.log("rightArrowCtrlFn")
-			store.dispatch(actions.resizeWidth(10))
-		}
-		// ____________________ upArrowCtrl
-		var upArrowCtrl = function upArrowCtrl() {
-			console.log("upArrowCtrlFn")
-			store.dispatch(actions.resizeWidth(-10))
-		}
-		// ____________________ controlfn
-	  function controlfn() {
- 		}
-		// ____________________ startKeysEvents
-		controlfn.startKeybKeyEvents = function startKeybKeyEvents() {
-			store.dispatch(actions.startKeybKeyEvents())
-			document.addEventListener("keydown", handleKeyDown, false);
-			document.addEventListener("keypress", handleKeyPressed, false);
-			document.addEventListener("keyup", handleKeyReleased, false);
-		}
-
-	return controlfn
-}
 
 /* ================================= */
 /*            posControls            */
@@ -990,8 +929,6 @@ function kbdControls(store) {
 		}
 		return d3Control
 }		
-
-
 
 /* ================================= */
 /*            tipControls            */
@@ -1307,8 +1244,8 @@ function tipControls (scope) {		// selection
 
 		
 exports.keyDownControl = keyDownControl
+exports.keyReleaseControl = keyReleaseControl
 
-		
 exports.mouseDownControl = mouseDownControl
 exports.touchStartControl = touchStartControl
 exports.mouseMoveControl = mouseMoveControl
@@ -1320,7 +1257,7 @@ exports.mouseEnterControl = mouseEnterControl
 
 exports.stepControls = stepControls
 exports.tickControls = tickControls
-exports.kbdControls = kbdControls
+// exports.kbdControls = kbdControls
 exports.dragControls = dragControls
 exports.posControls = posControls
 exports.tipControls = tipControls

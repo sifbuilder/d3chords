@@ -45,19 +45,18 @@ if (typeof require === "function") {
 				
 
 		/* PARTICLES  */
-		
-				var createParticlesPayload = function () { return {
-							particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-							x: store.getState().reducerCourt.mousePos[0], 
-							y: store.getState().reducerCourt.mousePos[1],
-							xInit: store.getState().reducerCourt.leftBorder,
-							xEnd: store.getState().reducerCourt.svgWidth, 
-							randNormal: store.getState().reducerConfig.randNormal,
-							randNormal2: store.getState().reducerConfig.randNormal2,
-							lanes: store.getState().reducerLanes.lanes,
-							generating: store.getState().reducerParticles.generating,
-				}}
-		
+		var createParticlesPayload = function () { return {
+					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
+					x: store.getState().reducerCourt.mousePos[0], 
+					y: store.getState().reducerCourt.mousePos[1],
+					xInit: store.getState().reducerCourt.leftBorder,
+					xEnd: store.getState().reducerCourt.svgWidth, 
+					randNormal: store.getState().reducerConfig.randNormal,
+					randNormal2: store.getState().reducerConfig.randNormal2,
+					lanes: store.getState().reducerLanes.lanes,
+					generating: store.getState().reducerParticles.generating,
+		}}
+
 		var createParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.createParticles,
@@ -121,18 +120,18 @@ if (typeof require === "function") {
 		)
 			
 	/* RINGS */
-				var createRingsPayload = function () { return {
-							ringsPerTick: store.getState().reducerRings.ringsPerTick,
-							x: store.getState().reducerCourt.mousePos[0], 
-							y: store.getState().reducerCourt.mousePos[1],
-							xInit: store.getState().reducerCourt.leftBorder,
-							xEnd: store.getState().reducerCourt.svgWidth, 
-							randNormal: store.getState().reducerConfig.randNormal,
-							randNormal2: store.getState().reducerConfig.randNormal2,
-							rings: store.getState().reducerRings.rings,
-							rangs: store.getState().reducerRangs.rangs,
-							generating: store.getState().reducerRings.generating,
-				}}
+			var createRingsPayload = function () { return {
+						ringsPerTick: store.getState().reducerRings.ringsPerTick,
+						x: store.getState().reducerCourt.mousePos[0], 
+						y: store.getState().reducerCourt.mousePos[1],
+						xInit: store.getState().reducerCourt.leftBorder,
+						xEnd: store.getState().reducerCourt.svgWidth, 
+						randNormal: store.getState().reducerConfig.randNormal,
+						randNormal2: store.getState().reducerConfig.randNormal2,
+						rings: store.getState().reducerRings.rings,
+						rangs: store.getState().reducerRangs.rangs,
+						generating: store.getState().reducerRings.generating,
+			}}
 		
 			var createRingsLauncher = store.compose(
 				store.dispatch,
@@ -150,9 +149,70 @@ if (typeof require === "function") {
 				actions.stopRings
 			)	
 
-			
-		/* start keyboad controls - mode on arrows */
-		var kbdControls = d3lanesControls.kbdControls(store, d3.select('svg')).startKeybKeyEvents()
+			var KeyDownPayload = function () { var keys = store.getState().reducerCourt.keys
+					return keys
+				}
+			var KeyDownLauncher = store.compose(
+				function (keys) {
+					var altKeyCode = 18, ctrlKeyCode = 17 
+					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+					var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+					
+					if (keys[vKeyCode] == true && keys[altKeyCode] == true) {		// alt-v
+						console.log("alt-v", store.getState().reducerCourt.keys)
+						var _views = store.getState().reducerConfig.views
+						var _currentView = store.getState().reducerCourt.currentView
+						var _currentViewIndex = _views.indexOf(_currentView)
+						var newViewIndex = _views[Math.abs(_currentViewIndex + 1) % _views.length]
+						store.dispatch(actions.setView(newViewIndex))					
+					}
+					if (keys[dKeyCode] == true && keys[altKeyCode] == true) {		// alt-d
+						store.dispatch(actions.switchDebugMode())
+					}
+					if (keys[leftArrow] == true) {										// leftArrow
+						var currentMode = 'walkMode'
+						store.dispatch(actions.setMode(currentMode))				
+					}
+					if (keys[rightArrow] == true) {										// rightArrow
+						var currentMode = 'autoMode'
+						store.dispatch(actions.setMode(currentMode))				
+					}
+					if (keys[upArrow] == true) {												// upArrow
+						var currentMode = store.getState().reducerCourt.currentMode
+						if (currentMode == 'autoMode') {
+							var newMode = 'walkMode'
+							store.dispatch(actions.setMode(newMode))
+						} else if (currentMode == 'walkMode') {
+							var itemSpan = store.getState().reducerConfig.itemSpan
+							store.dispatch(actions.walkUpRecords(itemSpan, currentMode))
+						}
+					}
+					if (keys[downArrow] == true) {											// downArrow
+						var currentMode = store.getState().reducerCourt.currentMode
+						if (currentMode == 'autoMode') {
+							var newMode = 'walkMode'
+							store.dispatch(actions.setMode(newMode))
+						} else if (currentMode == 'walkMode') {
+							var itemSpan = store.getState().reducerConfig.itemSpan
+							store.dispatch(actions.walkDownRecords(itemSpan, currentMode))
+						}
+					}
+					if (keys[leftArrow] == true && keys[ctrlKeyCode] == true) {		// leftArrow-Ctrl
+						console.log("leftArrowCtrlFn")
+						store.dispatch(actions.resizeWidth(-10))
+					}
+					if (keys[rightArrow] == true  && keys[ctrlKeyCode] == true) {		// rightArrow-Ctrl
+						console.log("rightArrowCtrlFn")
+						store.dispatch(actions.resizeWidth(10))
+					}
+					if (keys[upArrow] == true && keys[ctrlKeyCode] == true) {			// upArrow-Ctrl
+						console.log("upArrowCtrlFn")
+						store.dispatch(actions.resizeWidth(-10))
+					}
+				},
+				KeyDownPayload
+			)	
+
 		var mouseDown = d3lanesControls.mouseDownControl(store).start(d3.select('svg'))
 		var touchStart = d3lanesControls.touchStartControl(store).start(d3.select('svg'))
 		var mouseMove = d3lanesControls.mouseMoveControl(store).start(d3.select('svg'))
@@ -163,13 +223,12 @@ if (typeof require === "function") {
 		var mouseEnter = d3lanesControls.mouseEnterControl(store).start(d3.select('svg'))
 		var ticker = d3lanesControls.tickControls(store).start()
 		var stepper = d3lanesControls.stepControls(store).start()
-		
-		
 		var keyDown = d3lanesControls.keyDownControl(store).start()
+		var keyRelease = d3lanesControls.keyReleaseControl(store).start()
 			
-			
-		var mode = 'rings' // lanes, rings
+		var mode = 'lanes' // lanes, rings
 		if (mode == 'lanes') {
+				keyDown.subscribe(KeyDownLauncher)
 				mouseDown.subscribe(startParticlesLauncher)
 				touchStart.subscribe(startParticlesLauncher)
 				mouseDown.subscribe(createParticlesLauncher)
@@ -184,6 +243,7 @@ if (typeof require === "function") {
 				stepper.subscribe(initParticlesLauncher)
 
 		} else if (mode == 'rings') {
+				keyDown.subscribe(KeyDownLauncher)
 				mouseDown.subscribe(initRangsLauncher)
 				mouseEnter.subscribe(initRangsLauncher)
 				mouseLeave.subscribe(stopRangsLauncher)
@@ -191,8 +251,7 @@ if (typeof require === "function") {
 				mouseDown.subscribe(createRingsLauncher)
 				mouseMove.subscribe(createRingsLauncher)
 				mouseUp.subscribe(stopRingsLauncher)
-				mouseLeave.subscribe(stopRingsLauncher)
-		
+				mouseLeave.subscribe(stopRingsLauncher)		
 		}
 
 					

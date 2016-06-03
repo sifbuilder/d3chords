@@ -97,7 +97,7 @@ var ActionCreators = {
   },
 	startKeybKeyEvents() {
     return {
-        type: ActionTypes.START_KEYBKEY_EVENTS
+        type: ActionTypes.START_KEYBKEY_EVENTS	// startKeybKeyEvents
     }
 	},
 	updateMousePos(x, y) {
@@ -108,7 +108,6 @@ var ActionCreators = {
     }
 	},
 }
-
 
 exports.ActionTypes = ActionTypes;
 exports.ActionCreators = ActionCreators;

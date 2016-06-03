@@ -47,13 +47,7 @@ var intransition = false
 // _____________ render
 	function render(newState) {
 	
-console.log("_____________ render rangs _____________")
-
-		if (newState.reducerRangs.initRangs == false ) return
 		if (intransition == true) return
-console.log("=============== render rangs ============== ")
-		// DATA
-		// store previous - will not change during render
 		var state = stateRangs = newState
 
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime		
@@ -64,7 +58,10 @@ console.log("=============== render rangs ============== ")
 		var _width = state.reducerCourt.svgWidth
 		var _height = state.reducerCourt.svgHeight
 		var _svgid = state.reducerConfig.container
-	
+		var _initRangs = state.reducerRangs.initRangs
+
+		if (_initRangs == false) return
+			
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
@@ -110,7 +107,7 @@ var rangGroups = svgContainer.select("g.rangs")
             .data(gen(_n, _width, _height, _s), 
 								function(d) { 
 										var rangsId = state.reducerRangs.rangsIndex - 1
-										console.log('rangGroup id: rangsIndex:', rangsId)
+										// console.log('rangGroup id: rangsIndex:', rangsId)
 									return rangsId
 								})
  							

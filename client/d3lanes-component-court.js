@@ -53,7 +53,8 @@ if (typeof require === "function") {
 								" - N: " + state.reducerParticles.particleIndex + 
 								" - R: " + state.reducerRangs.rangsIndex + 
 								" - M: " + state.reducerRings.ringsIndex + 
-								" - fps: " + state.reducerDebug.fps
+								" - fps: " + state.reducerDebug.fps +
+								" - view: " + state.reducerCourt.currentView
 
 
 				var winWidthPixels = parseInt(svg.style("width"))
