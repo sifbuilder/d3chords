@@ -142,6 +142,9 @@ var intransition = false
 				.append("svg")
 					.attr("id", "lanes_svg")
 
+					
+					
+					
 			var messagesGroup = svgContainer
 				.selectAll('g.messages')
 				.data(['messages'])
@@ -150,12 +153,12 @@ var intransition = false
 				.append("g")
 					.classed("messages", true)
 
-			var actorsGroup = svgContainer
+			var tracksGroup = svgContainer
 				.selectAll('g.tracks')
 				.data(['tracks'])
 					.style('opacity', _opacity)
 					
-			actorsGroup.enter()	
+			tracksGroup.enter()	
 				.append("g")
 					.classed("tracks", true)
 
@@ -214,7 +217,7 @@ var intransition = false
 					// laneElems DATA
 						var laneElems = svgContainer
 							.select("g.tracks")
-								.selectAll("g.runner")
+								.selectAll("g.track")
 								.data(_laneObjs1, function(d) { return d.id })				
 					
 					// laneElems EXIT
@@ -227,7 +230,7 @@ var intransition = false
 										.remove(function(){})										
 									
 					// laneElems UPDATE	texts
-						var actorTexts = laneElems.select("text")
+						var trackTexts = laneElems.select("text")
 											.attr("text-anchor", "middle")
 											.attr("alignment-baseline", "middle")
 											.style("font-size", function(d, i) { 
@@ -248,7 +251,7 @@ var intransition = false
 									})
 
 					// laneElems UPDATE lines
-						var actorLines = laneElems.select("line")
+						var trackLines = laneElems.select("line")
 							.attr("x0", function(d, i) {
 								var r = parseFloat(coordsUtils().hcoord_pct(_laneItems0, d.name)
 												* parseInt(svgContainer.style("width")) / 100).toFixed(0)
@@ -283,15 +286,15 @@ var intransition = false
 										intransition = false
 								})								
 							
-					// laneElems ENTER
-						var newActorElements = laneElems
+					// newTrackElements ENTER
+						var newTrackElements = laneElems
 							.enter()
 								.append("g")
-									.classed("runner", true)
+									.classed("track", true)
 
-					// laneElems ENTER text
-						newActorElements.append("text")
-							.attr("class", "runner")
+					// newTrackElements ENTER text
+						newTrackElements.append("text")
+							.attr("class", "track")
 							.attr("text-anchor", "middle")
 							.attr("alignment-baseline", "middle")
 							.style("font-family", "sans-serif")
@@ -315,9 +318,9 @@ var intransition = false
 											intransition = false
 									})									
 									
-					// laneElems ENTER lines																			
-						newActorElements.append("line")
-							.attr("class", "runner")
+					// newTrackElements ENTER lines																			
+						newTrackElements.append("line")
+							.attr("class", "track")
 							.attr("stroke", "lightgray")
 							.style("stroke-width", "1px")
 							.attr("stroke-width", 1)
