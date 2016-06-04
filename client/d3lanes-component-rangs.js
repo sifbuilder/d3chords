@@ -62,7 +62,7 @@ var intransition = false
 				var _currentView = state.reducerCourt.currentView
 
 
-		// if (_initRangs == false) return
+		if (_initRangs == false) return
 
 		
 		// SVG
@@ -71,16 +71,12 @@ var intransition = false
 				.data(['rangs_svg'], function(d) {
 											return 'rangs_svg'
 								})
-			
-	console.log("rangs ^^^^^^^^ svgContainer ", svgContainer)					
 
 	var newSvgContainer = svgContainer
 				.enter()
 				.append("svg")
 					.attr("id", 'rangs_svg')
 
-console.log("rangs ^^^^^^^^^^^^^^^^^^ newSvgContainer ", _width, _height, newSvgContainer)					
-					
 			svgContainer
 					.style('width', _width)
 					.style('height', _height)

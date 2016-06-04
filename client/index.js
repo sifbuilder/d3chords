@@ -155,7 +155,6 @@ if (typeof require === "function") {
 			)	
 
 			var KeyDownPayload = function () { 
-console.log("_____________________ KeyDownPayload")			
 					var keys = store.getState().reducerCourt.keys
 					var altKeyCode = 18, ctrlKeyCode = 17 
 					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
