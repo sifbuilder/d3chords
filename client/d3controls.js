@@ -63,7 +63,20 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return stepper
+			// return stepper
+
+			return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		return stepper
 }		
@@ -122,7 +135,22 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return ticker
+			// return ticker
+
+
+			return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+			
+			
 		}
 		return ticker
 }		
@@ -179,7 +207,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+			return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+			
 		}
 		
 		return controlApi
@@ -237,7 +277,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -296,7 +348,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -354,7 +418,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -411,7 +487,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -468,7 +556,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -527,7 +627,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -585,7 +697,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -642,7 +766,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -696,7 +832,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi
@@ -749,7 +897,19 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			return controlApi
+			// return controlApi
+						return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+
 		}
 		
 		return controlApi

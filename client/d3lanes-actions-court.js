@@ -26,7 +26,6 @@ var keyMirror = function(obj, prefix) {
 
 // ____________________ action TYPES
 var cttsCourt = {
-	ADD_KEYS_EVENT: '',
 	FETCH_RECORDS: '',
 	RELEASE_KEYBKEY: '',
 	RESET_KEYS_EVENTS: '',

@@ -107,36 +107,56 @@ var intransition = false
 	
 // _____________ render
 	function render(newState) {
-		if (intransition == true) {
-			return
-		}
+		// return on transition
+		if (intransition == true) return
+
+		// return on same data
 		if (JSON.stringify(stateLanes.reducerLanes.records) === JSON.stringify(newState.reducerLanes.records)) {
 			return 
 		}
 
-
-		// DATA
 		// store previous - will not change during render
 		var _messages0 = stateLanes.reducerLanes.records || []
 		var state = stateLanes = newState
+		
+		
 		var _messages1 = state.reducerLanes.records
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
 		var _itemProps = state.reducerConfig.itemProps
+		var _currentView = state.reducerCourt.currentView
+		
+console.log("_____________________________ lanes _currentView: ", _currentView)		
+		var _display = null, _opacity = 1
+		if (_currentView !== 'lanesView') _display = 'none'
+		if (_currentView !== 'lanesView') _opacity = 0
+
 			
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
-				.data(['svgContainer'])
+				// .data(['svgContainer'])
+				.data(['lanes_svg'], function(d) {
+											return 'lanes_svg'
+								})
 			
-			svgContainer
+			var newSvgContainer = svgContainer
 				.enter()
 				.append("svg")
-					.attr("id", state.reducerConfig.container)
-			
+					// .attr("id", state.reducerConfig.container)
+					.attr("id", "lanes_svg")
+
+console.log("^^^^^^^^ lanes ", newSvgContainer)					
+
+		if (_currentView !== 'lanesView') 
+				d3.select("svg#lanes_svg").remove()
+
+					
 			svgContainer
 					.style('width', state.reducerCourt.svgWidth)
 					.style('height', state.reducerCourt.svgHeight)
 
+					
+					
 			var messagesGroup = d3.select('svg')
 				.selectAll('g.messages')		// items
 				.data(['messages'])
@@ -148,6 +168,7 @@ var intransition = false
 			var actorsGroup = d3.select('svg')
 				.selectAll('g.lanes')		// items
 				.data(['lanes'])
+					.style('opacity', _opacity)
 					
 			actorsGroup.enter()	
 				.append("g")

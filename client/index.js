@@ -22,27 +22,21 @@ if (typeof require === "function") {
 
 		/* store */
 		var store = d3lanesStore.createStore(d3lanesReducer.reducer, d3lanesReducer.reducer())
-			store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
-			store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
-			store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
-			store.subscribe(store.compose(d3lanesComponentRangs.render, store.getState))
-			store.subscribe(store.compose(d3lanesComponentRings.render, store.getState))
 
 		/* container */
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
 			.selectAll('svg')
 				.data(['svg'])
-				
-		var svgContainerNew = svgContainer.enter()
-			.append("svg")
-				.attr("id", store.getState().reducerConfig.containerId)
-				.style('width', store.getState().reducerCourt.svgWidth)
-				.style('height', store.getState().reducerCourt.svgHeight)
-				.style('background', 'oldlace')
-				.attr('class', 'bar-chart')			// 
-				.style('border', '1px solid darkgrey')
-				.attr('viewbox',"0 0 3 2")										
-				
+				.enter()
+					.append("svg")
+						.attr("id", store.getState().reducerConfig.containerId)
+						.style('width', store.getState().reducerCourt.svgWidth)
+						.style('height', store.getState().reducerCourt.svgHeight)
+						.style('background', 'oldlace')
+						.attr('class', 'bar-chart')			// 
+						.style('border', '1px solid darkgrey')
+						.attr('viewbox',"0 0 3 2")										
+						
 
 		/* PARTICLES  */
 		var createParticlesPayload = function () { return {
@@ -57,12 +51,14 @@ if (typeof require === "function") {
 					generating: store.getState().reducerParticles.generating,
 		}}
 
+		// createParticlesLauncher
 		var createParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.createParticles,
 			createParticlesPayload
 		)
 
+		// initParticlesLauncher
 		var initParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
@@ -76,17 +72,20 @@ if (typeof require === "function") {
 					lanes: store.getState().reducerLanes.lanes
 				}}
 
+		// tickParticlesLauncher
 			var tickParticlesLauncher = store.compose(
 				store.dispatch,
 				actions.tickParticles,
 				tickParticlesPayload
 			)
 		
+		// startParticlesLauncher
 			var startParticlesLauncher = store.compose(
 				store.dispatch,
 				actions.startParticles
 			)	
 			
+		// stopParticlesLauncher
 			var stopParticlesLauncher = store.compose(
 				store.dispatch,
 				actions.stopParticles
@@ -102,6 +101,7 @@ if (typeof require === "function") {
 				itemSpan: store.getState().reducerConfig.itemSpan,
 				currentMode: store.getState().reducerCourt.currentMode
 			}}
+		// setRecordsLauncher
 		var setRecordsLauncher = store.compose(
 				store.dispatch,
 				actions.setRecords,
@@ -109,11 +109,13 @@ if (typeof require === "function") {
 			)
 	
 	/* RANGS */
+		// initRangsLauncher
 		var initRangsLauncher = store.compose(
 			store.dispatch,
 			actions.initRangs
 		)
 			
+		// stopRangsLauncher
 		var stopRangsLauncher = store.compose(
 			store.dispatch,
 			actions.stopRangs
@@ -133,27 +135,28 @@ if (typeof require === "function") {
 						generating: store.getState().reducerRings.generating,
 			}}
 		
+		// createRingsLauncher
 			var createRingsLauncher = store.compose(
 				store.dispatch,
 				actions.createRings,
 				createRingsPayload
 			)
 
+		// startRingsLauncher
 			var startRingsLauncher = store.compose(
 				store.dispatch,
 				actions.startRings
 			)	
 			
+		// stopRingsLauncher
 			var stopRingsLauncher = store.compose(
 				store.dispatch,
 				actions.stopRings
 			)	
 
-			var KeyDownPayload = function () { var keys = store.getState().reducerCourt.keys
-					return keys
-				}
-			var KeyDownLauncher = store.compose(
-				function (keys) {
+			var KeyDownPayload = function () { 
+console.log("_____________________ KeyDownPayload")			
+					var keys = store.getState().reducerCourt.keys
 					var altKeyCode = 18, ctrlKeyCode = 17 
 					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 					var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
@@ -209,8 +212,9 @@ if (typeof require === "function") {
 						console.log("upArrowCtrlFn")
 						store.dispatch(actions.resizeWidth(-10))
 					}
-				},
-				KeyDownPayload
+			}
+			var KeyDownLauncher = store.compose(
+					KeyDownPayload
 			)	
 
 		var mouseDown = d3lanesControls.mouseDownControl(store).start(d3.select('svg'))
@@ -225,10 +229,14 @@ if (typeof require === "function") {
 		var stepper = d3lanesControls.stepControls(store).start()
 		var keyDown = d3lanesControls.keyDownControl(store).start()
 		var keyRelease = d3lanesControls.keyReleaseControl(store).start()
-			
-		var mode = 'lanes' // lanes, rings
-		if (mode == 'lanes') {
+
+			store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
 				keyDown.subscribe(KeyDownLauncher)
+		
+		var mode = 'lanes' // lanes, rings
+		// if (mode == 'lanes') {
+				store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
+				store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
 				mouseDown.subscribe(startParticlesLauncher)
 				touchStart.subscribe(startParticlesLauncher)
 				mouseDown.subscribe(createParticlesLauncher)
@@ -242,8 +250,9 @@ if (typeof require === "function") {
 				stepper.subscribe(setRecordsLauncher)
 				stepper.subscribe(initParticlesLauncher)
 
-		} else if (mode == 'rings') {
-				keyDown.subscribe(KeyDownLauncher)
+		// } else if (mode == 'rings') {
+				store.subscribe(store.compose(d3lanesComponentRangs.render, store.getState))
+				store.subscribe(store.compose(d3lanesComponentRings.render, store.getState))
 				mouseDown.subscribe(initRangsLauncher)
 				mouseEnter.subscribe(initRangsLauncher)
 				mouseLeave.subscribe(stopRangsLauncher)
@@ -252,7 +261,7 @@ if (typeof require === "function") {
 				mouseMove.subscribe(createRingsLauncher)
 				mouseUp.subscribe(stopRingsLauncher)
 				mouseLeave.subscribe(stopRingsLauncher)		
-		}
+		// }
 
 					
 					

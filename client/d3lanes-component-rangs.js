@@ -46,7 +46,7 @@ var intransition = false
 	
 // _____________ render
 	function render(newState) {
-	
+
 		if (intransition == true) return
 		var state = stateRangs = newState
 
@@ -59,19 +59,28 @@ var intransition = false
 		var _height = state.reducerCourt.svgHeight
 		var _svgid = state.reducerConfig.container
 		var _initRangs = state.reducerRangs.initRangs
+				var _currentView = state.reducerCourt.currentView
 
-		if (_initRangs == false) return
-			
+
+		// if (_initRangs == false) return
+
+		
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
-				.data(['svg'])
+				.data(['rangs_svg'], function(d) {
+											return 'rangs_svg'
+								})
 			
-			svgContainer
+	console.log("rangs ^^^^^^^^ svgContainer ", svgContainer)					
+
+	var newSvgContainer = svgContainer
 				.enter()
 				.append("svg")
-					.attr("id", _svgid)
-			
+					.attr("id", 'rangs_svg')
+
+console.log("rangs ^^^^^^^^^^^^^^^^^^ newSvgContainer ", _width, _height, newSvgContainer)					
+					
 			svgContainer
 					.style('width', _width)
 					.style('height', _height)

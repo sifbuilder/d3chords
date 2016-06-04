@@ -97,9 +97,7 @@ function reducerLanes(state = initialStateLanes, action) {
 						);
 						return r
 
-
 				case ActionTypes.SET_LANE:		// setLane
-				
 					var lanes = state.lanes
 					var ls = {}
 					var result = lanes.filter(function( obj ) {

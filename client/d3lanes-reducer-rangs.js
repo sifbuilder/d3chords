@@ -53,7 +53,6 @@ function combineReducers(reducers) {
   }
 }
 
-
 // _____________ RANGS
 var initialStateThis = {
 			duration: 500,
@@ -83,7 +82,7 @@ function reducerThis(state = initialStateThis, action) {
 							return r
 
        case ActionTypes.INIT_RANGS:
- 						console.log('INIT_RANGS')
+ 						console.log('_________________________ INIT_RANGS')
             return Object.assign({}, state, {
                 initRangs: true
             })
