@@ -114,22 +114,21 @@ var intransition = false
 		if (JSON.stringify(stateTracks.reducerLanes.records) === JSON.stringify(newState.reducerLanes.records)) {
 			return 
 		}
-
+	
 		// store previous - will not change during render
 		var _runners0 = stateTracks.reducerLanes.records || []
 		var state = stateTracks = newState
 		
-		
+		// hide on wrong views
+		var _display = null, _opacity = 1
+		var _currentView = state.reducerCourt.currentView
+		if (_currentView !== 'lanesView') _display = 'none'
+		if (_currentView !== 'lanesView') _opacity = 0
+	
 		var _runners1 = state.reducerLanes.records
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
 		var _itemProps = state.reducerConfig.itemProps
-		var _currentView = state.reducerCourt.currentView
-		
-		var _display = null, _opacity = 1
-		if (_currentView !== 'lanesView') _display = 'none'
-		if (_currentView !== 'lanesView') _opacity = 0
 
-			
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
@@ -141,7 +140,6 @@ var intransition = false
 				.enter()
 				.append("svg")
 					.attr("id", "tracks_svg")
-
 					
 					var laneGroup = svgContainer
 							.selectAll('g.lane')

@@ -75,8 +75,8 @@ var intransition = false
 											
 											if (rangHits.length != 0) {
 														var rangHit = rangHits[0]
-														console.log( "^^^^^^^^^^^^^^^^^^^ rand hit", JSON.stringify(rangHit, null, 2))
-														console.log( "^^^^^^^^^^^^^^^^^^^ rand hit width", rangHit.width)
+														console.log( "^^^^^^^^^^^^^^^^^^^ rang hit", JSON.stringify(rangHit, null, 2))
+														console.log( "^^^^^^^^^^^^^^^^^^^ rang hit width", rangHit.width)
 												
 													r = Math.min( ringsRadio, rangHit.width)
 											}

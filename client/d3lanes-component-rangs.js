@@ -47,8 +47,14 @@ var intransition = false
 // _____________ render
 	function render(newState) {
 
+		// return on transition
 		if (intransition == true) return
+		
 		var state = stateRangs = newState
+
+		// return if not init - mouse hover
+		var _initRangs = state.reducerRangs.initRangs
+		if (_initRangs == false) return
 
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime		
 		var _itemProps = state.reducerConfig.itemProps
@@ -58,12 +64,7 @@ var intransition = false
 		var _width = state.reducerCourt.svgWidth
 		var _height = state.reducerCourt.svgHeight
 		var _svgid = state.reducerConfig.container
-		var _initRangs = state.reducerRangs.initRangs
-				var _currentView = state.reducerCourt.currentView
-
-
-		if (_initRangs == false) return
-
+		var _currentView = state.reducerCourt.currentView
 		
 		// SVG
 		var svgContainer = d3.select('body')
