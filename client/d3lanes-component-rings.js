@@ -27,7 +27,7 @@ var intransition = false
 
 		rendering = true
 			var state = stateRings= newState
-			var ringsRadio = state.reducerRings.ringsRadio || 6.33
+			var ringsRadio = state.reducerRings.ringsRadio || state.reducerConfig.ringDefaultRadio
 
 			var svgContainer = d3.select('body')
 					.selectAll('svg')
@@ -64,17 +64,23 @@ var intransition = false
 									.attr('r', function(d, i, a) { 
 											console.log( "============ ring d", JSON.stringify(d, null, 2))
 											console.log( "============ rangs", JSON.stringify(state.reducerRangs.rangs, null, 2))
+											console.log( "============ rang id", d.rid)
 											
-											var i
+											
 											var r = ringsRadio
-												for (i=0; i<state.reducerRangs.rangs.length; ++i) {
-													if (state.reducerRangs.rangs[i].id == d.rid) {
+											
+											var rangHits = state.reducerRangs.rangs.filter(function( obj ) {
+												return obj.id == d.rid
+											});
+											
+											if (rangHits.length != 0) {
+														var rangHit = rangHits[0]
+														console.log( "^^^^^^^^^^^^^^^^^^^ rand hit", JSON.stringify(rangHit, null, 2))
+														console.log( "^^^^^^^^^^^^^^^^^^^ rand hit width", rangHit.width)
 												
-																					console.log("+++++++++++++++++", i)
-															r = Math.min( ringsRadio, state.reducerRangs.rangs[i].width)
-													}
+													r = Math.min( ringsRadio, rangHit.width)
+											}
 													
-												}
 											
 												return r })
 									.style("fill", function (d) {

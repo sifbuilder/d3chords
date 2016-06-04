@@ -58,6 +58,7 @@ function combineReducers(reducers) {
 var initialStateRings = {
 			rings: [],
 			ringsIndex: 0,
+			ringsHits: 0,
 			ringsIntroduced: false,
 			ringsPerTick: 1,
 			ringsRadio: 9,
@@ -83,6 +84,7 @@ function reducerThis(state = initialStateRings, action) {
         case ActionTypes.CREATE_RINGS:			// createRings
 						// console.log("CREATE_RINGS")		
 						var newRings = state.rings.slice(0)
+						var _ringsHits = state.ringsHits
 						if (action.generating == true) {
 						
 							var idx = state.ringsIndex
@@ -123,13 +125,15 @@ function reducerThis(state = initialStateRings, action) {
 													ring.vector = [ring.id%2 ? - action.randNormal() : action.randNormal(),
 																						 - action.randNormal2()*3.3];
 													newRings.unshift(ring);
-											}												
+											}
+											_ringsHits = _ringsHits + 1
 									}
 							}
 
 							return Object.assign({}, state, {
 									rings: newRings,
-									ringsIndex: state.rings.length
+									ringsIndex: state.rings.length,
+									ringsHits: _ringsHits
 							})
 						} else {
 							return state

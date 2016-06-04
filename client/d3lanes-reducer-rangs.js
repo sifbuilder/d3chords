@@ -55,7 +55,7 @@ function combineReducers(reducers) {
 
 // _____________ RANGS
 var initialStateThis = {
-			duration: 500,
+			duration: 1500,
 			n: 1,
 			s: 200,
 			rangs: [],

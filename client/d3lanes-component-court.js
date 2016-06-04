@@ -46,18 +46,34 @@ if (typeof require === "function") {
 					.classed("notices", true)	// items
 			// _________________________________ render Notice Update
 				var errorNotice = (state.reducerCourt.notice) ? state.reducerCourt.notice : ""
-				var noticeToShow = " " +
-								"click particles arrow mode" + 
-								" - " + state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]] + 
-								" - " + parseInt(svg.style("width")) + " x " + parseInt(svg.style("height")) +
-								" - N: " + state.reducerParticles.particleIndex + 
-								" - R: " + state.reducerRangs.rangsNow + 
-								" - M: " + state.reducerRings.ringsIndex + 
-								" - fps: " + state.reducerDebug.fps +
-								" - view: " + state.reducerCourt.currentView +
-								" - rangs: " + state.reducerRangs.rangsAlways
-
-
+				var noticeToShow = " "
+				var currentView = state.reducerCourt.currentView
+				var labelMode = state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]]
+				var size = parseInt(svg.style("width")) + " x " + parseInt(svg.style("height"))
+				var rangsNow = state.reducerRangs.rangsNow
+				var particlesNow = state.reducerParticles.particleIndex
+				var ringsNow = state.reducerRings.ringsIndex
+				var framesPerSecond = state.reducerDebug.fps
+				var rangsAlways = state.reducerRangs.rangsAlways
+				var ringsHits = state.reducerRings.ringsHits
+				var framesLostPct = Math.round(100 * (60 - framesPerSecond) / 60)
+				var hitsLostPct = Math.round(100 * (rangsAlways - ringsHits) / rangsAlways) || 0
+				
+				if (currentView == 'lanesView') {
+					var cmdsLanes = "down-arrow, right-arrow, alt-v"
+					noticeToShow = noticeToShow +
+						cmdsLanes + " - " + currentView +
+						" - fps: " + framesPerSecond
+				}
+				if (currentView == 'ringsView') {
+					var cmdsRings = "hover, alt-v"
+					noticeToShow = noticeToShow +
+						"(" + cmdsRings + ")" +
+						" - N: " + ringsNow +
+						' - you have alredy missed ' + hitsLostPct + ' % of your rings ' + 
+						' and ' + framesLostPct + ' % of your frames '
+				}
+				
 				var winWidthPixels = parseInt(svg.style("width"))
 				var winHeightPixels = parseInt(svg.style("height"))
 				
