@@ -51,10 +51,11 @@ if (typeof require === "function") {
 								" - " + state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]] + 
 								" - " + parseInt(svg.style("width")) + " x " + parseInt(svg.style("height")) +
 								" - N: " + state.reducerParticles.particleIndex + 
-								" - R: " + state.reducerRangs.rangsIndex + 
+								" - R: " + state.reducerRangs.rangsNow + 
 								" - M: " + state.reducerRings.ringsIndex + 
 								" - fps: " + state.reducerDebug.fps +
-								" - view: " + state.reducerCourt.currentView
+								" - view: " + state.reducerCourt.currentView +
+								" - rangs: " + state.reducerRangs.rangsAlways
 
 
 				var winWidthPixels = parseInt(svg.style("width"))

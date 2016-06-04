@@ -59,7 +59,8 @@ var initialStateThis = {
 			n: 1,
 			s: 200,
 			rangs: [],
-			rangsIndex: 0,
+			rangsNow: 0,
+			rangsAlways: 0,
 			initRangs: false,
 	}
 	
@@ -77,12 +78,12 @@ function reducerThis(state = initialStateThis, action) {
 		
 						 var r = Object.assign({}, state,
 							{rangs: items},
-							{rangsIndex: items.length}
+							{rangsNow: items.length}
 							);
 							return r
 
        case ActionTypes.INIT_RANGS:
- 						console.log('_________________________ INIT_RANGS')
+ 						console.log('INIT_RANGS')
             return Object.assign({}, state, {
                 initRangs: true
             })
@@ -94,9 +95,9 @@ function reducerThis(state = initialStateThis, action) {
             })
 
 			case ActionTypes.SET_RANG:		// setRang
-							// console.log('SET_RANG')
-			
+					// console.log('SET_RANG')
 					var rangs = state.rangs
+					var rangsAlways = state.rangsAlways
 					var items = {}
 					var result = rangs.filter(function( obj ) {
 							return obj.id == action.rang.id;
@@ -113,6 +114,7 @@ function reducerThis(state = initialStateThis, action) {
 							}, 
 							...rangs
 						]}
+						rangsAlways = rangsAlways + 1
 					} else {												// edit
 							items = {rangs: rangs.map(rang =>
 								rang.id === action.rang.id ?
@@ -126,20 +128,18 @@ function reducerThis(state = initialStateThis, action) {
 									rang
 							)}
 					}
-					
-					 var r = Object.assign({}, state,
+				 var r = Object.assign({}, state,
 						items,
-						{
-							rangsIndex: items.rangs.length
-						});
-						return r
-
+						{rangsNow: items.rangs.length,
+						 rangsAlways: rangsAlways}
+					)
+					return r
 		
         case ActionTypes.SET_RANGS:
  						console.log('SET_RANGS')
             return Object.assign({}, state, {
                 rangs: action.rangs,
-                rangsIndex: Object.keys(action.rangs).length
+                rangsNow: Object.keys(action.rangs).length
             })
 
 						

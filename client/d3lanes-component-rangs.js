@@ -111,8 +111,8 @@ var rangGroups = svgContainer.select("g.rangs")
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
 								function(d) { 
-										var rangsId = state.reducerRangs.rangsIndex - 1
-										// console.log('rangGroup id: rangsIndex:', rangsId)
+										var rangsId = state.reducerRangs.rangsNow - 1
+										// console.log('rangGroup id: rangsNow:', rangsId)
 									return rangsId
 								})
  							
