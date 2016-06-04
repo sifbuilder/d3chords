@@ -100,7 +100,7 @@ if (typeof require === "function") {
 	}
 
 // _____________ context
-var stateLanes = {
+var stateTracks = {
 	reducerLanes: {}
 }
 var intransition = false
@@ -111,16 +111,16 @@ var intransition = false
 		if (intransition == true) return
 
 		// return on same data
-		if (JSON.stringify(stateLanes.reducerLanes.records) === JSON.stringify(newState.reducerLanes.records)) {
+		if (JSON.stringify(stateTracks.reducerLanes.records) === JSON.stringify(newState.reducerLanes.records)) {
 			return 
 		}
 
 		// store previous - will not change during render
-		var _messages0 = stateLanes.reducerLanes.records || []
-		var state = stateLanes = newState
+		var _runners0 = stateTracks.reducerLanes.records || []
+		var state = stateTracks = newState
 		
 		
-		var _messages1 = state.reducerLanes.records
+		var _runners1 = state.reducerLanes.records
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
 		var _itemProps = state.reducerConfig.itemProps
 		var _currentView = state.reducerCourt.currentView
@@ -133,41 +133,47 @@ var intransition = false
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
-				.data(['lanes_svg'], function(d) {
-											return 'lanes_svg'
+				.data(['tracks_svg'], function(d) {
+											return 'tracks_svg'
 								})
 			
 			var newSvgContainer = svgContainer
 				.enter()
 				.append("svg")
-					.attr("id", "lanes_svg")
+					.attr("id", "tracks_svg")
 
 					
+					var laneGroup = svgContainer
+							.selectAll('g.lane')
+							.data(['lane'])
+							.style('opacity', _opacity)
+								
+						laneGroup.enter()	
+							.append("g")
+								.classed("lane", true)
+								
+			var runnersGroup = laneGroup
+				.selectAll('g.runners')
+				.data(['runners'])
 					
-					
-			var messagesGroup = svgContainer
-				.selectAll('g.messages')
-				.data(['messages'])
-					
-			messagesGroup.enter()	
+			runnersGroup.enter()	
 				.append("g")
-					.classed("messages", true)
+					.classed("runners", true)
 
-			var tracksGroup = svgContainer
+			var tracksGroup = laneGroup
 				.selectAll('g.tracks')
 				.data(['tracks'])
-					.style('opacity', _opacity)
 					
 			tracksGroup.enter()	
 				.append("g")
 					.classed("tracks", true)
 
-		var markerInstance = svgContainer.select(".message-marker")
+		var markerInstance = laneGroup.select(".runner-marker")
 		if (markerInstance.node() == null) {
-				svgContainer
+				laneGroup
 					.append("marker")
-					.attr("id", "message-marker")
-					.attr("class", "message-marker")
+					.attr("id", "runner-marker")
+					.attr("class", "runner-marker")
 					.attr("viewBox", "0 0 10 10")
 					.attr("refX", "10")
 					.attr("refY", "5")
@@ -175,35 +181,35 @@ var intransition = false
 					.attr("markerHeight", "4")
 					.attr("orient", "auto")
 					.append("path")
-						.attr("class", "message-arrow")
+						.attr("class", "runner-arrow")
 						.attr("d", "M 0 0 L 10 5 L 0 10 z")
 			}
 					
-			var _laneItems0 = arrayUtils()
-				.array_names_from_props(_messages0, _itemProps)
+			var _trackItems0 = arrayUtils()
+				.array_names_from_props(_runners0, _itemProps)
 
-			var _laneObjs0 = _laneItems0.map(function(d, i) {
+			var _trackObjs0 = _trackItems0.map(function(d, i) {
 					return ({id: d,
 								name: d,
-								x0: parseFloat(coordsUtils().hcoord_pct(_laneItems0, d)
+								x0: parseFloat(coordsUtils().hcoord_pct(_trackItems0, d)
 									* parseInt(svgContainer.style("width")) / 100).toFixed(0)})})
 
-			var _lanesObj0 = _laneItems0.reduce(function(total,d,currentIndex,arr) {
+			var _tracksObj0 = _trackItems0.reduce(function(total,d,currentIndex,arr) {
 					var o = {}
 					o[d] = {name: d,
-													x0: parseFloat(coordsUtils().hcoord_pct(_laneItems0, d)
+													x0: parseFloat(coordsUtils().hcoord_pct(_trackItems0, d)
 									* parseInt(svgContainer.style("width")) / 100).toFixed(0)}
 					return (Object.assign({}, total, o))}, {})								
 
 
-			var _laneItems1 = arrayUtils()
-				.array_names_from_props(_messages1, _itemProps)
+			var _trackItems1 = arrayUtils()
+				.array_names_from_props(_runners1, _itemProps)
 				
-			var _laneObjs1 = _laneItems1.map(function(d, i) {
+			var _trackObjs1 = _trackItems1.map(function(d, i) {
 
 			var x0 = 0
-					if ( _lanesObj0.hasOwnProperty( d) ) {
-							x0 =  _lanesObj0[d].x0
+					if ( _tracksObj0.hasOwnProperty( d) ) {
+							x0 =  _tracksObj0[d].x0
 					}
 				return ({id: d,
 							name: d,
@@ -218,7 +224,7 @@ var intransition = false
 						var trackElements = svgContainer
 							.select("g.tracks")
 								.selectAll("g.track")
-								.data(_laneObjs1, function(d) { return d.id })				
+								.data(_trackObjs1, function(d) { return d.id })				
 					
 					// trackElements EXIT
 							trackElements.exit()
@@ -240,7 +246,7 @@ var intransition = false
 											.attr("dy", "20")
 									.transition(d3lanesTransition)
 										.attr("x", function(d, i) {
-												var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
+												var r = coordsUtils().hcoord_tagged_pct(_trackItems1, d.name)
 												return r
 										})
 									.on("start", function start() {		
@@ -253,7 +259,7 @@ var intransition = false
 					// trackElements UPDATE lines
 						var trackLines = trackElements.select("line")
 							.attr("x0", function(d, i) {
-								var r = parseFloat(coordsUtils().hcoord_pct(_laneItems0, d.name)
+								var r = parseFloat(coordsUtils().hcoord_pct(_trackItems0, d.name)
 												* parseInt(svgContainer.style("width")) / 100).toFixed(0)
 								return r
 							})
@@ -265,7 +271,7 @@ var intransition = false
 							.transition(d3lanesTransition)
 									.attrTween("x1", function(d, i, a) {
 											return function (t) {
-													var r = parseFloat(coordsUtils().hcoord_pct(_laneItems1, d.name)
+													var r = parseFloat(coordsUtils().hcoord_pct(_trackItems1, d.name)
 																	* parseInt(svgContainer.style("width")) / 100).toFixed(0)
 													var x = parseFloat(parseInt(d.x0) + t * (r - parseInt(d.x0))).toFixed(0)
 													// dispatch tracks abscissa 	
@@ -276,7 +282,7 @@ var intransition = false
 											})
 
 								.attr("x2", function(d, i) {
-										var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
+										var r = coordsUtils().hcoord_tagged_pct(_trackItems1, d.name)
 										return r
 								})
 								.on("start", function start() {		
@@ -306,7 +312,7 @@ var intransition = false
 							.attr("dy", "20")
 
 							.attr("x", function(d, i, a) {
-								var r =  coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
+								var r =  coordsUtils().hcoord_tagged_pct(_trackItems1, d.name)
 								return r
 							})
 							.transition(d3lanesTransition)
@@ -325,20 +331,20 @@ var intransition = false
 							.style("stroke-width", "1px")
 							.attr("stroke-width", 1)
 							.attr("x0", function(d, i) {
-								var r = parseFloat(coordsUtils().hcoord_pct(_laneItems0, d.name)
+								var r = parseFloat(coordsUtils().hcoord_pct(_trackItems0, d.name)
 												* parseInt(svgContainer.style("width")) / 100).toFixed(0)
 								return r
 							})
 							.attr("x1", function(d, i, a) { 
-										var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
-										var x = parseFloat(coordsUtils().hcoord_pct(_laneItems1, d.name)
+										var r = coordsUtils().hcoord_tagged_pct(_trackItems1, d.name)
+										var x = parseFloat(coordsUtils().hcoord_pct(_trackItems1, d.name)
 												* parseInt(svgContainer.style("width")) / 100).toFixed(0)
 												var l = {name: d.name, id: d.id, x: x }
 												store.dispatch(actions.setLane(l))
 										return r
 							})
 							.attr("x2", function(d, i, a) { 
-										var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
+										var r = coordsUtils().hcoord_tagged_pct(_trackItems1, d.name)
 										return r
 							})
 							.attr("y1", function(_d, i) {
@@ -350,18 +356,18 @@ var intransition = false
 											return r
 							})
 
-				// messageElements										
-						var messageElements = svgContainer
-							.select("g.messages")
-								.selectAll("g.message")
-								.data(_messages1, function(d, i) { return d.id || (d.id = ++i); })
+				// runnerElements										
+						var runnerElements = svgContainer
+							.select("g.runners")
+								.selectAll("g.runner")
+								.data(_runners1, function(d, i) { return d.id || (d.id = ++i); })
 
-					// message elems UPDATE texts
-							messageElements.select('text')
+					// runner elems UPDATE texts
+							runnerElements.select('text')
 								.transition(d3lanesTransition)
 										.attr("x", function(d, i) {
-											var r1 = coordsUtils().hcoord_pct(_laneItems1, d.from)
-											var r2 = coordsUtils().hcoord_pct(_laneItems1, d.to)
+											var r1 = coordsUtils().hcoord_pct(_trackItems1, d.from)
+											var r2 = coordsUtils().hcoord_pct(_trackItems1, d.to)
 											var r = coordsUtils().hcenter_tagged_pct(r1, r2)
 											return r
 										})
@@ -376,15 +382,15 @@ var intransition = false
 											intransition = false
 									})
 									
-					// messageElems UPDATE lines
-							messageElements.select('line')						 
+					// runnerElems UPDATE lines
+							runnerElements.select('line')						 
 							.transition(d3lanesTransition)
 								.attr("x1", function(d, i, a) { 
-											var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.from)
+											var r = coordsUtils().hcoord_tagged_pct(_trackItems1, d.from)
 											return r
 							})
 							.attr("x2", function(d, i, a) { 
-										var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.to)
+										var r = coordsUtils().hcoord_tagged_pct(_trackItems1, d.to)
 										return r
 							})
 							.attr("y1", function(d, i) {
@@ -402,11 +408,11 @@ var intransition = false
 									intransition = false
 							})
 									
-					// messageElems UPDATE paths
-							messageElements.select("path")
+					// runnerElems UPDATE paths
+							runnerElements.select("path")
 								.transition(d3lanesTransition)
 									.attr("d", function(d, i) { 			
-											var	x_pc = coordsUtils().hcoord_tagged_pct(_laneItems1, d.from)
+											var	x_pc = coordsUtils().hcoord_tagged_pct(_trackItems1, d.from)
 											var xScrollWidth = parseInt(svgContainer.style("width"))
 											var t = xScrollWidth * Number.parseFloat(x_pc)/100
 											var x = t
@@ -427,17 +433,17 @@ var intransition = false
 											intransition = false
 									})					
 												
-						// messageElems ENTER
-								var newMessageElements = messageElements
+						// runnerElems ENTER
+								var newMessageElements = runnerElements
 									.enter()
 										.append("g")
-											.classed("message", true)
+											.classed("runner", true)
 																					
-						// messageElems ENTER TEXTs
+						// runnerElems ENTER TEXTs
 									newMessageElements.each(function(d, i) {
-										var new_message = d3.select(this)	
+										var new_runner = d3.select(this)	
 											.append("text")													
-											.attr("class", "message")
+											.attr("class", "runner")
 											.style("fill", "transparent")
 											.style("font-size", function(d, i) {
 													return parseInt(svgContainer.style("width")) * 2/100
@@ -448,8 +454,8 @@ var intransition = false
 												.text(d.msg)
 												.attr("y", (i + 2) * state.reducerConfig.vstep - 10)
 												.attr("x", function() {
-													var x1 = coordsUtils().hcoord_pct(_laneItems1, d.from)
-													var x2 = coordsUtils().hcoord_pct(_laneItems1, d.to)
+													var x1 = coordsUtils().hcoord_pct(_trackItems1, d.from)
+													var x2 = coordsUtils().hcoord_pct(_trackItems1, d.to)
 													var r = coordsUtils().hcenter_tagged_pct(x1, x2)
 													return r
 												})
@@ -463,18 +469,18 @@ var intransition = false
 													})					
 										})
 											
-						// messageElems ENTER PATHs
+						// runnerElems ENTER PATHs
 									newMessageElements.each(function(d, i) {
-										var new_message = d3.select(this)	
+										var new_runner = d3.select(this)	
 										if (d.from == d.to) {
-											new_message.append("path")			// new mPATHs
+											new_runner.append("path")			// new mPATHs
 												.attr("fill-opacity", 0)
 												.attr("stroke", "transparent")
 													.each(function(d) { 
 															// this._current = d_to_arc(d, i); // store initial state
 													})
 												.attr("d", function() { 			
-														var	x_pc_to = coordsUtils().hcoord_pct(_laneItems1, d.to)
+														var	x_pc_to = coordsUtils().hcoord_pct(_trackItems1, d.to)
 														var xScrollWidth = parseInt(svgContainer.style("width"))
 														var t = xScrollWidth * Number.parseFloat(x_pc_to)/100
 														var x = t																		
@@ -496,7 +502,7 @@ var intransition = false
 																	if (t != 1) {
 																		return null
 																		} else {
-																		return "url(#message-marker)"
+																		return "url(#runner-marker)"
 																		}
 																}
 															})
@@ -507,10 +513,10 @@ var intransition = false
 																intransition = false
 														})					
 																
-					// messageElems ENTER LINEs
+					// runnerElems ENTER LINEs
 										}	else {
-											var line = new_message.append("line")
-												.attr("class", "message")
+											var line = new_runner.append("line")
+												.attr("class", "runner")
 												.attr("stroke", "transparent")
 												.attr("stroke-width", 1)
 												.attr("y1", function() {
@@ -521,8 +527,8 @@ var intransition = false
 														var r = (i + 2) * state.reducerConfig.vstep ; 
 														return r 
 												})	
-												.attr("x1", coordsUtils().hcoord_tagged_pct(_laneItems1, d.from))
-												.attr("x2", coordsUtils().hcoord_tagged_pct(_laneItems1, d.to))
+												.attr("x1", coordsUtils().hcoord_tagged_pct(_trackItems1, d.from))
+												.attr("x2", coordsUtils().hcoord_tagged_pct(_trackItems1, d.to))
 												.transition(d3lanesTransition)
 															.attr("stroke", "gray")
 															.attr("fill", "grey")
@@ -531,7 +537,7 @@ var intransition = false
 																	if (t != 1) {
 																		return null
 																		} else {
-																		return "url(#message-marker)"
+																		return "url(#runner-marker)"
 																		}
 																}
 															})
@@ -544,8 +550,8 @@ var intransition = false
 											}
 									});								
 														
-		// messageElems EXIT
-				messageElements.exit()
+		// runnerElems EXIT
+				runnerElements.exit()
 					.transition()
 						.style("opacity", 0)
 						.remove()	
