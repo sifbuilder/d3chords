@@ -71,6 +71,7 @@ function reducerThis(state = initialStateRings, action) {
 	if (action == null) return state
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
+		
       case ActionTypes.DELETE_RING:	// deleteRing
 						var rings = state.rings
 						var items = rings.filter(function( obj ) {
@@ -95,7 +96,6 @@ function reducerThis(state = initialStateRings, action) {
                 ringsGenerating: false
             });
 
-							
         case ActionTypes.CREATE_RINGS:			// createRings
 						var _newRings = []
 						var _ringsHits = state.ringsHits
@@ -140,6 +140,7 @@ function reducerThis(state = initialStateRings, action) {
 																xh: xh,
 																yh: yh,
 																t: 0,
+																rang: {},
 															};
 
 													ring.vector = [ring.id%2 ? - action.randNormal() : action.randNormal(),
@@ -156,7 +157,6 @@ function reducerThis(state = initialStateRings, action) {
 							}
 							
 							var _ringsAll = state.rings.slice(0).concat(_newRings)
-// console.log("____________ CREATE_RING _ringsAll ", JSON.stringify(_ringsAll, null, 2))		
 							return Object.assign({}, state, {
 									rings: _ringsAll,
 									ringsNew: _newRings,
@@ -171,55 +171,55 @@ function reducerThis(state = initialStateRings, action) {
 						
 						
         case ActionTypes.TICK_RING:		// tickRing
-console.log("____________________________ TICK_RING ring ", action.id)
-// console.log("____________ TICK_RING state.rings ", JSON.stringify(state.rings, null, 2))		
+ // console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^TICK_RING", JSON.stringify(action, null, 2))
+				
 							var _ringsRadio = state.ringsRadio
               var _rings = state.rings
 								.filter(function (d) {
-											var inW = (d.cx > 0 )
-											var inE = (d.cx < 600 )
-											var inN = (d.cy < 400 )
-											var inS = (d.cy > 0 )
-											var inId = (d.id == action.id)
-											var r = inId && inW && inE && inS && inN
-		// console.log(" ================================== r: ", r)									
-											
-											return r 
+										// var inW = (d.cx > 0 )
+										// var inE = (d.cx < 600 )
+										// var inN = (d.cy < 400 )
+										// var inS = (d.cy > 0 )
+										var inId = (d.id == action.id)
+										// var r = inId && inW && inE && inS && inN
+										var r = inId
+										return r 
 									})
 								.map(function (d) {
-										d.id = action.id
-										d.cx += action.vector[0]
-										d.cy += action.vector[1]
-										d.t = action.t
-										d.r = (1 - action.t) * _ringsRadio
+// console.log("----------- tickRing ", d.cx, action.rang.x, action.rang.width)								
+								
+										if (d.cx > action.rang.x + action.rang.width) d.vector[0] = -d.vector[0]
+										if (d.cx < action.rang.x) d.vector[0] = -d.vector[0]
+										if (d.cy > action.rang.y + action.rang.height) d.vector[1] = -d.vector[1]
+										if (d.cy < action.rang.y) d.vector[1] = -d.vector[1]
 
+										var vx = d.vector[0], vy = d.vector[1]
+										var t = action.t, id = action.id
 										
-		// console.log(" ================================== d.id: ", d.id)									
-		// console.log(" ================================== d.cx: ", d.cx)									
-		// console.log(" ================================== d.cy: ", d.cy)									
-		// console.log(" ================================== d.r: ", d.r)									
-		// console.log(" ================================== d.t: ", d.t)									
-										
+										d.id = id
+										d.cx += vx
+										d.cy += vy
+										d.t = t
+										d.r = (1 - t) * _ringsRadio
 										return d
 								})
 
              var _ringsOther = state.rings
 								.filter(function (d) {
-											var inId = (d.id !== action.id)
-											var r = inId
-											return r 
+										var inId = (d.id !== action.id)
+										var r = inId
+										return r 
 									})
 										
 							var _ringsNew = 	_ringsOther.concat(_rings); 
 								
 							return Object.assign({}, state, {
-										rings: _ringsNew,
-										ringsIndex: _ringsNew.length,
+									rings: _ringsNew,
+									ringsIndex: _ringsNew.length,
 							});
 								
 						
         case ActionTypes.TICK_RINGS:		// tickRings
-console.log("____________ TICK_RINGS  ",  JSON.strinfigy(action, null, 2))		
 							var _ringsRadio = state.ringsRadio
               var _rings = state.rings
 								.filter(function (d) {
@@ -231,13 +231,6 @@ console.log("____________ TICK_RINGS  ",  JSON.strinfigy(action, null, 2))
 										d.cy += action.vector[1]
 										d.t = action.t
 										d.r = (1 - action.t) * _ringsRadio
-
-		console.log(" ================================== d.id: ", d.id)									
-		console.log(" ================================== d.cx: ", d.cx)									
-		console.log(" ================================== d.cy: ", d.cy)									
-		console.log(" ================================== d.r: ", d.r)									
-		console.log(" ================================== d.t: ", d.t)									
-										
 										return d
 								})
 
@@ -246,8 +239,8 @@ console.log("____________ TICK_RINGS  ",  JSON.strinfigy(action, null, 2))
 										ringsIndex: _rings.length,
 							});
 																
-					default:
-            return state;
+				default:
+					return state;
 	}
 }
 

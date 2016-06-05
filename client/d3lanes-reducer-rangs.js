@@ -116,7 +116,8 @@ function reducerThis(state = initialStateThis, action) {
 						]}
 						rangsAlways = rangsAlways + 1
 					} else {												// edit
-							items = {rangs: rangs.map(rang =>
+console.log('SET_RANG edit', action.rang.width ,action.rang.height, action.rang.id )
+						items = {rangs: rangs.map(rang =>
 								rang.id === action.rang.id ?
 									Object.assign({}, rang, { 
 											id: action.rang.id,

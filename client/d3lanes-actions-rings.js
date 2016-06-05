@@ -104,7 +104,8 @@ var ActionCreators = {
 				 yh: arg.yh,
 				 vector: arg.vector,
 				 t: arg.t,
-    }
+ 				 rang: arg.rang,
+   }
 	},
 	tickRings(arg) {
     return {
@@ -119,6 +120,7 @@ var ActionCreators = {
 				 yh: arg.yh,
 				 vector: arg.vector,
 				 t: arg.t,
+				 rang: arg.rang,
     }
 	},
 	stopRings() {

@@ -33,9 +33,9 @@ var intransition = false
 		// if (intransition == true) return
 		// if (newState.reducerRings.rings.length == 0) return
 	
-
-			var state = stateRings= newState
+			var state = stateRings = newState
 			var ringsRadio = state.reducerRings.ringsRadio || state.reducerConfig.ringDefaultRadio
+console.log("rings render", JSON.stringify(state.reducerRangs.rangs, null, 2))
 
 		var _duration = state.reducerRangs.duration
 	// elems trasition
@@ -89,37 +89,18 @@ var intransition = false
 										})							
 
 										
-										
-							// var updateItems = ringElements
-									// .attr('r', function(d, i, a) { return d.r })
-									// .attr('id', function(d, i, a) { return d.id })
-									// .attr('cx', function(d, i, a) { return d.cx })
-									// .attr('cy', function(d, i, a) { return d.cy })
-									// .attr('r', function(d, i, a) { return d.r })
-											// .transition(elemsTransition)
-											// .attrTween("id", function(d, i, a) {
-												// return function (t) {
-															// var ring = Object.assign({}, d, {t: t})
-// store.dispatch(actions.tickRing(ring))
-														// var r = d.id
-														// return r
-												// }
-											// })
-											// .on("start", function start() {		
-														// intransition = true
-												// })
-											// .on("end", function end(d) {	
-														// intransition = false
-											// })									
+							// x
+							var updateItems = ringElements
+									.attr('r', function(d, i, a) { return d.r })
+									.attr('cx', function(d, i, a) { return d.cx })
+									.attr('cy', function(d, i, a) { return d.cy })
+				
 								
 							var newRingElements = ringElements
 							.enter()
 								.append("circle")													
 										.attr('class', 'ring')
-										.attr('id', function(d, i, a) {
-console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ append ", d.id)		
-
-										return d.id })
+										.attr('id', function(d, i, a) { return d.id })
 										.attr('cx', function(d, i, a) { return d.cx })
 										.attr('cy', function(d, i, a) { return d.cy })
 										.attr('r', function(d, i, a) { return ringsRadio })
@@ -127,26 +108,37 @@ console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ append ", d.id)
 										.style("fill-opacity", 0.7)
 										.style("stroke", "none")
 									.transition(elemsTransition)
-											// .duration(_duration)
-											// .ease(d3.easeLinear)
-										.attrTween('r', function(d, i, a) {
-												return function (t) {
-// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ tick r", d.id)			
-var r = (1 - t) * ringsRadio
-														return r
-												}
-										})
-										// .remove()
-
-												// .attrTween('t', function(d, i, a) {
+									
+										// x
+										// .attrTween('r', function(d, i, a) {
 												// return function (t) {
-// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ tick Ring", d.id)			
-// var ring = Object.assign({}, d, {t: t})
-// store.dispatch(actions.tickRing(ring))
-														// var r = t
+												// var r = (1 - t) * ringsRadio
 														// return r
 												// }
 										// })
+
+												.attrTween('t', function(d, i, a) {
+												return function (t) {
+												
+												
+												
+             var rangs = state.reducerRangs.rangs
+								.filter(function (item) {
+											return (item.id == d.rid)
+									})
+
+//console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rangs", JSON.stringify(rangs[0], null, 2))	
+console.log(" ^^^^^^^^^^^^^^^^^^^^^ rangs", rangs[0].width, rangs[0].height, rangs[0].id )
+var ring = Object.assign({}, d, {t: t}, {rang: rangs[0]})
+// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ id", ring.id)			
+// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rid", ring.rid)	
+
+		
+store.dispatch(actions.tickRing(ring))
+														var r = t
+														return r
+												}
+										})
 											.on("start", function start() {		
 														intransition = true
 												})
