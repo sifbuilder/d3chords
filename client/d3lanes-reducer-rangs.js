@@ -61,7 +61,7 @@ var initialStateThis = {
 			rangs: [],
 			rangsNow: 0,
 			rangsAlways: 0,
-			initRangs: false,
+			startRangs: false,
 	}
 	
 function reducerThis(state = initialStateThis, action) {
@@ -85,13 +85,13 @@ function reducerThis(state = initialStateThis, action) {
        case ActionTypes.INIT_RANGS:
  						console.log('INIT_RANGS')
             return Object.assign({}, state, {
-                initRangs: true
+                startRangs: true
             })
 
        case ActionTypes.STOP_RANGS:
  						console.log('STOP_RANGS')
             return Object.assign({}, state, {
-                initRangs: false
+                startRangs: false
             })
 
 			case ActionTypes.SET_RANG:		// setRang

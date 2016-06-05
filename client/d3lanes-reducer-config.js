@@ -59,6 +59,7 @@ var initialStateConfig = {
 			beatTime: 500,
 			fadeFactor: 3,	// times beat - fade items
 			periodFactor: 4, // times beat - add items
+			ringDefaultRadio: 6.33,
 			vstep: 50,
 			itemSpan: 6,
 			itemProps: ['to', 'from'],

@@ -57,12 +57,13 @@ function combineReducers(reducers) {
 // _____________ RINGS
 var initialStateRings = {
 			rings: [],
+			ringsNew: [],
 			ringsIndex: 0,
 			ringsHits: 0,
 			ringsIntroduced: false,
 			ringsPerTick: 1,
 			ringsRadio: 9,
-			generating: false,
+			ringsGenerating: false,
 }
 function reducerThis(state = initialStateRings, action) {
 	if (action == null) return state
@@ -71,21 +72,21 @@ function reducerThis(state = initialStateRings, action) {
         case ActionTypes.START_RINGS:				// startRings
 					console.log("START_RINGS")		
           return Object.assign({}, state, {
-                generating: true
+                ringsGenerating: true
             })
 						
         case ActionTypes.STOP_RINGS:			// stopRings
 					console.log("STOP_RINGS")
             return Object.assign({}, state, {
-                generating: false
+                ringsGenerating: false
             });
 
 							
         case ActionTypes.CREATE_RINGS:			// createRings
-						// console.log("CREATE_RINGS")		
-						var newRings = state.rings.slice(0)
+						var _newRings = []
 						var _ringsHits = state.ringsHits
-						if (action.generating == true) {
+						if (action.ringsGenerating == true) {
+						console.log("CREATE_RINGS", JSON.stringify(action, null, 2))
 						
 							var idx = state.ringsIndex
 							var i, j
@@ -110,7 +111,7 @@ function reducerThis(state = initialStateRings, action) {
 												
 											// console.log( "rang", j, JSON.stringify(action.rangs[j], null, 2))
 												
-											for (i = 0; i < action.N; i++) {
+											for (i = 0; i < action.ringsPerTick; i++) {
 													var ring = {
 																id: guid(),
 																rid: rid,
@@ -124,15 +125,17 @@ function reducerThis(state = initialStateRings, action) {
 
 													ring.vector = [ring.id%2 ? - action.randNormal() : action.randNormal(),
 																						 - action.randNormal2()*3.3];
-													newRings.unshift(ring);
+													_newRings.unshift(ring);
 											}
 											_ringsHits = _ringsHits + 1
 									}
 							}
+							var _ringsAll = state.rings.slice(0).concat(_newRings)
 
 							return Object.assign({}, state, {
-									rings: newRings,
-									ringsIndex: state.rings.length,
+									rings: _ringsAll,
+									ringsNew: _newRings,
+									ringsIndex: _ringsAll.length,
 									ringsHits: _ringsHits
 							})
 						} else {
@@ -141,10 +144,6 @@ function reducerThis(state = initialStateRings, action) {
 						
 						
         case ActionTypes.TICK_RINGS:		// tickRings
-							var laneXs = action.lanes
-									.map(function(l) {
-										var x = parseInt(l.x)
-										return x})
 							var svgWidth = action.width
 							var svgHeight = action.height
               var gravity = action.gravity

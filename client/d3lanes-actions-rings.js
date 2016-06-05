@@ -42,7 +42,7 @@ var ActionCreators = {
 	introduceRings(obj) {
     return {
         type: ActionTypes.INTRODUCE_RINGS,	// introduceRings
-        N: obj.ringsPerTick,
+        ringsPerTick: obj.ringsPerTick,
         x: obj.x,
         y: obj.y,
 				randNormal: obj.randNormal,
@@ -50,13 +50,13 @@ var ActionCreators = {
 				xInit: obj.xInit,
 				xEnd: obj.xEnd,
  				rangs: obj.rangs,
- 				generating: obj.generating,
+ 				ringsGenerating: obj.ringsGenerating,
     }
   },
 	createRings(obj) {
     return {
         type: ActionTypes.CREATE_RINGS,	// createRings
-        N: obj.ringsPerTick,
+        ringsPerTick: obj.ringsPerTick,
         x: obj.x,
         y: obj.y,
 				randNormal: obj.randNormal,
@@ -64,7 +64,7 @@ var ActionCreators = {
 				xInit: obj.xInit,
 				xEnd: obj.xEnd,
  				rangs: obj.rangs,
- 				generating: obj.generating,
+ 				ringsGenerating: obj.ringsGenerating,
     }
   },
 	startRings() {

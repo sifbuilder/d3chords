@@ -53,7 +53,7 @@ var initialStateParticles = {
 			particleIndex: 0,
 			particlesGenerating: false,
 			particlesIntroduced: false,
-			particlesPerTick: 3,
+			particlesPerTick: 10,
 			particleRadio: 9,
 }
 function reducerParticles(state = initialStateParticles, action) {
@@ -61,7 +61,6 @@ function reducerParticles(state = initialStateParticles, action) {
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
-					console.log("START_PARTICLES")		
           return Object.assign({}, state, {
                 particlesGenerating: true
             })
@@ -73,12 +72,11 @@ function reducerParticles(state = initialStateParticles, action) {
             });
 						
         case ActionTypes.INTRODUCE_PARTICLES:			// introduceParticles
-					console.log("INTRODUCE_PARTICLES")		
 					var newParticles = state.particles.slice(0)
 					var i
 					if (state.particlesIntroduced == false) {
 						console.log("INTRODUCE_PARTICLES")		
-					for (i = 0; i < action.N * 5; i++) {
+						for (i = 0; i < action.N * 5; i++) {
 								var particle = {id: state.particleIndex+i,
 																		x: action.x,
 																		y: action.y,
@@ -99,11 +97,12 @@ function reducerParticles(state = initialStateParticles, action) {
 					}
 							
         case ActionTypes.CREATE_PARTICLES:			// createParticles
-					console.log("CREATE_PARTICLES")		
-						var newParticles = state.particles.slice(0)
-						var i
-						if (action.generating == true) {
-							for (i = 0; i < action.N; i++) {
+						// console.log("CREATE_PARTICLES")		
+						var _newParticles = state.particles.slice(0)
+						var _numberOfNewParticles = action.particlesPerTick
+						var _particlesGenerating = action.particlesGenerating
+						if (_particlesGenerating == true) {
+							for (var i = 0; i < _numberOfNewParticles; i++) {
 							
 											var ref = parseInt(action.x)
 											var closestLaneUp = action.lanes
@@ -128,16 +127,15 @@ function reducerParticles(state = initialStateParticles, action) {
 									particle.vector = [particle.id%2 ? - action.randNormal() : action.randNormal(),
 																		 - action.randNormal2()*3.3];
 
-									newParticles.unshift(particle);
+									_newParticles.unshift(particle);
 							}
 							return Object.assign({}, state, {
-									particles: newParticles,
+									particles: _newParticles,
 									particleIndex: state.particleIndex+i+1
 							})
 						} else {
 							return state
 						}
-						
 						
         case ActionTypes.TICK_PARTICLES:		// tickParticles
 							var laneXs = action.lanes
@@ -188,7 +186,6 @@ function reducerParticles(state = initialStateParticles, action) {
             return state;
 	}
 }
-
 
 exports.reducerParticles = reducerParticles;
 }));

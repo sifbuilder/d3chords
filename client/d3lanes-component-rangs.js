@@ -53,8 +53,14 @@ var intransition = false
 		var state = stateRangs = newState
 
 		// return if not init - mouse hover
-		var _initRangs = state.reducerRangs.initRangs
-		if (_initRangs == false) return
+		var _startRangs = state.reducerRangs.startRangs
+		
+		// hide on wrong views
+		var _opacity = 1
+		var _currentView = state.reducerCourt.currentView
+		if (_currentView !== 'ringsView') _opacity = 0
+				
+		if (_startRangs == false) return
 
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime		
 		var _itemProps = state.reducerConfig.itemProps
@@ -85,6 +91,8 @@ var intransition = false
 			var itemsGroup = d3.select('svg')
 				.selectAll('g.rangs')		// items
 				.data(['items'])
+				.style('opacity', _opacity)
+
 					
 			itemsGroup.enter()	
 				.append("g")
@@ -123,7 +131,7 @@ var newRangGroups = rangGroups
 							.attr("class", "rang")
 								.attr("id", function (d) { 
 
-													// pass data of rect that will be created !!!!!
+													// pass data of rect that will be created
 													// store.dispatch(actions.setRang(item))				
 									
 										return d.id; })

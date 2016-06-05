@@ -44,10 +44,10 @@ var ActionCreators = {
         rang: rang,
 		}
   },
-	initRangs(rangs) {
+	startRangs(rangs) {
     return {
         type: ActionTypes.INIT_RANGS,
-        initRangs: true,
+        startRangs: true,
 		}
   },
 	stopRangs(rangs) {

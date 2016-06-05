@@ -41,14 +41,14 @@ if (typeof require === "function") {
 		/* PARTICLES  */
 		var createParticlesPayload = function () { return {
 					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-					x: store.getState().reducerCourt.mousePos[0], 
-					y: store.getState().reducerCourt.mousePos[1],
-					xInit: store.getState().reducerCourt.leftBorder,
-					xEnd: store.getState().reducerCourt.svgWidth, 
-					randNormal: store.getState().reducerConfig.randNormal,
-					randNormal2: store.getState().reducerConfig.randNormal2,
-					lanes: store.getState().reducerLanes.lanes,
-					generating: store.getState().reducerParticles.generating,
+					x: 								store.getState().reducerCourt.mousePos[0], 
+					y: 								store.getState().reducerCourt.mousePos[1],
+					xInit: 						store.getState().reducerCourt.leftBorder,
+					xEnd: 						store.getState().reducerCourt.svgWidth, 
+					randNormal: 			store.getState().reducerConfig.randNormal,
+					randNormal2: 			store.getState().reducerConfig.randNormal2,
+					lanes: 						store.getState().reducerLanes.lanes,
+					particlesGenerating: 			store.getState().reducerParticles.particlesGenerating,
 		}}
 
 		// createParticlesLauncher
@@ -109,10 +109,10 @@ if (typeof require === "function") {
 			)
 	
 	/* RANGS */
-		// initRangsLauncher
-		var initRangsLauncher = store.compose(
+		// startRangsLauncher
+		var startRangsLauncher = store.compose(
 			store.dispatch,
-			actions.initRangs
+			actions.startRangs
 		)
 			
 		// stopRangsLauncher
@@ -132,7 +132,7 @@ if (typeof require === "function") {
 						randNormal2: store.getState().reducerConfig.randNormal2,
 						rings: store.getState().reducerRings.rings,
 						rangs: store.getState().reducerRangs.rangs,
-						generating: store.getState().reducerRings.generating,
+						ringsGenerating: store.getState().reducerRings.ringsGenerating,
 			}}
 		
 		// createRingsLauncher
@@ -246,14 +246,14 @@ if (typeof require === "function") {
 				touchEnd.subscribe(stopParticlesLauncher)
 				mouseLeave.subscribe(stopParticlesLauncher)
 				ticker.subscribe(tickParticlesLauncher)
+				ticker.subscribe(initParticlesLauncher)
 				stepper.subscribe(setRecordsLauncher)
-				stepper.subscribe(initParticlesLauncher)
 
 		// } else if (mode == 'rings') {
 				store.subscribe(store.compose(d3lanesComponentRangs.render, store.getState))
 				store.subscribe(store.compose(d3lanesComponentRings.render, store.getState))
-				mouseDown.subscribe(initRangsLauncher)
-				mouseEnter.subscribe(initRangsLauncher)
+				mouseDown.subscribe(startRangsLauncher)
+				mouseEnter.subscribe(startRangsLauncher)
 				mouseLeave.subscribe(stopRangsLauncher)
 				mouseDown.subscribe(startRingsLauncher)
 				mouseDown.subscribe(createRingsLauncher)

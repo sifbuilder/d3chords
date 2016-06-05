@@ -63,6 +63,7 @@ if (typeof require === "function") {
 					var cmdsLanes = "down-arrow, right-arrow, alt-v"
 					noticeToShow = noticeToShow +
 						cmdsLanes + " - " + currentView +
+						" - N: " + particlesNow +
 						" - fps: " + framesPerSecond
 				}
 				if (currentView == 'ringsView') {
@@ -70,8 +71,8 @@ if (typeof require === "function") {
 					noticeToShow = noticeToShow +
 						"(" + cmdsRings + ")" +
 						" - N: " + ringsNow +
-						' - you have alredy missed ' + hitsLostPct + ' % of your rings ' + 
-						' and ' + framesLostPct + ' % of your frames '
+						' - you have alredy missed ' + hitsLostPct + ' % of your ' + rangsAlways + ' rings ' + 
+						' and ' + framesLostPct + ' % of your ' + '60' + ' frames '
 				}
 				
 				var winWidthPixels = parseInt(svg.style("width"))

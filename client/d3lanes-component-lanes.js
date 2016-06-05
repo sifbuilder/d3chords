@@ -120,9 +120,8 @@ var intransition = false
 		var state = stateTracks = newState
 		
 		// hide on wrong views
-		var _display = null, _opacity = 1
+		var _opacity = 1
 		var _currentView = state.reducerCourt.currentView
-		if (_currentView !== 'lanesView') _display = 'none'
 		if (_currentView !== 'lanesView') _opacity = 0
 	
 		var _runners1 = state.reducerLanes.records
