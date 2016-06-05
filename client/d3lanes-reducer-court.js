@@ -53,7 +53,7 @@ var initialStateCourt = {
 			keys: [],
 			notice: 'auto lanes',
 			currentMode: 'autoMode',
-			currentView: 'lanesView',
+			currentView: 'ringsView',
 			arrowKeysStarted: false,
 			keybKeyEventsStarted: false,
 			tickerStarted: false,

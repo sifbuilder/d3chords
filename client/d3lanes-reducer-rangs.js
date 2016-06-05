@@ -70,7 +70,7 @@ function reducerThis(state = initialStateThis, action) {
     switch (action.type) {
 		
        case ActionTypes.DELETE_RANG:
- 						console.log('DELETE_RANG')
+ 						// console.log('DELETE_RANG')
 						var rangs = state.rangs
 						var items = rangs.filter(function( obj ) {
 								return obj.id !== action.rang.id;

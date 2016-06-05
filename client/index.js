@@ -58,8 +58,8 @@ if (typeof require === "function") {
 			createParticlesPayload
 		)
 
-		// initParticlesLauncher
-		var initParticlesLauncher = store.compose(
+		// createParticlesLauncher
+		var createParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
 			createParticlesPayload
@@ -246,7 +246,7 @@ if (typeof require === "function") {
 				touchEnd.subscribe(stopParticlesLauncher)
 				mouseLeave.subscribe(stopParticlesLauncher)
 				ticker.subscribe(tickParticlesLauncher)
-				ticker.subscribe(initParticlesLauncher)
+				ticker.subscribe(createParticlesLauncher)
 				stepper.subscribe(setRecordsLauncher)
 
 		// } else if (mode == 'rings') {

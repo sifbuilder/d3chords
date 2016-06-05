@@ -51,38 +51,38 @@ var intransition = false
 							.classed("particles", true)	// items
 							
 				// _________________________________ render Particles	
-							var color = d3.scalePlasma()
-									.domain([0, 1])
- 
-							var particleElements = svgContainer
-								.select("g.particles")
-									.selectAll("circle")
-									.data(state.reducerParticles.particles)
-											.attr('cx', function(d, i, a) { return d.x })
-											.attr('cy', function(d, i, a) { return d.y })
-											.attr('r', function(d, i, a) { return particleRadio })
-					            .style("fill", function (d) {
-												var r = d.closestLaneUp.x / (d.closestLaneUp.x - d.closestLaneDown.x)
-												return color( ((3*r)%10 / 10) + (Math.random()* 3 /10))
-											})
-											.style("fill-opacity", 0.2)
-					            .style("stroke", "none")
+					var color = d3.scalePlasma()
+							.domain([0, 1])
 
-								
-							var newParticleElements = particleElements
-							.enter()
-										.append("circle")													
-											.attr('cx', function(d, i, a) { 
-											return d.x })
-											.attr('cy', function(d, i, a) { return d.y })
-											.attr('r', function(d, i, a) { return particleRadio })
-					            .style("fill", function (d) {
-												var r = d.closestLaneUp.x / (d.closestLaneUp.x - d.closestLaneDown.x)
-												return color( ((3*r)%10 / 10) + (Math.random()/10))
-											})
-					            .style("stroke", "none")
-							particleElements.exit()
-								.remove()										
+					var particleElements = svgContainer
+						.select("g.particles")
+							.selectAll("circle")
+							.data(state.reducerParticles.particles)
+									.attr('cx', function(d, i, a) { return d.x })
+									.attr('cy', function(d, i, a) { return d.y })
+									.attr('r', function(d, i, a) { return particleRadio })
+									.style("fill", function (d) {
+										var r = d.closestLaneUp.x / (d.closestLaneUp.x - d.closestLaneDown.x)
+										return color( ((3*r)%10 / 10) + (Math.random()* 3 /10))
+									})
+									.style("fill-opacity", 0.2)
+									.style("stroke", "none")
+
+						
+					var newParticleElements = particleElements
+					.enter()
+								.append("circle")													
+									.attr('cx', function(d, i, a) { return d.x })
+									.attr('cy', function(d, i, a) { return d.y })
+									.attr('r', function(d, i, a) { return particleRadio })
+									.style("fill", function (d) {
+										var r = d.closestLaneUp.x / (d.closestLaneUp.x - d.closestLaneDown.x)
+										return color( ((3*r)%10 / 10) + (Math.random()/10))
+									})
+									.style("stroke", "none")
+									
+					particleElements.exit()
+						.remove()										
 
 				rendering = false
 } // render

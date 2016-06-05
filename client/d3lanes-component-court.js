@@ -56,8 +56,9 @@ if (typeof require === "function") {
 				var framesPerSecond = state.reducerDebug.fps
 				var rangsAlways = state.reducerRangs.rangsAlways
 				var ringsHits = state.reducerRings.ringsHits
+				var rangsHitsIndex = state.reducerRings.rangsHitsIndex
 				var framesLostPct = Math.round(100 * (60 - framesPerSecond) / 60)
-				var hitsLostPct = Math.round(100 * (rangsAlways - ringsHits) / rangsAlways) || 0
+				var hitsLostPct = Math.round(100 * (rangsAlways - rangsHitsIndex) / rangsAlways) || 0
 				
 				if (currentView == 'lanesView') {
 					var cmdsLanes = "down-arrow, right-arrow, alt-v"

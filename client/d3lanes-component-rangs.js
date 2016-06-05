@@ -109,40 +109,31 @@ var intransition = false
 			}
 			var textHeight = dummyText.node().getBBox().height				
 	
-	// elems trasition
-		var elemsTransition = d3.transition()
-			.duration(_duration)
-			.ease(d3.easeLinear)
+			// elems trasition
+				var elemsTransition = d3.transition()
+					.duration(_duration)
+					.ease(d3.easeLinear)
 	
 
 	
-var rangGroups = svgContainer.select("g.rangs")
+				var rangGroups = svgContainer.select("g.rangs")		// data rang
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
 								function(d) { 
 										var rangsId = state.reducerRangs.rangsNow - 1
-										// console.log('rangGroup id: rangsNow:', rangsId)
 									return rangsId
 								})
  							
-var newRangGroups = rangGroups						
+				var newRangGroups = rangGroups										// enter rang
             .enter()
 							.append("g")
 							.attr("class", "rang")
 								.attr("id", function (d) { 
-
-													// pass data of rect that will be created
-													// store.dispatch(actions.setRang(item))				
-									
 										return d.id; })
 
-							
-// console.log('____ newRangGroups ____ ', JSON.stringify(newRangGroups, null, 2))
 
-var rectOnNewRang = newRangGroups.append('rect')
-            .attr("rid", function (d) { 
-									console.log('____ rect rid: ', d.id)
-									return d.id; })
+				var rectOnNewRang = newRangGroups.append('rect')	// apend rect
+            .attr("rid", function (d) {return d.id })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
@@ -161,24 +152,20 @@ var rectOnNewRang = newRangGroups.append('rect')
 															width: d.s,
 															height: d.s, 
 													}
-										console.log('____ add rang', JSON.stringify(item, null, 2))
 										store.dispatch(actions.setRang(d))				
 
 									})
 								.on("end", function end(d) {	
-								// console.log('____ delete rang', JSON.stringify(d, null, 2))
 									intransition = false
 								})								
 
-var rectOnExistingRang = rangGroups.select("rect")	
+					var rectOnExistingRang = rangGroups.select("rect")	// update rect
  						.attr("id", function (d) { return d.id; })
   					.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
             .attr("height", function (d) { return d.s; })
             .attr("width", function (d) { return d.s; })
 						.transition(elemsTransition)
-							// .attr("height", function (d) { return 0 * d.s; })
-							// .attr("width", function (d) { return 0 * d.s; })
 							.attrTween("height", function(d) {
 								return function (t) {
 									var r = parseInt((1 - t) * d.s)
@@ -191,7 +178,6 @@ var rectOnExistingRang = rangGroups.select("rect")
 									return r
 								}
 							})
-
 							.attrTween("s", function(d) {
 								return function (t) {
 									var r = parseInt((1 - t) * d.s)
@@ -202,7 +188,6 @@ var rectOnExistingRang = rangGroups.select("rect")
 												width: r,
 												height: r, 
 										}
-					// console.log('____ update rang', JSON.stringify(item, null, 2))
 									store.dispatch(actions.setRang(item))				
 									return r
 								}
@@ -211,16 +196,14 @@ var rectOnExistingRang = rangGroups.select("rect")
 									intransition = true
 								})
 							.on("end", function end(d) {	
-							// console.log('____ delete rang', JSON.stringify(d, null, 2))
-												store.dispatch(actions.deleteRang(d))				
+								store.dispatch(actions.deleteRang(d))				
 								intransition = false
 							})								
 						
-rangGroups.exit()
-			.remove(function(){
-							console.log('____ delete rang', JSON.stringify(item, d, 2))
-							store.dispatch(actions.deleteRang(d))
-					})
+					rangGroups.exit()															// delete rang
+						.remove(function(){
+										store.dispatch(actions.deleteRang(d))
+								})
 
 
 

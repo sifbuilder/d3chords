@@ -178,7 +178,7 @@ function reducerLanes(state = initialStateLanes, action) {
             })
 						
 				case ActionTypes.SET_RECORDS:
-						console.log('SET_RECORDS')
+						// console.log('SET_RECORDS')
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
 						var itemSpan = action.itemSpan

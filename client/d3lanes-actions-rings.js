@@ -27,10 +27,12 @@ var keyMirror = function(obj, prefix) {
 var consts = {
 	INTRODUCE_RINGS: '',
 	CREATE_RINGS: '',
+	DELETE_RING: '',
 	START_RINGS: '',
 	START_RINGS_TICKER: '',
 	STOP_RINGS: '',
 	STOP_TICKER: '',
+	TICK_RING: '',
 	TICK_RINGS: '',
 }
 
@@ -67,6 +69,12 @@ var ActionCreators = {
  				ringsGenerating: obj.ringsGenerating,
     }
   },
+	deleteRing(ring) {
+    return {
+        type: ActionTypes.DELETE_RING,
+        ring: ring,
+		}
+  },	
 	startRings() {
     return {
         type: ActionTypes.START_RINGS
@@ -82,13 +90,35 @@ var ActionCreators = {
         type: ActionTypes.STOP_RINGS_TICKER
     };
 	},
+	tickRing(arg) {
+    return {
+         type: ActionTypes.TICK_RING,		// tickRing
+				 id: arg.id,
+				 rid: arg.rid,
+				 cx: arg.cx,
+				 cy: arg.cy,
+				 r: arg.r,
+				 xl: arg.xl,
+				 yl: arg.yl,
+				 xh: arg.xh,
+				 yh: arg.yh,
+				 vector: arg.vector,
+				 t: arg.t,
+    }
+	},
 	tickRings(arg) {
     return {
          type: ActionTypes.TICK_RINGS,		// tickRings
-				 width: arg.width,
-				 height: arg.height,
-				 gravity: arg.gravity,
-				 lanes: arg.lanes,
+				 id: arg.id,
+				 rid: arg.rid,
+				 cx: arg.x,
+				 cy: arg.y,
+				 xl: arg.xl,
+				 yl: arg.yl,
+				 xh: arg.xh,
+				 yh: arg.yh,
+				 vector: arg.vector,
+				 t: arg.t,
     }
 	},
 	stopRings() {
