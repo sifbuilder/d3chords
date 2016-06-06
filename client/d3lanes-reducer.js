@@ -8,8 +8,9 @@ if (typeof require === "function") {
 	var d3lanesReducerDebug = require('./d3lanes-reducer-debug.js')
 	var d3lanesReducerLanes = require('./d3lanes-reducer-lanes.js')
 	var d3lanesReducerParticles = require('./d3lanes-reducer-particles.js')
-	var d3lanesReducerRangs = require('./d3lanes-reducer-rangs.js')
-	var d3lanesReducerRings = require('./d3lanes-reducer-rings.js')
+	var d3lanesReducerWhirls = require('./d3lanes-reducer-whirls.js')
+	// var d3lanesReducerRangs = require('./d3lanes-reducer-rangs.js')
+	// var d3lanesReducerRings = require('./d3lanes-reducer-rings.js')
 }
 	
 (function (global, factory) {
@@ -58,8 +59,9 @@ var reducer = combineReducers({
 		reducerDebug: d3lanesReducerDebug.reducerDebug,
 		reducerLanes: d3lanesReducerLanes.reducerLanes,
 		reducerParticles: d3lanesReducerParticles.reducerParticles,
-		reducerRangs: d3lanesReducerRangs.reducer,
-		reducerRings: d3lanesReducerRings.reducer,
+		reducerWhirls: d3lanesReducerWhirls.reducer,
+		// reducerRangs: d3lanesReducerRangs.reducer,
+		// reducerRings: d3lanesReducerRings.reducer,
 })
 
 

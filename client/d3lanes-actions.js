@@ -7,8 +7,8 @@ if (typeof require === "function") {
 	var d3lanesActionsDebug = require('./d3lanes-actions-debug.js')
 	var d3lanesActionsLanes = require('./d3lanes-actions-lanes.js')
 	var d3lanesActionsParticles = require('./d3lanes-actions-particles.js')
-	var d3lanesActionsRangs = require('./d3lanes-actions-rangs.js')
-	var d3lanesActionsRings = require('./d3lanes-actions-rings.js')
+	var d3lanesActionsRangs = require('./d3lanes-actions-whirls.js')
+	// var d3lanesActionsRings = require('./d3lanes-actions-rings.js')
 }	
 
 
@@ -33,8 +33,9 @@ var ActionTypes = merge_objects(
 		d3lanesActionsDebug.ActionTypes,
 		d3lanesActionsLanes.ActionTypes,
 		d3lanesActionsParticles.ActionTypes,
-		d3lanesActionsRangs.ActionTypes,
-		d3lanesActionsRings.ActionTypes
+		d3lanesActionsWhirls.ActionTypes
+		// d3lanesActionsRangs.ActionTypes
+		// d3lanesActionsRings.ActionTypes
 	)
 		
 var ActionCreators = merge_objects(
@@ -42,8 +43,9 @@ var ActionCreators = merge_objects(
 		d3lanesActionsDebug.ActionCreators, 
 		d3lanesActionsLanes.ActionCreators, 
 		d3lanesActionsParticles.ActionCreators,
-		d3lanesActionsRangs.ActionCreators,
-		d3lanesActionsRings.ActionCreators
+		d3lanesActionsWhirls.ActionCreators
+		// d3lanesActionsRangs.ActionCreators
+		// d3lanesActionsRings.ActionCreators
 	)
 
 exports.ActionTypes = ActionTypes;

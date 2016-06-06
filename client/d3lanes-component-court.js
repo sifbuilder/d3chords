@@ -50,13 +50,13 @@ if (typeof require === "function") {
 				var currentView = state.reducerCourt.currentView
 				var labelMode = state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]]
 				var size = parseInt(svg.style("width")) + " x " + parseInt(svg.style("height"))
-				var rangsNow = state.reducerRangs.rangsNow
+				var rangsNow = state.reducerWhirls.rangsNow
 				var particlesNow = state.reducerParticles.particleIndex
-				var ringsNow = state.reducerRings.ringsIndex
+				var ringsNow = state.reducerWhirls.ringsIndex
 				var framesPerSecond = state.reducerDebug.fps
-				var rangsAlways = state.reducerRangs.rangsAlways
-				var ringsHits = state.reducerRings.ringsHits
-				var rangsHitsIndex = state.reducerRings.rangsHitsIndex
+				var rangsAlways = state.reducerWhirls.rangsAlways
+				var ringsHits = state.reducerWhirls.ringsHits
+				var rangsHitsIndex = state.reducerWhirls.rangsHitsIndex
 				var framesLostPct = Math.round(100 * (60 - framesPerSecond) / 60)
 				var hitsLostPct = Math.round(100 * (rangsAlways - rangsHitsIndex) / rangsAlways) || 0
 				

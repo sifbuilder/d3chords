@@ -8,8 +8,7 @@ if (typeof require === "function") {
 	var d3lanesComponentCourt = require('./d3lanes-component-court.js')
 	var d3lanesComponentLanes = require('./d3lanes-component-lanes.js')
 	var d3lanesComponentParticles = require('./d3lanes-component-particles.js')
-	var d3lanesComponentRangs = require('./d3lanes-component-rangs.js')
-	var d3lanesComponentRings = require('./d3lanes-component-rings.js')
+	var d3lanesComponentWhirls = require('./d3lanes-component-whirls.js')
 
 	var d3lanesReducer = require('./d3lanes-reducer.js')
 	var d3lanesStore = require('./d3lanes-store.js')
@@ -123,16 +122,16 @@ if (typeof require === "function") {
 			
 	/* RINGS */
 			var createRingsPayload = function () { return {
-						ringsPerTick: store.getState().reducerRings.ringsPerTick,
+						ringsPerTick: store.getState().reducerWhirls.ringsPerTick,
 						x: store.getState().reducerCourt.mousePos[0], 
 						y: store.getState().reducerCourt.mousePos[1],
 						xInit: store.getState().reducerCourt.leftBorder,
 						xEnd: store.getState().reducerCourt.svgWidth, 
 						randNormal: store.getState().reducerConfig.randNormal,
 						randNormal2: store.getState().reducerConfig.randNormal2,
-						rings: store.getState().reducerRings.rings,
-						rangs: store.getState().reducerRangs.rangs,
-						ringsGenerating: store.getState().reducerRings.ringsGenerating,
+						rings: store.getState().reducerWhirls.rings,
+						rangs: store.getState().reducerWhirls.rangs,
+						ringsGenerating: store.getState().reducerWhirls.ringsGenerating,
 			}}
 		
 		// createRingsLauncher
@@ -250,8 +249,7 @@ if (typeof require === "function") {
 				stepper.subscribe(setRecordsLauncher)
 
 		// } else if (mode == 'rings') {
-				store.subscribe(store.compose(d3lanesComponentRangs.render, store.getState))
-				store.subscribe(store.compose(d3lanesComponentRings.render, store.getState))
+				store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
 				mouseDown.subscribe(startRangsLauncher)
 				mouseEnter.subscribe(startRangsLauncher)
 				mouseLeave.subscribe(stopRangsLauncher)
