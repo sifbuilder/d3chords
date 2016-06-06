@@ -20,7 +20,7 @@ function guid() {
     }
     return _p8() + _p8(true) + _p8(true) + _p8();
 }
-
+var test = 0
 // _____________ context
 var stateRings = {
 	reducerRings: {}
@@ -35,14 +35,19 @@ var intransition = false
 	
 			var state = stateRings = newState
 			var ringsRadio = state.reducerRings.ringsRadio || state.reducerConfig.ringDefaultRadio
-console.log("rings render", JSON.stringify(state.reducerRangs.rangs, null, 2))
+			
+			
+			
+// console.log("rings render", JSON.stringify(state.reducerRangs.rangs, null, 2))
 
 		var _duration = state.reducerRangs.duration
 	// elems trasition
 		var elemsTransition = d3.transition()
 			.duration(_duration)
 			.ease(d3.easeLinear)
-
+			
+if (state.reducerRangs.rangs.length > 0) console.log("--------------------- rang id: ", state.reducerRangs.rangs[0].id)
+if (state.reducerRangs.rangs.length > 0) console.log("--------------------- rang width: ", state.reducerRangs.rangs[0].width)
 			
 			var svgContainer = d3.select('body')
 					.selectAll('svg')
@@ -94,6 +99,7 @@ console.log("rings render", JSON.stringify(state.reducerRangs.rangs, null, 2))
 									.attr('r', function(d, i, a) { return d.r })
 									.attr('cx', function(d, i, a) { return d.cx })
 									.attr('cy', function(d, i, a) { return d.cy })
+									.attr('rang', function(d, i, a) { return d.rang })
 				
 								
 							var newRingElements = ringElements
@@ -107,7 +113,12 @@ console.log("rings render", JSON.stringify(state.reducerRangs.rangs, null, 2))
 										.style("fill", function (d) {	return colorScale( Math.random() / 2)})
 										.style("fill-opacity", 0.7)
 										.style("stroke", "none")
-									.transition(elemsTransition)
+										
+							newRingElements				
+									.transition()
+											.duration(_duration)
+											.ease(d3.easeLinear)
+
 									
 										// x
 										// .attrTween('r', function(d, i, a) {
@@ -117,24 +128,30 @@ console.log("rings render", JSON.stringify(state.reducerRangs.rangs, null, 2))
 												// }
 										// })
 
-												.attrTween('t', function(d, i, a) {
+										.attrTween('t', function(d, i, a) {
 												return function (t) {
 												
-												
-												
-             var rangs = state.reducerRangs.rangs
-								.filter(function (item) {
-											return (item.id == d.rid)
-									})
+	 // var rangs = state.reducerRangs.rangs
+	 // rangs
+			// .filter(function (item) {
+						// return (item.id == d.rid)
+				// })
 
-//console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rangs", JSON.stringify(rangs[0], null, 2))	
-console.log(" ^^^^^^^^^^^^^^^^^^^^^ rangs", rangs[0].width, rangs[0].height, rangs[0].id )
-var ring = Object.assign({}, d, {t: t}, {rang: rangs[0]})
-// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ id", ring.id)			
-// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rid", ring.rid)	
+if (state.reducerRangs.rangs.length > 0) console.log("||||||||||||||||||||||||||||| d: ", JSON.stringify(d, null, 2))
+if (state.reducerRangs.rangs.length > 0) console.log("||||||||||||||||||||||||||||| rang id: ", state.reducerRangs.rangs[0].id)
+if (state.reducerRangs.rangs.length > 0) console.log("||||||||||||||||||||||||||||| rang width: ", state.reducerRangs.rangs[0].width)
+																	
+																	
+													//console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rangs", JSON.stringify(rangs[0], null, 2))	
+													// console.log(" ^^^^^^^^^^^^^^^^^^^^^ test", test )
+													// console.log(" ^^^^^^^^^^^^^^^^^^^^^ rangs id", rangs[0].id )
+													// console.log(" ^^^^^^^^^^^^^^^^^^^^^ rangs width", rangs[0].width )
+var ring = Object.assign({}, d, {t: t}, {rang: state.reducerRangs.rangs[0]})
+													// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ id", ring.id)			
+													// console.log(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rid", ring.rid)	
 
-		
-store.dispatch(actions.tickRing(ring))
+															
+													store.dispatch(actions.tickRing(ring))
 														var r = t
 														return r
 												}

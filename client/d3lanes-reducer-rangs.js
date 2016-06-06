@@ -83,7 +83,7 @@ function reducerThis(state = initialStateThis, action) {
 							return r
 
        case ActionTypes.INIT_RANGS:
- 						console.log('INIT_RANGS')
+ 						// console.log('INIT_RANGS')
             return Object.assign({}, state, {
                 startRangs: true
             })
