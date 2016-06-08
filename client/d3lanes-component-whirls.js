@@ -29,7 +29,7 @@ var gen = function(n, l, h, s) {
     data.push({
       x: Math.random() * l | 0,
       y: Math.random() * h | 0,
-			id: id,			// guid() // i
+			id: i,			// guid() // i
 			s: s
     })
   }
@@ -87,7 +87,7 @@ var intransition_newRing = false
 											return 'rangs_svg'
 								})
 
-	var newSvgContainer = svgContainer
+		var newSvgContainer = svgContainer
 				.enter()
 				.append("svg")
 					.attr("id", 'rangs_svg')
@@ -104,8 +104,7 @@ var intransition_newRing = false
 				.append("g")
 					.classed("rangs", true)	// items
 
-	
-				// rings
+			// rings
 				d3.select('svg')
 						.selectAll('g.rings')		// items
 						.data(['items'])
@@ -147,57 +146,31 @@ var intransition_newRing = false
 				var rangGroups = svgContainer.select("g.rangs")		// data rang
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
-								function(d) { 
-										var rangsId = state.reducerWhirls.rangsNow - 1
-									return rangsId
-								})
+								function(d) { return d.id })
  							
 				var newRangGroups = rangGroups										// enter rang
             .enter()
 							.append("g")
 							.attr("class", "rang")
-								.attr("id", function (d) { 
-										return d.id; })
+								.attr("id", function (d) { return d.id; })
 
-if (intransition_newRang == false) {
-				var rectOnNewRang = newRangGroups.append('rect')	// apend rect
+				var rectOnNewRang = newRangGroups.append('rect')	// append rect
             .attr("rid", function (d) {return d.id })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
-            .attr("height", function (d) { return d.s; })
-            .attr("width", function (d) { return d.s; })
+            .attr("s", function (d) { return d.s; })
 						.attr("stroke-width", 1)
 						.attr("stroke", "grey")
 						.style("fill", "transparent")
-.transition('newRang')
-								.duration(_duration)
-								.ease(d3.easeLinear)
-								.on("start", function start(d) {		
-										intransition_newRang = true
-												var item = {
-															id: d.id,
-															x: d.x,
-															y: d.y,
-															width: d.s,
-															height: d.s, 
-													}
-										store.dispatch(actions.setRang(d))				
 
-									})
-								.on("end", function end(d) {	
-									intransition_newRang = false
-								})								
-}
-
-if (intransition_updRang == false) {
+				if (intransition_updRang == false) {
 					var rectOnExistingRang = rangGroups.select("rect")	// update rect
  						.attr("id", function (d) { return d.id; })
   					.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
-            .attr("height", function (d) { return d.s; })
-            .attr("width", function (d) { return d.s; })
-.transition('updRang')
+            .attr("s", function (d) { return d.s; })
+							.transition('updRang')
 								.duration(_duration)
 								.ease(d3.easeLinear)
 							.attrTween("height", function(d) {
@@ -213,17 +186,15 @@ if (intransition_updRang == false) {
 								}
 							})
 							.attrTween("s", function(d) {
-							
 								return function (t) {
 									var r = parseInt((1 - t) * d.s)
 									var item = {
 												id: d.id,
 												x: d.x,
 												y: d.y,
-												width: parseInt((1 - t) * d.s),
-												height: parseInt((1 - t) * d.s),
+												s: parseInt((1 - t) * d.s),
 										}
-store.dispatch(actions.setRang(item))				
+									store.dispatch(actions.setRang(item))				
 									return r
 								}
 							})
@@ -235,66 +206,50 @@ store.dispatch(actions.setRang(item))
 								intransition_updRang = false
 							})								
 						
-					rangGroups.exit()															// delete rang
+					rangGroups.exit()											// delete rang
 						.remove(function(){
-										store.dispatch(actions.deleteRang(d))
+							store.dispatch(actions.deleteRang(d))
 								})
-}
+				}
+				
 					// _________________________________ render rings
 
 						var ringElements = svgContainer
 							.select("g.rings")
 							.selectAll("circle")
-							.data(state.reducerWhirls.rings, 
-										function (d) { return d.id})
+							.data(state.reducerWhirls.rings, function (d) { return d.id})
 
-						var exitRingElements = ringElements.exit()
-								.remove(function(){
-												store.dispatch(actions.deleteRing(d))
-										})							
-
-										
-							// x
-							var updateItems = ringElements
+						var updateItems = ringElements
 									.attr('r', function(d, i, a) { return d.r })
 									.attr('cx', function(d, i, a) { return d.cx })
 									.attr('cy', function(d, i, a) { return d.cy })
+										.style("fill", function (d) {	return colorScale( Math.random() / 2)})
+										.style("fill-opacity", 0.7)
+										.style("stroke", "none")
 				
-if (intransition_newRing == false) {
-								
-							var newRingElements = ringElements
+						var newRingElements = ringElements
 							.enter()
 								.append("circle")													
 										.attr('class', 'ring')
 										.attr('id', function(d, i, a) { return d.id })
-										.attr('cx', function(d, i, a) { return d.cx })
-										.attr('cy', function(d, i, a) { return d.cy })
-										.attr('r', function(d, i, a) { return ringsRadio })
-										.style("fill", function (d) {	return colorScale( Math.random() / 2)})
-										.style("fill-opacity", 0.7)
-										.style("stroke", "none")
 										
-							newRingElements				
-.transition('newRing')
-											.duration(_duration)
-											.ease(d3.easeLinear)
-												.attrTween('t', function(d, i, a) {
-												return function (t) {
-var ring = Object.assign({}, d, {t: t})
-store.dispatch(actions.tickRing(ring))
-														var r = t
-														return r
-												}
-										})
-											.on("start", function start() {		
-														intransition_newRing = true
-												})
-											.on("end", function end(d) {	
-														intransition_newRing = false
-store.dispatch(actions.deleteRing(d))														
-											})				
-}
-					
+						newRingElements				
+									.transition('newRing')
+										.duration(_duration)
+										.ease(d3.easeLinear)
+											.attrTween('t', function(d, i, a) {
+											return function (t) {
+													var ring = Object.assign({}, d, {t: t})
+													store.dispatch(actions.tickRing(ring))
+													return t
+											}
+									})
+			
+							var exitRingElements = ringElements.exit()
+								.remove(function(){
+												store.dispatch(actions.deleteRing(d))
+								})
+
 	} // end render
 	
 	exports.render = render;

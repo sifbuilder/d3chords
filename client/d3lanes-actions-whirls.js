@@ -99,10 +99,9 @@ var ActionCreators = {
         ringsPerTick: obj.ringsPerTick,
         x: obj.x,
         y: obj.y,
-				randNormal: obj.randNormal,
+        r: obj.r,
+ 				randNormal: obj.randNormal,
  				randNormal2: obj.randNormal2,
-				xInit: obj.xInit,
-				xEnd: obj.xEnd,
  				rangs: obj.rangs,
  				ringsGenerating: obj.ringsGenerating,
     }
@@ -130,34 +129,17 @@ var ActionCreators = {
 	},
 	tickRing(arg) {
     return {
-         type: ActionTypes.TICK_RING,		// tickRing
-				 id: arg.id,
-				 rid: arg.rid,
-				 cx: arg.cx,
-				 cy: arg.cy,
-				 r: arg.r,
-				 xl: arg.xl,
-				 yl: arg.yl,
-				 xh: arg.xh,
-				 yh: arg.yh,
-				 vector: arg.vector,
-				 t: arg.t,
+        type: ActionTypes.TICK_RING,		// tickRing
+				ring: {
+					 id: arg.id,
+					 rid: arg.rid,
+					 cx: arg.cx,
+					 cy: arg.cy,
+					 r: arg.r,
+					 vector: arg.vector,
+					 t: arg.t,
+				}
    }
-	},
-	tickRings(arg) {
-    return {
-         type: ActionTypes.TICK_RINGS,		// tickRings
-				 id: arg.id,
-				 rid: arg.rid,
-				 cx: arg.x,
-				 cy: arg.y,
-				 xl: arg.xl,
-				 yl: arg.yl,
-				 xh: arg.xh,
-				 yh: arg.yh,
-				 vector: arg.vector,
-				 t: arg.t,
-    }
 	},
 	stopRings() {
     return {

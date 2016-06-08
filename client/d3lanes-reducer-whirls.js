@@ -55,8 +55,9 @@ function combineReducers(reducers) {
 
 // _____________ RANGS
 var initialStateThis = {
-			duration: 1500,
-			n: 1,
+			duration: 2500,
+			n: 3,
+			s0: 200,
 			s: 200,
 			rangs: [],
 			rangsNow: 0,
@@ -106,8 +107,9 @@ function reducerThis(state = initialStateThis, action) {
             })
 
 			case ActionTypes.SET_RANG:		// setRang
-					// console.log('SET_RANG')
+					console.log('SET_RANG')
 					var rangs = state.rangs
+					var s0 = state.s0
 					var rangsAlways = state.rangsAlways
 					var items = {}
 					var result = rangs.filter(function( obj ) {
@@ -115,28 +117,26 @@ function reducerThis(state = initialStateThis, action) {
 						});
 							
 					if (result.length === 0) {			// add
-console.log('SET_RANG add', action.rang.id , action.rang.width ,action.rang.height)
 						items = {rangs: [
 							{
 								id: action.rang.id,
 								x: action.rang.x,
 								y: action.rang.y,
-								width: action.rang.width,
-								height: action.rang.height,
+								s: action.rang.s,
+								s: s0,
 							}, 
 							...rangs
 						]}
 						rangsAlways = rangsAlways + 1
 					} else {												// edit
-console.log('SET_RANG edit', action.rang.id , action.rang.width ,action.rang.height)
 						items = {rangs: rangs.map(rang =>
 								rang.id === action.rang.id ?
 									Object.assign({}, rang, { 
 											id: action.rang.id,
 											x: action.rang.x,
 											y: action.rang.y,
-											width: action.rang.width,
-											height: action.rang.height,
+											s: action.rang.s,
+											s0: s0,
 									}) :
 									rang
 							)}
@@ -186,7 +186,6 @@ console.log('SET_RANG edit', action.rang.id , action.rang.width ,action.rang.hei
 						var _rangsHits = state.rangsHits
 						var _rangsHitsIndex = state.rangsHitsIndex
 						if (action.ringsGenerating == true) {
-							console.log("CREATE_RINGS")
 							var ringsRadio = state.ringsRadio
 						
 							var idx = state.ringsIndex
@@ -194,41 +193,34 @@ console.log('SET_RANG edit', action.rang.id , action.rang.width ,action.rang.hei
 							for (j = 0; j < action.rangs.length; ++j) {
 									var cx = action.x
 									var cy = action.y
-									var rid = action.rangs[j].id
-									var xl = action.rangs[j].x
-									var xh = action.rangs[j].x + action.rangs[j].width
-									var yl = action.rangs[j].y
-									var yh = action.rangs[j].y + action.rangs[j].height
 								
-									// console.log(cx, xl, xh, cy, yl, yh)
 									function inSquare (cx, cy, xl, yl, xh, yh) {
-											if (cx  > xl && 
-													cx  < xh && 
-													cy  > yl && 
-													cy  < yh) return true
-											else 		return false											
+										if (cx > xl && cx < xh && cy > yl && cy < yh) return true
+										else return false											
 									}
+
+									var xl = action.rangs[j].x
+									var yl = action.rangs[j].y
+									var xh = action.rangs[j].x + action.rangs[j].s
+									var yh = action.rangs[j].y + action.rangs[j].s
 									if (inSquare (cx, cy, xl, yl, xh, yh)) {
-												
-											// console.log( "rang", j, JSON.stringify(action.rangs[j], null, 2))
+											var hitRang = action.rangs[j]
+											var rid = hitRang.id
+											var s = hitRang.s
+											var s0 = hitRang.s0
+											var r = ringsRadio || 0
 												
 											for (i = 0; i < action.ringsPerTick; i++) {
 													var ring = {
 																id: guid(),
 																cx: cx,
 																cy: cy,
-																r: ringsRadio,
+																r: r,
 																rid: rid,
-																xl: xl,
-																yl: yl,
-																xh: xh,
-																yh: yh,
-																t: 0,
-																rang: action.rangs[j],
 															};
 
 													ring.vector = [ring.id%2 ? - action.randNormal() : action.randNormal(),
-																						 - action.randNormal2()*3.3];
+																						 - action.randNormal2()*9.3];
 													_newRings.unshift(ring);
 											}
 											_ringsHits = _ringsHits + 1
@@ -255,67 +247,42 @@ console.log('SET_RANG edit', action.rang.id , action.rang.width ,action.rang.hei
 						
 						
         case ActionTypes.TICK_RING:		// tickRing
-              var _rangs = state.rangs
-								.filter(function (d) {
-										var inId = (d.id == action.rid)
-										var r = inId
-										return r 
-									})
+					console.log("TICK_RING")
+					var ringsRadio = state.ringsRadio		// init ring radion
+					var rangs = state.rangs
+					var ringsNew = []
+				
+					var hitRangs = rangs
+						.filter(function (d) { return (d.id == action.ring.rid) })
 
-console.log("________________ tick rang d.id: ", _rangs[0].id, _rangs[0].x, _rangs[0].y, _rangs[0].width, _rangs[0].height)								
-									
-							var _ringsRadio = state.ringsRadio
-              var _rings = state.rings
-								.filter(function (d) {
-										var r = _rangs.length == 1
-										return r 
-									})
-									.filter(function (d) {
-										// var inW = (d.cx > 0 )
-										// var inE = (d.cx < 600 )
-										// var inN = (d.cy < 400 )
-										// var inS = (d.cy > 0 )
-										var inId = (d.id == action.id)
-										// var r = inId && inW && inE && inS && inN
-										var r = inId
-										return r 
-									})
-								.map(function (d) {
-										var _x = 					_rangs[0].x || 0
-										var _y = 					_rangs[0].y || 0
-										var _width = 			_rangs[0].width || 0
-										var _height = 		_rangs[0].height || 0
-								
-										if (d.cx > _x + _width) 		d.vector[0] = -d.vector[0]
-										if (d.cx < _x) 							d.vector[0] = -d.vector[0]
-										if (d.cy > _y + _height) 		d.vector[1] = -d.vector[1]
-										if (d.cy < _y) 							d.vector[1] = -d.vector[1]
-
-										var vx = d.vector[0], vy = d.vector[1]
-										var t = action.t, id = action.id
-										
-										d.id = id
-										d.cx += vx
-										d.cy += vy
-										d.t = t
-										d.r = (1 - t) * _ringsRadio
-console.log("________________ tick ring d.id: ", d.id, d.cx,  d.cy,  d.r, d.t)								
-										return d
-								})
-
-             var _ringsOther = state.rings
-								.filter(function (d) {
-										var inId = (d.id !== action.id)
-										var r = inId
-										return r 
-									})
-										
-							var _ringsNew = 	_ringsOther.concat(_rings); 
-								
-							return Object.assign({}, state, {
-									rings: _ringsNew,
-									ringsIndex: _ringsNew.length,
-							});
+					if (hitRangs.length > 0) {
+						var rang = hitRangs[0]		// rang by id
+						
+						ringsNew = state.rings			// get other rings
+							.reduce(function (a, d) {				
+									if (d.id == action.ring.id) {
+												if (d.cx + d.r > rang.x + rang.s) 	d.vector[0] = - Math.abs(d.vector[0])
+												if (d.cx - d.r < rang.x) 					d.vector[0] = Math.abs(d.vector[0])
+												if (d.cy + d.r > rang.y + rang.s)	d.vector[1] = - Math.abs(d.vector[1])
+												if (d.cy - d.r < rang.y) 					d.vector[1] = Math.abs(d.vector[1])
+											
+												d.r = (1 - action.ring.t) * ringsRadio
+												d.cx = Math.min(d.cx + d.vector[0], rang.x + rang.s)
+												d.cy = Math.min(d.cy + d.vector[1], rang.y + rang.s)
+											if (d.r > 1e-6) {
+													a.push(d)
+											}
+											return a
+									} else {
+											a.push(d)
+											return a
+									}
+						}, [])
+					}
+					return Object.assign({}, state, {
+							rings: ringsNew,
+							ringsIndex: ringsNew.length,
+					})
 								
 						
         case ActionTypes.TICK_RINGS:		// tickRings
@@ -336,7 +303,7 @@ console.log("________________ tick ring d.id: ", d.id, d.cx,  d.cy,  d.r, d.t)
 							return Object.assign({}, state, {
 										rings: _rings,
 										ringsIndex: _rings.length,
-							});
+							})
 																		
 						
         default:

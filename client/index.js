@@ -29,10 +29,10 @@ if (typeof require === "function") {
 				.enter()
 					.append("svg")
 						.attr("id", store.getState().reducerConfig.containerId)
+						.attr('class', 'chart')			// 
 						.style('width', store.getState().reducerCourt.svgWidth)
 						.style('height', store.getState().reducerCourt.svgHeight)
 						.style('background', 'oldlace')
-						.attr('class', 'bar-chart')			// 
 						.style('border', '1px solid darkgrey')
 						.attr('viewbox',"0 0 3 2")										
 						
@@ -64,31 +64,31 @@ if (typeof require === "function") {
 			createParticlesPayload
 		)
 
-			var tickParticlesPayload = function () { return {
-					width: store.getState().reducerCourt.svgWidth,
-					height: store.getState().reducerCourt.svgHeight,
-					gravity: store.getState().reducerConfig.gravity,
-					lanes: store.getState().reducerLanes.lanes
-				}}
+		var tickParticlesPayload = function () { return {
+				width: store.getState().reducerCourt.svgWidth,
+				height: store.getState().reducerCourt.svgHeight,
+				gravity: store.getState().reducerConfig.gravity,
+				lanes: store.getState().reducerLanes.lanes
+			}}
 
-		// tickParticlesLauncher
-			var tickParticlesLauncher = store.compose(
-				store.dispatch,
-				actions.tickParticles,
-				tickParticlesPayload
-			)
+	// tickParticlesLauncher
+		var tickParticlesLauncher = store.compose(
+			store.dispatch,
+			actions.tickParticles,
+			tickParticlesPayload
+		)
+	
+	// startParticlesLauncher
+		var startParticlesLauncher = store.compose(
+			store.dispatch,
+			actions.startParticles
+		)	
 		
-		// startParticlesLauncher
-			var startParticlesLauncher = store.compose(
-				store.dispatch,
-				actions.startParticles
-			)	
-			
-		// stopParticlesLauncher
-			var stopParticlesLauncher = store.compose(
-				store.dispatch,
-				actions.stopParticles
-			)		
+	// stopParticlesLauncher
+		var stopParticlesLauncher = store.compose(
+			store.dispatch,
+			actions.stopParticles
+		)		
 		
 		/* LANES  */
 		/* set data on lanes */
@@ -125,8 +125,6 @@ if (typeof require === "function") {
 						ringsPerTick: store.getState().reducerWhirls.ringsPerTick,
 						x: store.getState().reducerCourt.mousePos[0], 
 						y: store.getState().reducerCourt.mousePos[1],
-						xInit: store.getState().reducerCourt.leftBorder,
-						xEnd: store.getState().reducerCourt.svgWidth, 
 						randNormal: store.getState().reducerConfig.randNormal,
 						randNormal2: store.getState().reducerConfig.randNormal2,
 						rings: store.getState().reducerWhirls.rings,
@@ -228,37 +226,33 @@ if (typeof require === "function") {
 		var keyDown = d3lanesControls.keyDownControl(store).start()
 		var keyRelease = d3lanesControls.keyReleaseControl(store).start()
 
-			store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
-				keyDown.subscribe(KeyDownLauncher)
-		
-		var mode = 'lanes' // lanes, rings
-		// if (mode == 'lanes') {
-				store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
-				store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
-				mouseDown.subscribe(startParticlesLauncher)
-				touchStart.subscribe(startParticlesLauncher)
-				mouseDown.subscribe(createParticlesLauncher)
-				touchStart.subscribe(createParticlesLauncher)
-				mouseMove.subscribe(createParticlesLauncher)
-				touchMove.subscribe(createParticlesLauncher)
-				mouseUp.subscribe(stopParticlesLauncher)
-				touchEnd.subscribe(stopParticlesLauncher)
-				mouseLeave.subscribe(stopParticlesLauncher)
-				ticker.subscribe(tickParticlesLauncher)
-				ticker.subscribe(createParticlesLauncher)
-				stepper.subscribe(setRecordsLauncher)
+		store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
+		keyDown.subscribe(KeyDownLauncher)
 
-		// } else if (mode == 'rings') {
-				store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
-				mouseDown.subscribe(startRangsLauncher)
-				mouseEnter.subscribe(startRangsLauncher)
-				mouseLeave.subscribe(stopRangsLauncher)
-				mouseDown.subscribe(startRingsLauncher)
-				mouseDown.subscribe(createRingsLauncher)
-				mouseMove.subscribe(createRingsLauncher)
-				mouseUp.subscribe(stopRingsLauncher)
-				mouseLeave.subscribe(stopRingsLauncher)		
-		// }
+		store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
+		store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
+		mouseDown.subscribe(startParticlesLauncher)
+		touchStart.subscribe(startParticlesLauncher)
+		mouseDown.subscribe(createParticlesLauncher)
+		touchStart.subscribe(createParticlesLauncher)
+		mouseMove.subscribe(createParticlesLauncher)
+		touchMove.subscribe(createParticlesLauncher)
+		mouseUp.subscribe(stopParticlesLauncher)
+		touchEnd.subscribe(stopParticlesLauncher)
+		mouseLeave.subscribe(stopParticlesLauncher)
+		ticker.subscribe(tickParticlesLauncher)
+		ticker.subscribe(createParticlesLauncher)
+		stepper.subscribe(setRecordsLauncher)
+
+		store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
+		mouseDown.subscribe(startRangsLauncher)
+		mouseEnter.subscribe(startRangsLauncher)
+		mouseLeave.subscribe(stopRangsLauncher)
+		mouseDown.subscribe(startRingsLauncher)
+		mouseDown.subscribe(createRingsLauncher)
+		mouseMove.subscribe(createRingsLauncher)
+		mouseUp.subscribe(stopRingsLauncher)
+		mouseLeave.subscribe(stopRingsLauncher)		
 
 					
 					

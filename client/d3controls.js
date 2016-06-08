@@ -149,8 +149,6 @@ if (typeof require === "function") {
 				var index = nextListeners.indexOf(listener)
 				nextListeners.splice(index, 1)
 			}
-			
-			
 		}
 		return ticker
 }		

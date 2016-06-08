@@ -54,6 +54,7 @@ if (typeof require === "function") {
 				var particlesNow = state.reducerParticles.particleIndex
 				var ringsNow = state.reducerWhirls.ringsIndex
 				var framesPerSecond = state.reducerDebug.fps
+				var startRangs = state.reducerWhirls.startRangs
 				var rangsAlways = state.reducerWhirls.rangsAlways
 				var ringsHits = state.reducerWhirls.ringsHits
 				var rangsHitsIndex = state.reducerWhirls.rangsHitsIndex
@@ -68,10 +69,10 @@ if (typeof require === "function") {
 						" - fps: " + framesPerSecond
 				}
 				if (currentView == 'ringsView') {
-					var cmdsRings = "hover, alt-v"
 					noticeToShow = noticeToShow +
-						"(" + cmdsRings + ")" +
-						" - N: " + ringsNow +
+						((startRangs) ? '' : ' MOUSE !!! ') +
+						"(" + 'try alt-v' + ")" +
+						" N: " + ringsNow +
 						' - you have alredy missed ' + hitsLostPct + ' % of your ' + rangsAlways + ' rings ' + 
 						' and ' + framesLostPct + ' % of your ' + '60' + ' frames '
 				}
