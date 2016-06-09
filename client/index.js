@@ -42,7 +42,7 @@ if (typeof require === "function") {
 						.style('border', '1px solid darkgrey')
 						.attr('viewbox',"0 0 3 2")										
 						
-
+		/* launchers */
 		var createParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.createParticles,
@@ -71,10 +71,12 @@ if (typeof require === "function") {
 			actions.stopParticles
 		)		
 		
-		store.dispatch(actions.setRecordsCollection(
-				store.getState().reducerConfig.messageCollection))
-		store.dispatch(actions.setRecordsFetched(true))
-
+		var setMessageCollectionLauncher = store.compose(
+				store.dispatch,
+				actions.setRecordsCollection,
+				d3lanesPayloadsTracks.messageCollectionPayload
+			)
+	
 		var setRecordsLauncher = store.compose(
 				store.dispatch,
 				actions.setRecords,
@@ -91,26 +93,33 @@ if (typeof require === "function") {
 			actions.stopRangs
 		)
 			
-			var createRingsLauncher = store.compose(
-				store.dispatch,
-				actions.createRings,
-				d3lanesPayloadsWhirls.createRingsPayload
-			)
-
-			var startRingsLauncher = store.compose(
-				store.dispatch,
-				actions.startRings
-			)	
+		var updateRangsDurationLuncher = store.compose(
+			store.dispatch,
+			actions.updateRangsDuration,
+			d3lanesPayloadsWhirls.updateDurationPayload			
+		)
 			
-			var stopRingsLauncher = store.compose(
-				store.dispatch,
-				actions.stopRings
-			)	
+		var createRingsLauncher = store.compose(
+			store.dispatch,
+			actions.createRings,
+			d3lanesPayloadsWhirls.createRingsPayload
+		)
 
-			var KeyDownLauncher = store.compose(
-					d3lanesPayloadsCourt.KeyDownPayload
-			)	
+		var startRingsLauncher = store.compose(
+			store.dispatch,
+			actions.startRings
+		)	
+		
+		var stopRingsLauncher = store.compose(
+			store.dispatch,
+			actions.stopRings
+		)	
 
+		var KeyDownLauncher = store.compose(
+				d3lanesPayloadsCourt.KeyDownPayload
+		)	
+
+		/* listerners */
 		var mouseDown = d3lanesControls.mouseDownControl(store).start(d3.select('svg'))
 		var touchStart = d3lanesControls.touchStartControl(store).start(d3.select('svg'))
 		var mouseMove = d3lanesControls.mouseMoveControl(store).start(d3.select('svg'))
@@ -124,6 +133,7 @@ if (typeof require === "function") {
 		var keyDown = d3lanesControls.keyDownControl(store).start()
 		var keyRelease = d3lanesControls.keyReleaseControl(store).start()
 
+		/* launches */
 		store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
 		keyDown.subscribe(KeyDownLauncher)
 
@@ -141,6 +151,7 @@ if (typeof require === "function") {
 		ticker.subscribe(tickParticlesLauncher)
 		ticker.subscribe(createParticlesLauncher)
 		stepper.subscribe(setRecordsLauncher)
+		stepper.subscribe(updateRangsDurationLuncher)
 
 		store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
 		mouseDown.subscribe(startRangsLauncher)

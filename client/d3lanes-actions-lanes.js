@@ -85,6 +85,7 @@ var ActionCreators = {
     return {
         type: ActionTypes.SET_RECORDS_COLLECTION,
         recordsCollection: recordsCollection,
+				areRecordsFetched: true,
     }
   },
 	setLane(lane) {

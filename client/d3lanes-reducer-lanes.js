@@ -84,8 +84,7 @@ function reducerLanes(state = initialStateLanes, action) {
 						);
 						return r					
 		
-				case ActionTypes.DELETE_LANE:		// setLane
-				
+				case ActionTypes.DELETE_LANE:		// deleteLane
 					var lanes = state.lanes
 					var ls = lanes.filter(function( obj ) {
 							return obj.id !== action.lane.id;
@@ -128,13 +127,13 @@ function reducerLanes(state = initialStateLanes, action) {
 						});
 						return r
 						
-        case ActionTypes.SET_LANES:
+        case ActionTypes.SET_LANES:		// setLanes
  						console.log('SET_LANES')
             return Object.assign({}, state, {
                 lanes: action.lanes,
                 lanesIndex: Object.keys(action.lanes).length
             });
-				case ActionTypes.FETCH_RECORDS:
+				case ActionTypes.FETCH_RECORDS:	// fetchRecords
 						console.log('FETCH_RECORDS')
 						var processRecord = function processRecord(d) {
 							d.amount = +d.amount;
@@ -171,11 +170,16 @@ function reducerLanes(state = initialStateLanes, action) {
                 areRecordsFetched: action.areRecordsFetched
             })
 						
-				case ActionTypes.SET_RECORDS_COLLECTION:
+				case ActionTypes.SET_RECORDS_COLLECTION:	// setRecordsCollection
 						console.log('SET_RECORDS_COLLECTION')
-            return Object.assign({}, state, {
-                recordsCollection: action.recordsCollection
-            })
+						var r = state
+						if (state.areRecordsFetched == false) {
+							Object.assign({}, state, {
+									recordsCollection: action.recordsCollection,
+									areRecordsFetched: true,
+							})
+						}
+						return r
 						
 				case ActionTypes.SET_RECORDS:
 						// console.log('SET_RECORDS')

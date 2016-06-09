@@ -28,9 +28,11 @@ var keyMirror = function(obj, prefix) {
 var consts = {
 	DELETE_RANG: '',
 	INIT_RANGS: '',
-	STOP_RANGS: '',
+	SET_DURATION: '',
 	SET_RANG: '',
 	SET_RANGS: '',
+	STOP_RANGS: '',
+	UPDATE_RANGS_DURATION: '',
 	
 	INTRODUCE_RINGS: '',
 	CREATE_RINGS: '',
@@ -54,13 +56,19 @@ var ActionCreators = {
         rang: rang,
 		}
   },
-	startRangs(rangs) {
+	startRangs() {
     return {
         type: ActionTypes.INIT_RANGS,
         startRangs: true,
 		}
   },
-	stopRangs(rangs) {
+	setDuration(duration) {
+    return {
+        type: ActionTypes.SET_DURATION,
+        duration: duration,
+		}
+  },
+	stopRangs() {
     return {
         type: ActionTypes.STOP_RANGS
 		}
@@ -75,6 +83,14 @@ var ActionCreators = {
     return {
         type: ActionTypes.SET_RANGS,
         rangs: rangs,
+		}
+  },
+	
+	updateRangsDuration(obj) {
+    return {
+        type: ActionTypes.UPDATE_RANGS_DURATION,
+        rangsAlways: obj.rangsAlways,
+        rangsHitsIndex: obj.rangsHitsIndex,
 		}
   },
 	
@@ -93,6 +109,7 @@ var ActionCreators = {
  				ringsGenerating: obj.ringsGenerating,
     }
   },
+	
 	createRings(obj) {
     return {
         type: ActionTypes.CREATE_RINGS,	// createRings

@@ -71,7 +71,7 @@ var initialStateThis = {
 			rangsHitsIndex: 0,
 			rangsHits: [],
 			ringsIntroduced: false,
-			ringsPerTick: 1,
+			ringsPerTick: 3,
 			ringsRadio: 9,
 			ringsGenerating: false,			
 	}
@@ -120,6 +120,7 @@ function reducerThis(state = initialStateThis, action) {
 						items = {rangs: [
 							{
 								id: action.rang.id,
+								grid: action.rang.grid,
 								x: action.rang.x,
 								y: action.rang.y,
 								s: action.rang.s,
@@ -133,6 +134,7 @@ function reducerThis(state = initialStateThis, action) {
 								rang.id === action.rang.id ?
 									Object.assign({}, rang, { 
 											id: action.rang.id,
+											grid: action.rang.grid,
 											x: action.rang.x,
 											y: action.rang.y,
 											s: action.rang.s,
@@ -155,31 +157,21 @@ function reducerThis(state = initialStateThis, action) {
                 rangsNow: Object.keys(action.rangs).length
             })
 
-						
-     case ActionTypes.DELETE_RING:	// deleteRing
-						var rings = state.rings
-						var items = rings.filter(function( obj ) {
-								return obj.id !== action.ring.id;
-							});
-		
-						 var r = Object.assign({}, state,
-								{rings: items},
-								{ringsIndex: items.length}
-							)
-							return r
-		
-        case ActionTypes.START_RINGS:				// startRings
-					console.log("START_RINGS")		
-          return Object.assign({}, state, {
-                ringsGenerating: true
-            })
-						
-        case ActionTypes.STOP_RINGS:			// stopRings
-					console.log("STOP_RINGS")
+       case ActionTypes.UPDATE_RANGS_DURATION:
+						var duration = state.duration
+						var hitsLostPct = Math.round(100 * (action.rangsAlways - action.rangsHitsIndex) / action.rangsAlways) || 0
+console.log("____________", duration, hitsLostPct)						
+						if (hitsLostPct < 90) {
+								duration = Math.max (duration - 100, 500)
+							} else {
+								duration = Math.min (duration + 100, 2500)
+							}
+ 						console.log('UPDATE_RANGS_DURATION', duration)
             return Object.assign({}, state, {
-                ringsGenerating: false
-            });
+                duration: duration,
+             })
 
+						
         case ActionTypes.CREATE_RINGS:			// createRings
 						var _newRings = []
 						var _ringsHits = state.ringsHits
@@ -206,6 +198,7 @@ function reducerThis(state = initialStateThis, action) {
 									if (inSquare (cx, cy, xl, yl, xh, yh)) {
 											var hitRang = action.rangs[j]
 											var rid = hitRang.id
+											var grid = hitRang.grid
 											var s = hitRang.s
 											var s0 = hitRang.s0
 											var r = ringsRadio || 0
@@ -217,20 +210,21 @@ function reducerThis(state = initialStateThis, action) {
 																cy: cy,
 																r: r,
 																rid: rid,
+																grid: grid,
 															};
 
 													ring.vector = [ring.id%2 ? - action.randNormal() : action.randNormal(),
-																						 - action.randNormal2()*9.3];
-													_newRings.unshift(ring);
+																						 - action.randNormal2()*9.3]
+													_newRings.unshift(ring)
 											}
 											_ringsHits = _ringsHits + 1
-									}
 									
-									if (_rangsHits.indexOf(rid) == -1) {
-											_rangsHits.push(rid);
-									}
-									_rangsHitsIndex = _rangsHits.length
-							}
+											if (_rangsHits.indexOf(grid) == -1) {
+													_rangsHits.push(grid)
+											}
+											_rangsHitsIndex = _rangsHits.length
+										}
+						}
 							
 							var _ringsAll = state.rings.slice(0).concat(_newRings)
 							return Object.assign({}, state, {
@@ -245,10 +239,41 @@ function reducerThis(state = initialStateThis, action) {
 							return state
 						}
 						
+     case ActionTypes.DELETE_RING:	// deleteRing
+						var rings = state.rings
+						var items = rings.filter(function( obj ) {
+								return obj.id !== action.ring.id;
+							});
+		
+						 var r = Object.assign({}, state,
+								{rings: items},
+								{ringsIndex: items.length}
+							)
+							return r
+		
+        case ActionTypes.SET_DURATION:				// setDuration
+					console.log("SET_DURATION")		
+          return Object.assign({}, state, {
+                duration: action.duration
+            })
+						
+		
+        case ActionTypes.START_RINGS:				// startRings
+					console.log("START_RINGS")		
+          return Object.assign({}, state, {
+                ringsGenerating: true
+            })
+						
+        case ActionTypes.STOP_RINGS:			// stopRings
+					console.log("STOP_RINGS")
+            return Object.assign({}, state, {
+                ringsGenerating: false
+            });
+
 						
         case ActionTypes.TICK_RING:		// tickRing
 					console.log("TICK_RING")
-					var ringsRadio = state.ringsRadio		// init ring radion
+					var ringsRadio = state.ringsRadio		// init ring radio
 					var rangs = state.rangs
 					var ringsNew = []
 				
@@ -284,27 +309,6 @@ function reducerThis(state = initialStateThis, action) {
 							ringsIndex: ringsNew.length,
 					})
 								
-						
-        case ActionTypes.TICK_RINGS:		// tickRings
-							var _ringsRadio = state.ringsRadio
-              var _rings = state.rings
-								.filter(function (d) {
-											return (d.id == action.id)
-									})
-								.map(function (d) {
-										d.id = action.id
-										d.cx += action.vector[0]
-										d.cy += action.vector[1]
-										d.t = action.t
-										d.r = (1 - action.t) * _ringsRadio
-										return d
-								})
-
-							return Object.assign({}, state, {
-										rings: _rings,
-										ringsIndex: _rings.length,
-							})
-																		
 						
         default:
             return state;

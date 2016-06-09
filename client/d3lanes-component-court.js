@@ -65,14 +65,13 @@ if (typeof require === "function") {
 					var cmdsLanes = "down-arrow, right-arrow, alt-v"
 					noticeToShow = noticeToShow +
 						cmdsLanes + " - " + currentView +
-						" - N: " + particlesNow +
+						" - n: " + particlesNow +
 						" - fps: " + framesPerSecond
 				}
 				if (currentView == 'ringsView') {
 					noticeToShow = noticeToShow +
 						((startRangs) ? '' : ' MOUSE !!! ') +
-						"(" + 'try alt-v' + ")" +
-						" N: " + ringsNow +
+						"(" + 'try alt-v' + ")" +		
 						' - you have alredy missed ' + hitsLostPct + ' % of your ' + rangsAlways + ' rings ' + 
 						' and ' + framesLostPct + ' % of your ' + '60' + ' frames '
 				}

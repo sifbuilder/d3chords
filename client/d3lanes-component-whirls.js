@@ -25,11 +25,12 @@ function guid() {
 var gen = function(n, l, h, s) {
   var data = []
   for (var i = n; i; i--) {
-		var id = guid()
+		var grid = guid()
     data.push({
       x: Math.random() * l | 0,
       y: Math.random() * h | 0,
-			id: i,			// guid() // i
+			id: i,
+			grid: grid,
 			s: s
     })
   }
@@ -77,7 +78,6 @@ var intransition_newRing = false
 
 		// rings
 		var ringsRadio = state.reducerWhirls.ringsRadio || state.reducerConfig.ringDefaultRadio
-		var _duration = state.reducerWhirls.duration
 
 		
 		// SVG
@@ -156,6 +156,7 @@ var intransition_newRing = false
 
 				var rectOnNewRang = newRangGroups.append('rect')	// append rect
             .attr("rid", function (d) {return d.id })
+            .attr("grid", function (d) {return d.grid })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
@@ -166,10 +167,10 @@ var intransition_newRing = false
 
 				if (intransition_updRang == false) {
 					var rectOnExistingRang = rangGroups.select("rect")	// update rect
- 						.attr("id", function (d) { return d.id; })
-  					.attr("x", function (d) { return d.x; })
-            .attr("y", function (d) { return d.y; })
-            .attr("s", function (d) { return d.s; })
+ 						.attr("id", function (d) { return d.id })
+  					.attr("x", function (d) { return d.x })
+            .attr("y", function (d) { return d.y })
+            .attr("s", function (d) { return d.s })
 							.transition('updRang')
 								.duration(_duration)
 								.ease(d3.easeLinear)
@@ -190,6 +191,7 @@ var intransition_newRing = false
 									var r = parseInt((1 - t) * d.s)
 									var item = {
 												id: d.id,
+												grid: d.grid,
 												x: d.x,
 												y: d.y,
 												s: parseInt((1 - t) * d.s),
