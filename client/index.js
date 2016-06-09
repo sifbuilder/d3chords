@@ -14,6 +14,12 @@ if (typeof require === "function") {
 	var d3lanesStore = require('./d3lanes-store.js')
 	var d3lanesActions = require('./d3lanes-actions.js')
 	var d3lanesControls = require('./d3controls.js')
+	
+	var d3lanesPayloadsTracks = require('./d3lanes-payloads-tracks.js')
+	var d3lanesPayloadssCourt = require('./d3lanes-payloads-court.js')
+	var d3lanesPayloadsParticles = require('./d3lanes-payload-particles.js')
+	var d3lanesPayloadsWhirls = require('./d3lanes-payload-whirls.js')
+	
 }	
 
 		/* actions */
@@ -37,180 +43,72 @@ if (typeof require === "function") {
 						.attr('viewbox',"0 0 3 2")										
 						
 
-		/* PARTICLES  */
-		var createParticlesPayload = function () { return {
-					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-					x: 								store.getState().reducerCourt.mousePos[0], 
-					y: 								store.getState().reducerCourt.mousePos[1],
-					xInit: 						store.getState().reducerCourt.leftBorder,
-					xEnd: 						store.getState().reducerCourt.svgWidth, 
-					randNormal: 			store.getState().reducerConfig.randNormal,
-					randNormal2: 			store.getState().reducerConfig.randNormal2,
-					lanes: 						store.getState().reducerLanes.lanes,
-					particlesGenerating: 			store.getState().reducerParticles.particlesGenerating,
-		}}
-
-		// createParticlesLauncher
 		var createParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.createParticles,
-			createParticlesPayload
+			d3lanesPayloadsParticles.createParticlesPayload
 		)
 
-		// createParticlesLauncher
 		var createParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
-			createParticlesPayload
+			d3lanesPayloadsParticles.createParticlesPayload
 		)
 
-		var tickParticlesPayload = function () { return {
-				width: store.getState().reducerCourt.svgWidth,
-				height: store.getState().reducerCourt.svgHeight,
-				gravity: store.getState().reducerConfig.gravity,
-				lanes: store.getState().reducerLanes.lanes
-			}}
-
-	// tickParticlesLauncher
 		var tickParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.tickParticles,
-			tickParticlesPayload
+			d3lanesPayloadsParticles.tickParticlesPayload
 		)
 	
-	// startParticlesLauncher
 		var startParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.startParticles
 		)	
 		
-	// stopParticlesLauncher
 		var stopParticlesLauncher = store.compose(
 			store.dispatch,
 			actions.stopParticles
 		)		
 		
-		/* LANES  */
-		/* set data on lanes */
 		store.dispatch(actions.setRecordsCollection(
 				store.getState().reducerConfig.messageCollection))
 		store.dispatch(actions.setRecordsFetched(true))
 
-		var setRecordsPayload = function () { return {
-				itemSpan: store.getState().reducerConfig.itemSpan,
-				currentMode: store.getState().reducerCourt.currentMode
-			}}
-		// setRecordsLauncher
 		var setRecordsLauncher = store.compose(
 				store.dispatch,
 				actions.setRecords,
-				setRecordsPayload
+				d3lanesPayloadsTracks.setRecordsPayload
 			)
 	
-	/* RANGS */
-		// startRangsLauncher
 		var startRangsLauncher = store.compose(
 			store.dispatch,
 			actions.startRangs
 		)
 			
-		// stopRangsLauncher
 		var stopRangsLauncher = store.compose(
 			store.dispatch,
 			actions.stopRangs
 		)
 			
-	/* RINGS */
-			var createRingsPayload = function () { return {
-						ringsPerTick: store.getState().reducerWhirls.ringsPerTick,
-						x: store.getState().reducerCourt.mousePos[0], 
-						y: store.getState().reducerCourt.mousePos[1],
-						randNormal: store.getState().reducerConfig.randNormal,
-						randNormal2: store.getState().reducerConfig.randNormal2,
-						rings: store.getState().reducerWhirls.rings,
-						rangs: store.getState().reducerWhirls.rangs,
-						ringsGenerating: store.getState().reducerWhirls.ringsGenerating,
-			}}
-		
-		// createRingsLauncher
 			var createRingsLauncher = store.compose(
 				store.dispatch,
 				actions.createRings,
-				createRingsPayload
+				d3lanesPayloadsWhirls.createRingsPayload
 			)
 
-		// startRingsLauncher
 			var startRingsLauncher = store.compose(
 				store.dispatch,
 				actions.startRings
 			)	
 			
-		// stopRingsLauncher
 			var stopRingsLauncher = store.compose(
 				store.dispatch,
 				actions.stopRings
 			)	
 
-			var KeyDownPayload = function () { 
-					var keys = store.getState().reducerCourt.keys
-					var altKeyCode = 18, ctrlKeyCode = 17 
-					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
-					var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
-					
-					if (keys[vKeyCode] == true && keys[altKeyCode] == true) {		// alt-v
-						console.log("alt-v", store.getState().reducerCourt.keys)
-						var _views = store.getState().reducerConfig.views
-						var _currentView = store.getState().reducerCourt.currentView
-						var _currentViewIndex = _views.indexOf(_currentView)
-						var newViewIndex = _views[Math.abs(_currentViewIndex + 1) % _views.length]
-						store.dispatch(actions.setView(newViewIndex))					
-					}
-					if (keys[dKeyCode] == true && keys[altKeyCode] == true) {		// alt-d
-						store.dispatch(actions.switchDebugMode())
-					}
-					if (keys[leftArrow] == true) {										// leftArrow
-						var currentMode = 'walkMode'
-						store.dispatch(actions.setMode(currentMode))				
-					}
-					if (keys[rightArrow] == true) {										// rightArrow
-						var currentMode = 'autoMode'
-						store.dispatch(actions.setMode(currentMode))				
-					}
-					if (keys[upArrow] == true) {												// upArrow
-						var currentMode = store.getState().reducerCourt.currentMode
-						if (currentMode == 'autoMode') {
-							var newMode = 'walkMode'
-							store.dispatch(actions.setMode(newMode))
-						} else if (currentMode == 'walkMode') {
-							var itemSpan = store.getState().reducerConfig.itemSpan
-							store.dispatch(actions.walkUpRecords(itemSpan, currentMode))
-						}
-					}
-					if (keys[downArrow] == true) {											// downArrow
-						var currentMode = store.getState().reducerCourt.currentMode
-						if (currentMode == 'autoMode') {
-							var newMode = 'walkMode'
-							store.dispatch(actions.setMode(newMode))
-						} else if (currentMode == 'walkMode') {
-							var itemSpan = store.getState().reducerConfig.itemSpan
-							store.dispatch(actions.walkDownRecords(itemSpan, currentMode))
-						}
-					}
-					if (keys[leftArrow] == true && keys[ctrlKeyCode] == true) {		// leftArrow-Ctrl
-						console.log("leftArrowCtrlFn")
-						store.dispatch(actions.resizeWidth(-10))
-					}
-					if (keys[rightArrow] == true  && keys[ctrlKeyCode] == true) {		// rightArrow-Ctrl
-						console.log("rightArrowCtrlFn")
-						store.dispatch(actions.resizeWidth(10))
-					}
-					if (keys[upArrow] == true && keys[ctrlKeyCode] == true) {			// upArrow-Ctrl
-						console.log("upArrowCtrlFn")
-						store.dispatch(actions.resizeWidth(-10))
-					}
-			}
 			var KeyDownLauncher = store.compose(
-					KeyDownPayload
+					d3lanesPayloadsCourt.KeyDownPayload
 			)	
 
 		var mouseDown = d3lanesControls.mouseDownControl(store).start(d3.select('svg'))
