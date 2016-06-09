@@ -19,11 +19,17 @@
 						ringsGenerating: store.getState().reducerWhirls.ringsGenerating,
 			}}
 			
-			var updateDurationPayload = function () { return {
+			var updateRangsDurationPayload = function () { return {
+						rangsAlways: store.getState().reducerWhirls.rangsAlways,
+						rangsHitsIndex: store.getState().reducerWhirls.rangsHitsIndex, 
+			}}
+			
+			var updateRangsNumberPayload = function () { return {
 						rangsAlways: store.getState().reducerWhirls.rangsAlways,
 						rangsHitsIndex: store.getState().reducerWhirls.rangsHitsIndex, 
 			}}
 			
 exports.createRingsPayload = createRingsPayload
-exports.updateDurationPayload = updateDurationPayload
+exports.updateRangsDurationPayload = updateRangsDurationPayload
+exports.updateRangsNumberPayload = updateRangsNumberPayload
 }));							

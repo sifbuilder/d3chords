@@ -33,6 +33,7 @@ var consts = {
 	SET_RANGS: '',
 	STOP_RANGS: '',
 	UPDATE_RANGS_DURATION: '',
+	UPDATE_RANGS_NUMBER: '',
 	
 	INTRODUCE_RINGS: '',
 	CREATE_RINGS: '',
@@ -94,6 +95,13 @@ var ActionCreators = {
 		}
   },
 	
+	updateRangsNumber(obj) {
+    return {
+        type: ActionTypes.UPDATE_RANGS_NUMBER,
+        rangsAlways: obj.rangsAlways,
+        rangsHitsIndex: obj.rangsHitsIndex,
+		}
+  },
 	
 	introduceRings(obj) {
     return {

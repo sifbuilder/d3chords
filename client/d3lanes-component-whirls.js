@@ -30,6 +30,7 @@ var gen = function(n, l, h, s) {
       x: Math.random() * l | 0,
       y: Math.random() * h | 0,
 			id: i,
+			rid: i,
 			grid: grid,
 			s: s
     })
@@ -155,19 +156,20 @@ var intransition_newRing = false
 								.attr("id", function (d) { return d.id; })
 
 				var rectOnNewRang = newRangGroups.append('rect')	// append rect
-            .attr("rid", function (d) {return d.id })
+            .attr("rid", function (d) {return d.rid })
             .attr("grid", function (d) {return d.grid })
             .attr("class", "rect")
 						.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
             .attr("s", function (d) { return d.s; })
+            .attr("t", function (d) { return d.t; })
 						.attr("stroke-width", 1)
 						.attr("stroke", "grey")
 						.style("fill", "transparent")
 
 				if (intransition_updRang == false) {
 					var rectOnExistingRang = rangGroups.select("rect")	// update rect
- 						.attr("id", function (d) { return d.id })
+ 						.attr("rid", function (d) { return d.rid })
   					.attr("x", function (d) { return d.x })
             .attr("y", function (d) { return d.y })
             .attr("s", function (d) { return d.s })
@@ -191,9 +193,11 @@ var intransition_newRing = false
 									var r = parseInt((1 - t) * d.s)
 									var item = {
 												id: d.id,
+												rid: d.rid,
 												grid: d.grid,
 												x: d.x,
 												y: d.y,
+												t: t,
 												s: parseInt((1 - t) * d.s),
 										}
 									store.dispatch(actions.setRang(item))				

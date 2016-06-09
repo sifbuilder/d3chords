@@ -96,7 +96,13 @@ if (typeof require === "function") {
 		var updateRangsDurationLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsDuration,
-			d3lanesPayloadsWhirls.updateDurationPayload			
+			d3lanesPayloadsWhirls.updateRangsDurationPayload			
+		)
+			
+		var updateRangsNumberLuncher = store.compose(
+			store.dispatch,
+			actions.updateRangsNumber,
+			d3lanesPayloadsWhirls.updateRangsNumberPayload			
 		)
 			
 		var createRingsLauncher = store.compose(
@@ -152,6 +158,7 @@ if (typeof require === "function") {
 		ticker.subscribe(createParticlesLauncher)
 		stepper.subscribe(setRecordsLauncher)
 		stepper.subscribe(updateRangsDurationLuncher)
+		stepper.subscribe(updateRangsNumberLuncher)
 
 		store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
 		mouseDown.subscribe(startRangsLauncher)
