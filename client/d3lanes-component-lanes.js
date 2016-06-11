@@ -107,6 +107,8 @@ var intransition = false
 	
 // _____________ render
 	function render(newState) {
+	
+// console.log("______________________ render", stateTracks.reducerLanes.records)	
 		// return on transition
 		if (intransition == true) return
 

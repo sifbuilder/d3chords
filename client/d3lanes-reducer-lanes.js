@@ -62,39 +62,16 @@ function reducerLanes(state = initialStateLanes, action) {
 	if (action == null) return state
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
-		
-				case ActionTypes.INCREASE_CURSOR_LOW:
-					 var r = Object.assign({}, state,
-						{messagesCursorLow: ++state.messagesCursorLow}
-						);
-						return r					
-				case ActionTypes.REDUCE_CURSOR_LOW:
-					 var r = Object.assign({}, state,
-						{messagesCursorLow: --state.messagesCursorLow}
-						);
-						return r					
-				case ActionTypes.INCREASE_CURSOR_HIGH:
-					 var r = Object.assign({}, state,
-						{messagesCursorHigh: ++state.messagesCursorHigh}
-						);
-						return r					
-				case ActionTypes.REDUCE_CURSOR_HIGH:
-					 var r = Object.assign({}, state,
-						{messagesCursorHigh: --state.messagesCursorHigh}
-						);
-						return r					
-		
 				case ActionTypes.DELETE_LANE:		// deleteLane
 					var lanes = state.lanes
 					var ls = lanes.filter(function( obj ) {
 							return obj.id !== action.lane.id;
-						});
-	
-					 var r = Object.assign({}, state,
+						})
+					var r = Object.assign({}, state,
 						{lanes: ls},
 						{lanesIndex: ls.length}
-						);
-						return r
+						)
+					return r
 
 				case ActionTypes.SET_LANE:		// setLane
 					var lanes = state.lanes
@@ -124,7 +101,7 @@ function reducerLanes(state = initialStateLanes, action) {
 						ls,
 						{
 							lanesIndex: ls.lanes.length
-						});
+						})
 						return r
 						
         case ActionTypes.SET_LANES:		// setLanes
@@ -132,7 +109,7 @@ function reducerLanes(state = initialStateLanes, action) {
             return Object.assign({}, state, {
                 lanes: action.lanes,
                 lanesIndex: Object.keys(action.lanes).length
-            });
+            })
 				case ActionTypes.FETCH_RECORDS:	// fetchRecords
 						console.log('FETCH_RECORDS')
 						var processRecord = function processRecord(d) {
@@ -148,11 +125,10 @@ function reducerLanes(state = initialStateLanes, action) {
 							if (store.getState().court.currentMode == 0) {	// _tbd_  
 									++timeTick
 									++vLast
-									store.dispatch(actions.setMessages(store.getState().reducerConfig.messageCollection.slice(0,
-										store.getState().reducerConfig.messageCollection.length)))
+									store.dispatch(actions.setMessages(store.getState().reducerConfig.recordsCollection.slice(0,
+										store.getState().reducerConfig.recordsCollection.length)))
 							}
 						}
-					
 						d3.queue()
 							.defer(d3.csv, action.src, processRecord)
 							.await(processData)					
@@ -163,7 +139,8 @@ function reducerLanes(state = initialStateLanes, action) {
  						console.log('SET_MESSAGES')
            return Object.assign({}, state, {
 										messages: action.messages,
-            });
+            })
+						
 				case ActionTypes.SET_RECORDS_FETCHED:
 						console.log('SET_RECORDS_FETCHED')
            return Object.assign({}, state, {
@@ -171,10 +148,10 @@ function reducerLanes(state = initialStateLanes, action) {
             })
 						
 				case ActionTypes.SET_RECORDS_COLLECTION:	// setRecordsCollection
-						console.log('SET_RECORDS_COLLECTION')
 						var r = state
 						if (state.areRecordsFetched == false) {
-							Object.assign({}, state, {
+							console.log('SET_RECORDS_COLLECTION')
+							var r = Object.assign({}, state, {
 									recordsCollection: action.recordsCollection,
 									areRecordsFetched: true,
 							})
@@ -182,7 +159,7 @@ function reducerLanes(state = initialStateLanes, action) {
 						return r
 						
 				case ActionTypes.SET_RECORDS:
-						// console.log('SET_RECORDS')
+						console.log('SET_RECORDS')
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
 						var itemSpan = action.itemSpan
@@ -242,7 +219,7 @@ function reducerLanes(state = initialStateLanes, action) {
 						return r
 						
         default:
-            return state;
+            return state
     }
 }
 

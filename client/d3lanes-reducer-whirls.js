@@ -82,7 +82,6 @@ function reducerThis(state = initialStateThis, action) {
     switch (action.type) {
 		
        case ActionTypes.DELETE_RANG:
- 						// console.log('DELETE_RANG')
 						var rangs = state.rangs
 						var items = rangs.filter(function( obj ) {
 								return obj.rid !== action.rang.rid;
@@ -95,7 +94,6 @@ function reducerThis(state = initialStateThis, action) {
 							return r
 
        case ActionTypes.INIT_RANGS:
- 						// console.log('INIT_RANGS')
             return Object.assign({}, state, {
                 startRangs: true
             })
@@ -106,8 +104,7 @@ function reducerThis(state = initialStateThis, action) {
                 startRangs: false
             })
 
-			case ActionTypes.SET_RANG:		// setRang
-					// console.log('SET_RANG')
+			case ActionTypes.SET_RANG:					// setRang
 					var rangs = state.rangs
 					var s0 = state.s0
 					var rangsAlways = state.rangsAlways
@@ -116,7 +113,7 @@ function reducerThis(state = initialStateThis, action) {
 							return obj.id == action.rang.id;
 						});
 							
-					if (result.length === 0) {			// add
+					if (result.length === 0) {			// add rang
 						items = {rangs: [
 							{
 								id: action.rang.id,
@@ -126,12 +123,13 @@ function reducerThis(state = initialStateThis, action) {
 								y: action.rang.y,
 								s: action.rang.s,
 								t: action.rang.t,
+								sn: action.rang.s,
 								s: s0,
 							}, 
 							...rangs
 						]}
 						rangsAlways = rangsAlways + 1
-					} else {												// edit
+					} else {												// edit rang
 						items = {rangs: rangs.map(rang =>
 								rang.rid === action.rang.rid ?
 									Object.assign({}, rang, { 
@@ -140,6 +138,7 @@ function reducerThis(state = initialStateThis, action) {
 											x: action.rang.x,
 											y: action.rang.y,
 											s: action.rang.s,
+											sn: rang.s,
 											s0: s0,
 									}) :
 									rang
@@ -152,7 +151,7 @@ function reducerThis(state = initialStateThis, action) {
 					)
 					return r
 		
-        case ActionTypes.SET_RANGS:
+        case ActionTypes.SET_RANGS:						// setRangs
  						console.log('SET_RANGS')
             return Object.assign({}, state, {
                 rangs: action.rangs,
@@ -162,24 +161,16 @@ function reducerThis(state = initialStateThis, action) {
        case ActionTypes.UPDATE_RANGS_DURATION:	// updateRangsDuration
 						var duration = state.duration
 						var hitsLostPct = Math.round(100 * (action.rangsAlways - action.rangsHitsIndex) / action.rangsAlways) || 0
-						if (hitsLostPct < 70) {
-								duration = Math.max (duration - 100, 500)
-							} else {
-								duration = Math.min (duration + 100, 2500)
-							}
+						if (hitsLostPct < 20) duration = Math.min(Math.max((50 - hitsLostPct) * 20, 1500), 2500)
             return Object.assign({}, state, {
                 duration: duration,
              })
 
-       case ActionTypes.UPDATE_RANGS_NUMBER:		// updateRangsDuration
+       case ActionTypes.UPDATE_RANGS_NUMBER:		// updateRangsNumber
 						var n = state.n
-						// var hitsLostPct = Math.round(100 * (action.rangsAlways - action.rangsHitsIndex) / action.rangsAlways) || 0
-						// if (hitsLostPct < 70) {
-								// n = Math.min (n + 1, 7)
-							// } else {
-								// n = Math.max (n - 1, 2)
-							// }
-            return Object.assign({}, state, {
+						var hitsLostPct = Math.round(100 * (action.rangsAlways - action.rangsHitsIndex) / action.rangsAlways) || 0
+ 						if (hitsLostPct < 20) n = Math.min(Math.max(Math.round((50 - hitsLostPct)/10), 1), 3)
+						return Object.assign({}, state, {
                 n: n,
              })
 
@@ -209,12 +200,12 @@ function reducerThis(state = initialStateThis, action) {
 									var xh = action.rangs[j].x + action.rangs[j].s
 									var yh = action.rangs[j].y + action.rangs[j].s
 									if (inSquare (cx, cy, xl, yl, xh, yh)) {
-											var hitRang = action.rangs[j]
-											var rid = hitRang.id
-											var grid = hitRang.grid
-											var t = hitRang.t
-											var s = hitRang.s
-											var s0 = hitRang.s0
+											var rang = action.rangs[j]
+											var rid = rang.id
+											var grid = rang.grid
+											var t = rang.t
+											var s = rang.s
+											var s0 = rang.s0
 											var r = ringsRadio || 0
 												
 											for (i = 0; i < action.ringsPerTick; i++) {
@@ -225,6 +216,7 @@ function reducerThis(state = initialStateThis, action) {
 																r: r,
 																rid: rid,
 																grid: grid,
+																rang: rang,
 															};
 
 													ring.vector = [ring.id%2 ? - action.randNormal() : action.randNormal(),
@@ -286,7 +278,6 @@ function reducerThis(state = initialStateThis, action) {
 
 						
         case ActionTypes.TICK_RING:		// tickRing
-					console.log("TICK_RING", action.ring.t)
 					var duration = state.duration
 					
 					var ringsRadio = state.ringsRadio		// init ring radio
@@ -299,21 +290,29 @@ function reducerThis(state = initialStateThis, action) {
 					if (hitRangs.length > 0) {
 						var rang = hitRangs[0]		// rang by id
 						var speed = rang.s0/duration
+						var xe = rang.x + rang.s
+						var xw = rang.x
+						var yn = rang.y
+						var ys = rang.y + rang.s
+						var v = (rang.s - rang.sn)/(action.ring.t - action.ring.tn) || 0
+						
 						ringsNew = state.rings			// get other rings
 							.reduce(function (a, d) {				
 									if (d.id == action.ring.id) {
-												if (d.cx - d.r < rang.x) 					d.vector[0] = Math.max(Math.abs(d.vector[0]), speed * action.ring.t  * duration)
-												if (d.cx + d.r > rang.x + rang.s) d.vector[0] = - Math.max(Math.abs(d.vector[0]), speed * action.ring.t  * duration)
-												if (d.cy + d.r > rang.y + rang.s)	d.vector[1] = - Math.abs(d.vector[1])
-												if (d.cy - d.r < rang.y) 					d.vector[1] = Math.abs(d.vector[1])
+												var deltax = d.vector[0]
+												var deltay = d.vector[1]
+												if (d.cx - d.r < xw) d.vector[0] =  - deltax
+												if (d.cx + d.r > xe) d.vector[0] = deltax + 2 * v * (action.ring.t - action.ring.tn)
+												if (d.cy - d.r < yn) d.vector[1] =  - deltay
+												if (d.cy + d.r > ys) d.vector[1] = deltay + 2 * v * (action.ring.t - action.ring.tn)
 											
+												d.tn = action.ring.t
 												d.r = (1 - action.ring.t) * ringsRadio
-												d.cx = d.cx + d.vector[0] //Math.min(d.cx + d.vector[0], rang.x + rang.s)
-console.log("action.ring.id: " , action.ring.id)						
-console.log("action.ring.t: " , action.ring.t)						
-console.log("d.s: " , rang.s0 - speed * action.ring.t * duration)						
-console.log("d.cx: " , d.cx)						
-												d.cy = d.cy - speed //d.vector[1] //Math.min(d.cy + d.vector[1], rang.y + rang.s)
+												
+												var xnp1 = d.cx + d.vector[0]
+												var ynp1 = d.cy + d.vector[1]
+												d.cx = Math.min(Math.max(xw, xnp1), xe)
+												d.cy = Math.min(Math.max(yn, ynp1), ys)
 											if (d.r > 1e-6) a.push(d)
 											return a
 									} else {

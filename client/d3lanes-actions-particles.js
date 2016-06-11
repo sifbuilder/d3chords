@@ -40,7 +40,6 @@ var ActionTypes = keyMirror(cttsParticles, '')
 // ____________________ actions PARTICLES
 var ActionCreators = {
 	createParticles(obj) {
-// console.log("  obj createParticles", JSON.stringify(obj, null, 2))	
     var action = {
         type: ActionTypes.CREATE_PARTICLES,	// createParticles
         particlesPerTick: obj.particlesPerTick,
@@ -52,8 +51,8 @@ var ActionCreators = {
 				xEnd: obj.xEnd,
  				lanes: obj.lanes,
  				particlesGenerating: obj.particlesGenerating,
+ 				currentView: obj.currentView,
     }
-// console.log("^^^^^^^^^^^^^^^^^^^ obj action", JSON.stringify(action, null, 2))	
 		return action
   },
 	introduceParticles(obj) {
@@ -68,6 +67,7 @@ var ActionCreators = {
 				xEnd: obj.xEnd,
  				lanes: obj.lanes,
  				particlesGenerating: obj.particlesGenerating,
+ 				currentView: obj.currentView,
     }
   },
 	startParticles() {

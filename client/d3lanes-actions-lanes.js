@@ -58,16 +58,6 @@ var ActionCreators = {
         lane: lane,
 		}
   },
-	increaseCursorLow() {		// INCREASE_CURSOR_LOW
-    return {
-        type: ActionTypes.INCREASE_CURSOR_LOW,	
-		}
-  },
-	increaseCursorHigh() {
-    return {
-        type: ActionTypes.INCREASE_CURSOR_HIGH,
-		}
-  },
 	setRecordsFetched(areRecordsFetched) {
     return {
         type: ActionTypes.SET_RECORDS_FETCHED,
@@ -81,11 +71,10 @@ var ActionCreators = {
         mode: argObj.currentMode,
     }
   },
-	setRecordsCollection(recordsCollection) {
+	setRecordsCollection(obj) {	// SET_RECORDS_COLLECTION
     return {
         type: ActionTypes.SET_RECORDS_COLLECTION,
-        recordsCollection: recordsCollection,
-				areRecordsFetched: true,
+        recordsCollection: obj.recordsCollection
     }
   },
 	setLane(lane) {

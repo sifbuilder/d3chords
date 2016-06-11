@@ -163,6 +163,8 @@ var ActionCreators = {
 					 r: arg.r,
 					 vector: arg.vector,
 					 t: arg.t,
+					 tn: arg.tn,
+					 rang: arg.rang,
 				}
    }
 	},

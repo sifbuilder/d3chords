@@ -45,8 +45,6 @@ function combineReducers(reducers) {
   }
 }
 
-
-
 // _____________ PARTICLES
 var initialStateParticles = {
 			particles: [],
@@ -56,11 +54,13 @@ var initialStateParticles = {
 			particlesPerTick: 10,
 			particleRadio: 9,
 }
+
 function reducerParticles(state = initialStateParticles, action) {
 	if (action == null) return state
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
+					console.log("START_PARTICLES")
           return Object.assign({}, state, {
                 particlesGenerating: true
             })
@@ -73,10 +73,11 @@ function reducerParticles(state = initialStateParticles, action) {
 						
         case ActionTypes.INTRODUCE_PARTICLES:			// introduceParticles
 					var newParticles = state.particles.slice(0)
+					var numberOfNewParticles = 5 * action.particlesPerTick
+					var currentView = action.currentView
 					var i
-					if (state.particlesIntroduced == false) {
-						console.log("INTRODUCE_PARTICLES")		
-						for (i = 0; i < action.N * 5; i++) {
+					if ((state.particlesIntroduced == false) && (currentView == 'lanesView')) {
+						for (i = 0; i < numberOfNewParticles; i++) {
 								var particle = {id: state.particleIndex+i,
 																		x: action.x,
 																		y: action.y,
@@ -97,25 +98,24 @@ function reducerParticles(state = initialStateParticles, action) {
 					}
 							
         case ActionTypes.CREATE_PARTICLES:			// createParticles
-						// console.log("CREATE_PARTICLES")		
-						var _newParticles = state.particles.slice(0)
-						var _numberOfNewParticles = action.particlesPerTick
-						var _particlesGenerating = action.particlesGenerating
-						if (_particlesGenerating == true) {
-							for (var i = 0; i < _numberOfNewParticles; i++) {
-							
-											var ref = parseInt(action.x)
-											var closestLaneUp = action.lanes
-															.filter(function (d) {return d.x >= ref} )
-															.reduce(function (prev, curr) {
-												return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
-											}, {id: 'end', x: action.xEnd})
-											
-											var closestLaneDown = action.lanes
-															.filter(function (d) {return d.x <= ref} )
-															.reduce(function (prev, curr) {
-												return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
-											}, {id: 'init', x: action.xInit})									
+						var newParticles = state.particles.slice(0)
+						var numberOfNewParticles = action.particlesPerTick
+						var particlesGenerating = action.particlesGenerating
+						var currentView = action.currentView
+						if ((particlesGenerating == true) && (currentView == 'lanesView') ){
+							for (var i = 0; i < numberOfNewParticles; i++) {
+									var ref = parseInt(action.x)
+									var closestLaneUp = action.lanes
+													.filter(function (d) {return d.x >= ref} )
+													.reduce(function (prev, curr) {
+										return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
+									}, {id: 'end', x: action.xEnd})
+									
+									var closestLaneDown = action.lanes
+													.filter(function (d) {return d.x <= ref} )
+													.reduce(function (prev, curr) {
+										return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
+									}, {id: 'init', x: action.xInit})									
 							
 									var particle = {id: state.particleIndex+i,
 																		x: action.x,
@@ -127,10 +127,10 @@ function reducerParticles(state = initialStateParticles, action) {
 									particle.vector = [particle.id%2 ? - action.randNormal() : action.randNormal(),
 																		 - action.randNormal2()*3.3];
 
-									_newParticles.unshift(particle);
+									newParticles.unshift(particle);
 							}
 							return Object.assign({}, state, {
-									particles: _newParticles,
+									particles: newParticles,
 									particleIndex: state.particleIndex+i+1
 							})
 						} else {

@@ -147,13 +147,14 @@ var intransition_newRing = false
 				var rangGroups = svgContainer.select("g.rangs")		// data rang
 						.selectAll("g.rang")
             .data(gen(_n, _width, _height, _s), 
-								function(d) { return d.id })
+								function(d) { return d.rid })
  							
 				var newRangGroups = rangGroups										// enter rang
             .enter()
 							.append("g")
 							.attr("class", "rang")
-								.attr("id", function (d) { return d.id; })
+							// .attr("id", function (d) { return d.id; })
+							.attr("rid", function (d) { return d.rid; })
 
 				var rectOnNewRang = newRangGroups.append('rect')	// append rect
             .attr("rid", function (d) {return d.rid })
@@ -247,7 +248,7 @@ var intransition_newRing = false
 											return function (t) {
 													var ring = Object.assign({}, d, {t: t})
 													store.dispatch(actions.tickRing(ring))
-													return t
+												return t
 											}
 									})
 			

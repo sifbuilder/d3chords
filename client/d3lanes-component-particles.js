@@ -23,8 +23,6 @@ var intransition = false
 	function render(newState) {
 		if (rendering == true) return
 		if (newState.reducerParticles.particles.length == 0) return
-	
-
 		rendering = true
 			var state = stateParticles= newState
 			var particleRadio = state.reducerParticles.particleRadio || 6.33

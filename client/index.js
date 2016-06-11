@@ -16,7 +16,7 @@ if (typeof require === "function") {
 	var d3lanesControls = require('./d3controls.js')
 	
 	var d3lanesPayloadsTracks = require('./d3lanes-payloads-tracks.js')
-	var d3lanesPayloadssCourt = require('./d3lanes-payloads-court.js')
+	var d3lanesPayloadsCourt = require('./d3lanes-payloads-court.js')
 	var d3lanesPayloadsParticles = require('./d3lanes-payload-particles.js')
 	var d3lanesPayloadsWhirls = require('./d3lanes-payload-whirls.js')
 	
@@ -35,7 +35,7 @@ if (typeof require === "function") {
 				.enter()
 					.append("svg")
 						.attr("id", store.getState().reducerConfig.containerId)
-						.attr('class', 'chart')			// 
+						.attr('class', 'chart')
 						.style('width', store.getState().reducerCourt.svgWidth)
 						.style('height', store.getState().reducerCourt.svgHeight)
 						.style('background', 'oldlace')
@@ -43,52 +43,52 @@ if (typeof require === "function") {
 						.attr('viewbox',"0 0 3 2")										
 						
 		/* launchers */
-		var createParticlesLauncher = store.compose(
+		var createParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.createParticles,
-			d3lanesPayloadsParticles.createParticlesPayload
+			d3lanesPayloadsParticles.createParticles_Payload
 		)
 
-		var createParticlesLauncher = store.compose(
+		var introduceParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
-			d3lanesPayloadsParticles.createParticlesPayload
+			d3lanesPayloadsParticles.introduceParticles_Payload
 		)
 
-		var tickParticlesLauncher = store.compose(
+		var tickParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.tickParticles,
-			d3lanesPayloadsParticles.tickParticlesPayload
+			d3lanesPayloadsParticles.tickParticles_Payload
 		)
 	
-		var startParticlesLauncher = store.compose(
+		var startParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.startParticles
 		)	
 		
-		var stopParticlesLauncher = store.compose(
+		var stopParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.stopParticles
 		)		
 		
-		var setMessageCollectionLauncher = store.compose(
-				store.dispatch,
-				actions.setRecordsCollection,
-				d3lanesPayloadsTracks.messageCollectionPayload
-			)
+		var setRecordsCollection_Launcher = store.compose(
+			store.dispatch,
+			actions.setRecordsCollection,
+			d3lanesPayloadsTracks.setRecordsCollection_Payload
+		)
 	
-		var setRecordsLauncher = store.compose(
-				store.dispatch,
-				actions.setRecords,
-				d3lanesPayloadsTracks.setRecordsPayload
-			)
+		var setRecords_Launcher = store.compose(
+			store.dispatch,
+			actions.setRecords,
+			d3lanesPayloadsTracks.setRecords_Payload
+		)
 	
-		var startRangsLauncher = store.compose(
+		var startRangs_Launcher = store.compose(
 			store.dispatch,
 			actions.startRangs
 		)
 			
-		var stopRangsLauncher = store.compose(
+		var stopRangs_Launcher = store.compose(
 			store.dispatch,
 			actions.stopRangs
 		)
@@ -96,33 +96,33 @@ if (typeof require === "function") {
 		var updateRangsDurationLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsDuration,
-			d3lanesPayloadsWhirls.updateRangsDurationPayload			
+			d3lanesPayloadsWhirls.updateRangsDuration_Payload			
 		)
 			
 		var updateRangsNumberLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsNumber,
-			d3lanesPayloadsWhirls.updateRangsNumberPayload			
+			d3lanesPayloadsWhirls.updateRangsNumber_Payload			
 		)
 			
-		var createRingsLauncher = store.compose(
+		var createRings_Launcher = store.compose(
 			store.dispatch,
 			actions.createRings,
-			d3lanesPayloadsWhirls.createRingsPayload
+			d3lanesPayloadsWhirls.createRings_Payload
 		)
 
-		var startRingsLauncher = store.compose(
+		var startRings_Launcher = store.compose(
 			store.dispatch,
 			actions.startRings
 		)	
 		
-		var stopRingsLauncher = store.compose(
+		var stopRings_Launcher = store.compose(
 			store.dispatch,
 			actions.stopRings
 		)	
 
-		var KeyDownLauncher = store.compose(
-				d3lanesPayloadsCourt.KeyDownPayload
+		var KeyDown_Launcher = store.compose(
+				d3lanesPayloadsCourt.KeyDown_Payload
 		)	
 
 		/* listerners */
@@ -141,34 +141,37 @@ if (typeof require === "function") {
 
 		/* launches */
 		store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
-		keyDown.subscribe(KeyDownLauncher)
+		keyDown.subscribe(KeyDown_Launcher)
 
 		store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
+		stepper.subscribe(setRecordsCollection_Launcher)
+		stepper.subscribe(setRecords_Launcher)
+			
 		store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
-		mouseDown.subscribe(startParticlesLauncher)
-		touchStart.subscribe(startParticlesLauncher)
-		mouseDown.subscribe(createParticlesLauncher)
-		touchStart.subscribe(createParticlesLauncher)
-		mouseMove.subscribe(createParticlesLauncher)
-		touchMove.subscribe(createParticlesLauncher)
-		mouseUp.subscribe(stopParticlesLauncher)
-		touchEnd.subscribe(stopParticlesLauncher)
-		mouseLeave.subscribe(stopParticlesLauncher)
-		ticker.subscribe(tickParticlesLauncher)
-		ticker.subscribe(createParticlesLauncher)
-		stepper.subscribe(setRecordsLauncher)
-		stepper.subscribe(updateRangsDurationLuncher)
-		stepper.subscribe(updateRangsNumberLuncher)
+		mouseDown.subscribe(startParticles_Launcher)
+		touchStart.subscribe(startParticles_Launcher)
+		mouseDown.subscribe(createParticles_Launcher)
+		touchStart.subscribe(createParticles_Launcher)
+		mouseMove.subscribe(createParticles_Launcher)
+		touchMove.subscribe(createParticles_Launcher)
+		mouseUp.subscribe(stopParticles_Launcher)
+		touchEnd.subscribe(stopParticles_Launcher)
+		mouseLeave.subscribe(stopParticles_Launcher)
+		ticker.subscribe(tickParticles_Launcher)
+		ticker.subscribe(createParticles_Launcher)
+		stepper.subscribe(introduceParticles_Launcher)
 
 		store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
-		mouseDown.subscribe(startRangsLauncher)
-		mouseEnter.subscribe(startRangsLauncher)
-		mouseLeave.subscribe(stopRangsLauncher)
-		mouseDown.subscribe(startRingsLauncher)
-		mouseDown.subscribe(createRingsLauncher)
-		mouseMove.subscribe(createRingsLauncher)
-		mouseUp.subscribe(stopRingsLauncher)
-		mouseLeave.subscribe(stopRingsLauncher)		
+		mouseDown.subscribe(startRangs_Launcher)
+		mouseEnter.subscribe(startRangs_Launcher)
+		mouseLeave.subscribe(stopRangs_Launcher)
+		mouseDown.subscribe(startRings_Launcher)
+		mouseDown.subscribe(createRings_Launcher)
+		mouseMove.subscribe(createRings_Launcher)
+		mouseUp.subscribe(stopRings_Launcher)
+		mouseLeave.subscribe(stopRings_Launcher)		
+		stepper.subscribe(updateRangsDurationLuncher)
+		stepper.subscribe(updateRangsNumberLuncher)
 
 					
 					

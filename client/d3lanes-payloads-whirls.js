@@ -8,7 +8,7 @@
   (factory((global.d3lanesPayloadsWhirls = global.d3lanesPayloadsWhirls || {})));
 }(this, function (exports) { 'use strict';
 
-			var createRingsPayload = function () { return {
+			var createRings_Payload = function () { return {
 						ringsPerTick: store.getState().reducerWhirls.ringsPerTick,
 						x: store.getState().reducerCourt.mousePos[0], 
 						y: store.getState().reducerCourt.mousePos[1],
@@ -19,17 +19,17 @@
 						ringsGenerating: store.getState().reducerWhirls.ringsGenerating,
 			}}
 			
-			var updateRangsDurationPayload = function () { return {
+			var updateRangsDuration_Payload = function () { return {
 						rangsAlways: store.getState().reducerWhirls.rangsAlways,
 						rangsHitsIndex: store.getState().reducerWhirls.rangsHitsIndex, 
 			}}
 			
-			var updateRangsNumberPayload = function () { return {
+			var updateRangsNumber_Payload = function () { return {
 						rangsAlways: store.getState().reducerWhirls.rangsAlways,
 						rangsHitsIndex: store.getState().reducerWhirls.rangsHitsIndex, 
 			}}
 			
-exports.createRingsPayload = createRingsPayload
-exports.updateRangsDurationPayload = updateRangsDurationPayload
-exports.updateRangsNumberPayload = updateRangsNumberPayload
+exports.createRings_Payload = createRings_Payload
+exports.updateRangsDuration_Payload = updateRangsDuration_Payload
+exports.updateRangsNumber_Payload = updateRangsNumber_Payload
 }));							

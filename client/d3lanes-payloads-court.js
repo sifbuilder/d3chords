@@ -1,9 +1,5 @@
-/* 																	*/
-/* d3lanes-payloads-court.js   						*/
-/* 																	*/
-
 /* 													  			*/
-/*    d3lanes-payloads-court.js      */
+/*    d3lanes-payloads-court.js    */
 /* 																	*/
 
 (function (global, factory) {
@@ -12,7 +8,7 @@
   (factory((global.d3lanesPayloadsCourt = global.d3lanesPayloadsCourt || {})));
 }(this, function (exports) { 'use strict';
 
-			var KeyDownPayload = function () { 
+			var KeyDown_Payload = function () { 
 					var keys = store.getState().reducerCourt.keys
 					var altKeyCode = 18, ctrlKeyCode = 17 
 					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
@@ -71,5 +67,5 @@
 					}
 			}
 			
-exports.KeyDownPayload = KeyDownPayload
+exports.KeyDown_Payload = KeyDown_Payload
 }));										

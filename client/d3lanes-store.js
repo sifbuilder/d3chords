@@ -28,7 +28,7 @@
 			return currentState
 		}
 
-	// redux compose
+		// ______________________________ redux compose
 		function compose(...funcs) {
 			if (funcs.length === 0) {
 				return arg => arg
@@ -93,8 +93,6 @@
 			return action
 		}
 		
-		
-		
 		// ______________________________ return		
 		return {
 			compose: compose,
@@ -103,7 +101,6 @@
 			getState: getState,
 		}
 	}
-		
 
 		exports.createStore = createStore;
 }));

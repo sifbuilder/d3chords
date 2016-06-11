@@ -64,7 +64,7 @@ var initialStateConfig = {
 			itemSpan: 6,
 			itemProps: ['to', 'from'],
 			itemVal: 'msg',
-			messageCollection_000: [
+			recordsCollection_000: [
 				 {id: "1", from: "customer", to: "barrista1", msg: "place order"},
 				 {id: "2", from: "barrista1", to: "register", msg: "enter order"},
 				 {id: "3", from: "register", to: "barrista1", msg: "give total"},
@@ -85,7 +85,7 @@ var initialStateConfig = {
 				 {id: "18", from: "manager", to: "barrista1", msg: "fire"},
 				 {id: "19", from: "manager", to: "barrista2", msg: "fire"},
 			],
-			messageCollection: [
+			recordsCollection: [
 				 {id: "1", from: "app", to: "store", msg: "create store"},
 				 {id: "2", from: "store", to: "store", msg: "subscribe lanes listener"},
 				 {id: "3", from: "store", to: "store", msg: "subscribe particles listener"},
