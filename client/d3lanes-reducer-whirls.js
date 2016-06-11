@@ -294,26 +294,42 @@ function reducerThis(state = initialStateThis, action) {
 						var xw = rang.x
 						var yn = rang.y
 						var ys = rang.y + rang.s
-						var v = (rang.s - rang.sn)/(action.ring.t - action.ring.tn) || 0
+						var t = action.ring.t
+						var tn = action.ring.tn
+						var deltas = rang.s - rang.sn
+						var deltat = t - tn
+						var v = deltas/deltat || 0
 						
 						ringsNew = state.rings			// get other rings
 							.reduce(function (a, d) {				
 									if (d.id == action.ring.id) {
-												var deltax = d.vector[0]
-												var deltay = d.vector[1]
-												if (d.cx - d.r < xw) d.vector[0] =  - deltax
-												if (d.cx + d.r > xe) d.vector[0] = deltax + 2 * v * (action.ring.t - action.ring.tn)
-												if (d.cy - d.r < yn) d.vector[1] =  - deltay
-												if (d.cy + d.r > ys) d.vector[1] = deltay + 2 * v * (action.ring.t - action.ring.tn)
-											
-												d.tn = action.ring.t
-												d.r = (1 - action.ring.t) * ringsRadio
+												var randx = d.vector[0]
+												var randy = d.vector[1]
+												var dcx = d.cx
+												var dcy = d.cy
+												var dr = d.r
 												
-												var xnp1 = d.cx + d.vector[0]
-												var ynp1 = d.cy + d.vector[1]
-												d.cx = Math.min(Math.max(xw, xnp1), xe)
-												d.cy = Math.min(Math.max(yn, ynp1), ys)
-											if (d.r > 1e-6) a.push(d)
+												if (dr > deltas) {
+															if (dcx - dr < xw) randx = - randx
+															if (dcx + dr > xe) randx = randx + 2 * deltas
+															if (dcy - dr < yn) randy = - randy
+															if (dcy + dr > ys) randy = randy + 2 * deltas
+														
+															var xnp1 = dcx + randx
+															var ynp1 = dcy + randy
+
+															d.tn = t
+															d.r = (1 - t) * ringsRadio
+															d.vector[0] = randx
+															d.vector[1] = randy
+															
+															var xpose = Math.max(xw, xnp1)
+															var xpos = Math.min(xpose, xe)
+															var yposn = Math.max(yn, ynp1)
+															var ypos = Math.min(yposn, ys)
+															d.cy = ypos
+															a.push(d)
+											}
 											return a
 									} else {
 											a.push(d)

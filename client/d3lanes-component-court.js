@@ -71,9 +71,10 @@ if (typeof require === "function") {
 				if (currentView == 'ringsView') {
 					noticeToShow = noticeToShow +
 						((startRangs) ? '' : ' MOUSE !!! ') +
-						"(" + 'try alt-v' + ")" +		
-						' - you have alredy missed ' + hitsLostPct + ' % of your ' + rangsAlways + ' rings ' + 
-						' and ' + framesLostPct + ' % of your ' + '60' + ' frames '
+						' alredy missed ' + hitsLostPct + ' % of your ' + rangsAlways + ' rings' + 
+						' and ' + framesLostPct + ' % of your ' + '60' + ' frames ' +
+						'!!!' +
+						'(' + 'try alt-v' + ')'
 				}
 				
 				var winWidthPixels = parseInt(svg.style("width"))

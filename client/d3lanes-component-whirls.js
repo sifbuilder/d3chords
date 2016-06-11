@@ -246,8 +246,7 @@ var intransition_newRing = false
 										.ease(d3.easeLinear)
 											.attrTween('t', function(d, i, a) {
 											return function (t) {
-													var ring = Object.assign({}, d, {t: t})
-													store.dispatch(actions.tickRing(ring))
+												store.dispatch(actions.tickRing(Object.assign({}, d, {t: t})))
 												return t
 											}
 									})

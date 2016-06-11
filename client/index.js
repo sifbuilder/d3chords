@@ -17,8 +17,8 @@ if (typeof require === "function") {
 	
 	var d3lanesPayloadsTracks = require('./d3lanes-payloads-tracks.js')
 	var d3lanesPayloadsCourt = require('./d3lanes-payloads-court.js')
-	var d3lanesPayloadsParticles = require('./d3lanes-payload-particles.js')
-	var d3lanesPayloadsWhirls = require('./d3lanes-payload-whirls.js')
+	var d3lanesPayloadsParticles = require('./d3lanes-payloads-particles.js')
+	var d3lanesPayloadsWhirls = require('./d3lanes-payloads-whirls.js')
 	
 }	
 
