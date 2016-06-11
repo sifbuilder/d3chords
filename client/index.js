@@ -5,10 +5,10 @@
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.44.js')
 
-	var d3ringsComponentCourt = require('./d3rings-component-court.js')
-	var d3ringsComponentLanes = require('./d3rings-component-lanes.js')
-	var d3ringsComponentParticles = require('./d3rings-component-particles.js')
-	var d3ringsComponentWhirls = require('./d3rings-component-whirls.js')
+	var d3ringsRendererCourt = require('./d3rings-renderer-court.js')
+	var d3ringsRendererLanes = require('./d3rings-renderer-lanes.js')
+	var d3ringsRendererParticles = require('./d3rings-renderer-particles.js')
+	var d3ringsRendererWhirls = require('./d3rings-renderer-whirls.js')
 
 	var d3ringsReducer = require('./d3rings-reducer.js')
 	var d3ringsStore = require('./d3rings-store.js')
@@ -140,14 +140,14 @@ if (typeof require === "function") {
 		var keyRelease = d3ringsControls.keyReleaseControl(store).start()
 
 		/* launches */
-		store.subscribe(store.compose(d3ringsComponentCourt.render, store.getState))
+		store.subscribe(store.compose(d3ringsRendererCourt.renderer, store.getState))
 		keyDown.subscribe(KeyDown_Launcher)
 
-		store.subscribe(store.compose(d3ringsComponentLanes.render, store.getState))
+		store.subscribe(store.compose(d3ringsRendererLanes.renderer, store.getState))
 		stepper.subscribe(setRecordsCollection_Launcher)
 		stepper.subscribe(setRecords_Launcher)
 			
-		store.subscribe(store.compose(d3ringsComponentParticles.render, store.getState))	
+		store.subscribe(store.compose(d3ringsRendererParticles.renderer, store.getState))	
 		mouseDown.subscribe(startParticles_Launcher)
 		touchStart.subscribe(startParticles_Launcher)
 		mouseDown.subscribe(createParticles_Launcher)
@@ -161,7 +161,7 @@ if (typeof require === "function") {
 		ticker.subscribe(createParticles_Launcher)
 		stepper.subscribe(introduceParticles_Launcher)
 
-		store.subscribe(store.compose(d3ringsComponentWhirls.render, store.getState))
+		store.subscribe(store.compose(d3ringsRendererWhirls.renderer, store.getState))
 		mouseDown.subscribe(startRangs_Launcher)
 		mouseEnter.subscribe(startRangs_Launcher)
 		mouseLeave.subscribe(stopRangs_Launcher)

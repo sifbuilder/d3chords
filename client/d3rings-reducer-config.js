@@ -1,5 +1,5 @@
 /* 																		*/
-/*    d3rings-reducer-coinfig.js      */
+/*    d3rings-reducer-config.js      */
 /* 																		*/
 
 if (typeof require === "function") {
@@ -98,7 +98,7 @@ var initialStateConfig = {
 				 {id: "10", from: "reducer", to: "reducer", msg: "apply action logic"},
 				 {id: "11", from: "reducer", to: "store", msg: "return new state"},
 				 {id: "12", from: "ticker", to: "ticker", msg: "run listeners"},
-				 {id: "13", from: "component", to: "UI", msg: "render lanes"},
+				 {id: "13", from: "renderer", to: "UI", msg: "render lanes"},
 				 {id: "14", from: "UI", to: "app", msg: "trigger left arrow event"},
 				 {id: "15", from: "store", to: "reducer", msg: "dispatch setMode action"},
 				 {id: "16", from: "reducer", to: "reducer", msg: "run action"},
@@ -109,18 +109,18 @@ var initialStateConfig = {
 				 {id: "21", from: "reducer", to: "reducer", msg: "run action and get record"},
 				 {id: "22", from: "reducer", to: "reducer", msg: "return new set"},
 				 {id: "23", from: "ticker", to: "ticker", msg: "run listeners"},
-				 {id: "24", from: "component", to: "UI", msg: "render lanes"},
+				 {id: "24", from: "renderer", to: "UI", msg: "render lanes"},
 				 {id: "25", from: "UI", to: "app", msg: "send right arrow event"},
 				 {id: "26", from: "store", to: "reducer", msg: "dispatch setMode action"},
 				 {id: "27", from: "reducer", to: "reducer", msg: "run action"},
 				 {id: "28", from: "reducer", to: "reducer", msg: "return new mode auto"},
 				 {id: "29", from: "ticker", to: "ticker", msg: "run listeners with new state"},
-				 {id: "30", from: "component", to: "UI", msg: "render auto lanes"},
+				 {id: "30", from: "renderer", to: "UI", msg: "render auto lanes"},
 				 {id: "31", from: "store", to: "reducer", msg: "dispatch createParticles action"},
 				 {id: "32", from: "reducer", to: "reducer", msg: "run action"},
 				 {id: "33", from: "reducer", to: "store", msg: "return new state with particles"},
 				 {id: "34", from: "ticker", to: "ticker", msg: "run particles listeners"},
-				 {id: "35", from: "component", to: "UI", msg: "render particles"},
+				 {id: "35", from: "renderer", to: "UI", msg: "render particles"},
 			],			
 }
 function reducerConfig(state = initialStateConfig, action) {
