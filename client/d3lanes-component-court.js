@@ -73,8 +73,8 @@ if (typeof require === "function") {
 						((startRangs) ? '' : ' MOUSE !!! ') +
 						' alredy missed ' + hitsLostPct + ' % of your ' + rangsAlways + ' rings' + 
 						' and ' + framesLostPct + ' % of your ' + '60' + ' frames ' +
-						'!!!' +
-						'(' + 'try alt-v' + ')'
+						'!!! ' +
+						'  (' + 'try alt-v' + ')'
 				}
 				
 				var winWidthPixels = parseInt(svg.style("width"))

@@ -327,8 +327,9 @@ function reducerThis(state = initialStateThis, action) {
 															var xpos = Math.min(xpose, xe)
 															var yposn = Math.max(yn, ynp1)
 															var ypos = Math.min(yposn, ys)
+															d.cx = xpos
 															d.cy = ypos
-															a.push(d)
+												a.push(d)
 											}
 											return a
 									} else {
