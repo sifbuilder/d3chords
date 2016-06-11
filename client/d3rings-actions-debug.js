@@ -1,11 +1,11 @@
 /* 																	*/
-/* d3lanes-actions-debug.js					*/
+/* d3rings-actions-debug.js					*/
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesActionsDebug = global.d3lanesActionsDebug || {})));
+  (factory((global.d3ringsActionsDebug = global.d3ringsActionsDebug || {})));
 }(this, function (exports) { 'use strict';
 
 // ____________________ keyMirror

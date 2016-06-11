@@ -1,5 +1,5 @@
 /* 																	*/
-/* d3lanes-component-whirls.js   		*/
+/* d3rings-component-whirls.js   		*/
 /* 																	*/
 
 if (typeof require === "function") {
@@ -8,7 +8,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesComponentWhirls = global.d3lanesComponentWhirls || {})));
+  (factory((global.d3ringsComponentWhirls = global.d3ringsComponentWhirls || {})));
 }(this, function (exports) { 'use strict';
 
 			

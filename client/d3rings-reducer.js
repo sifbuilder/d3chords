@@ -1,22 +1,22 @@
 /* 														*/
-/*    d3lanes-reducer.js      */
+/*    d3rings-reducer.js      */
 /* 														*/
 
 if (typeof require === "function") {
-	var d3lanesReducerConfig = require('./d3lanes-reducer-config.js')
-	var d3lanesReducerCourt = require('./d3lanes-reducer-court.js')
-	var d3lanesReducerDebug = require('./d3lanes-reducer-debug.js')
-	var d3lanesReducerLanes = require('./d3lanes-reducer-lanes.js')
-	var d3lanesReducerParticles = require('./d3lanes-reducer-particles.js')
-	var d3lanesReducerWhirls = require('./d3lanes-reducer-whirls.js')
-	// var d3lanesReducerRangs = require('./d3lanes-reducer-rangs.js')
-	// var d3lanesReducerRings = require('./d3lanes-reducer-rings.js')
+	var d3ringsReducerConfig = require('./d3rings-reducer-config.js')
+	var d3ringsReducerCourt = require('./d3rings-reducer-court.js')
+	var d3ringsReducerDebug = require('./d3rings-reducer-debug.js')
+	var d3ringsReducerLanes = require('./d3rings-reducer-lanes.js')
+	var d3ringsReducerParticles = require('./d3rings-reducer-particles.js')
+	var d3ringsReducerWhirls = require('./d3rings-reducer-whirls.js')
+	// var d3ringsReducerRangs = require('./d3rings-reducer-rangs.js')
+	// var d3ringsReducerRings = require('./d3rings-reducer-rings.js')
 }
 	
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesReducer = global.d3lanesReducer || {})));
+  (factory((global.d3ringsReducer = global.d3ringsReducer || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -54,14 +54,14 @@ function combineReducers(reducers) {
 
 // _____________ combined reducer
 var reducer = combineReducers({
-		reducerConfig: d3lanesReducerConfig.reducerConfig,
-		reducerCourt: d3lanesReducerCourt.reducerCourt,
-		reducerDebug: d3lanesReducerDebug.reducerDebug,
-		reducerLanes: d3lanesReducerLanes.reducerLanes,
-		reducerParticles: d3lanesReducerParticles.reducerParticles,
-		reducerWhirls: d3lanesReducerWhirls.reducer,
-		// reducerRangs: d3lanesReducerRangs.reducer,
-		// reducerRings: d3lanesReducerRings.reducer,
+		reducerConfig: d3ringsReducerConfig.reducerConfig,
+		reducerCourt: d3ringsReducerCourt.reducerCourt,
+		reducerDebug: d3ringsReducerDebug.reducerDebug,
+		reducerLanes: d3ringsReducerLanes.reducerLanes,
+		reducerParticles: d3ringsReducerParticles.reducerParticles,
+		reducerWhirls: d3ringsReducerWhirls.reducer,
+		// reducerRangs: d3ringsReducerRangs.reducer,
+		// reducerRings: d3ringsReducerRings.reducer,
 })
 
 

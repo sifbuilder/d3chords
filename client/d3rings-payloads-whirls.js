@@ -1,11 +1,11 @@
 /* 																	*/
-/* d3lanes-payloads-whirls.js   	  */
+/* d3rings-payloads-whirls.js   	  */
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesPayloadsWhirls = global.d3lanesPayloadsWhirls || {})));
+  (factory((global.d3ringsPayloadsWhirls = global.d3ringsPayloadsWhirls || {})));
 }(this, function (exports) { 'use strict';
 
 			var createRings_Payload = function () { return {

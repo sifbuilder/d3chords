@@ -1,11 +1,11 @@
 /* 																	*/
-/* d3lanes-actions-court.js   			*/
+/* d3rings-actions-court.js   			*/
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesActionsCourt = global.d3lanesActionsCourt || {})));
+  (factory((global.d3ringsActionsCourt = global.d3ringsActionsCourt || {})));
 }(this, function (exports) { 'use strict';
 
 // ____________________ keyMirror

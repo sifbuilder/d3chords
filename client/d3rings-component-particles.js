@@ -1,5 +1,5 @@
 /* 																	*/
-/* d3lanes-component-particles.js   */
+/* d3rings-component-particles.js   */
 /* 																	*/
 
 if (typeof require === "function") {
@@ -9,7 +9,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesComponentParticles = global.d3lanesComponentParticles || {})));
+  (factory((global.d3ringsComponentParticles = global.d3ringsComponentParticles || {})));
 }(this, function (exports) { 'use strict';
 
 // _____________ context

@@ -1,11 +1,11 @@
 /* 																	*/
-/* d3lanes-_Payloads-particles.js   	  */
+/* d3rings-_Payloads-particles.js   	  */
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesPayloadsParticles = global.d3lanesPayloadsParticles || {})));
+  (factory((global.d3ringsPayloadsParticles = global.d3ringsPayloadsParticles || {})));
 }(this, function (exports) { 'use strict';
 
 		var createParticles_Payload = function () { return {

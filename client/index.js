@@ -5,28 +5,28 @@
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.44.js')
 
-	var d3lanesComponentCourt = require('./d3lanes-component-court.js')
-	var d3lanesComponentLanes = require('./d3lanes-component-lanes.js')
-	var d3lanesComponentParticles = require('./d3lanes-component-particles.js')
-	var d3lanesComponentWhirls = require('./d3lanes-component-whirls.js')
+	var d3ringsComponentCourt = require('./d3rings-component-court.js')
+	var d3ringsComponentLanes = require('./d3rings-component-lanes.js')
+	var d3ringsComponentParticles = require('./d3rings-component-particles.js')
+	var d3ringsComponentWhirls = require('./d3rings-component-whirls.js')
 
-	var d3lanesReducer = require('./d3lanes-reducer.js')
-	var d3lanesStore = require('./d3lanes-store.js')
-	var d3lanesActions = require('./d3lanes-actions.js')
-	var d3lanesControls = require('./d3controls.js')
+	var d3ringsReducer = require('./d3rings-reducer.js')
+	var d3ringsStore = require('./d3rings-store.js')
+	var d3ringsActions = require('./d3rings-actions.js')
+	var d3ringsControls = require('./d3rings-controls.js')
 	
-	var d3lanesPayloadsTracks = require('./d3lanes-payloads-tracks.js')
-	var d3lanesPayloadsCourt = require('./d3lanes-payloads-court.js')
-	var d3lanesPayloadsParticles = require('./d3lanes-payloads-particles.js')
-	var d3lanesPayloadsWhirls = require('./d3lanes-payloads-whirls.js')
+	var d3ringsPayloadsLanes = require('./d3rings-payloads-lanes.js')
+	var d3ringsPayloadsCourt = require('./d3rings-payloads-court.js')
+	var d3ringsPayloadsParticles = require('./d3rings-payloads-particles.js')
+	var d3ringsPayloadsWhirls = require('./d3rings-payloads-whirls.js')
 	
 }	
 
 		/* actions */
-		var actions = d3lanesActions.ActionCreators
+		var actions = d3ringsActions.ActionCreators
 
 		/* store */
-		var store = d3lanesStore.createStore(d3lanesReducer.reducer, d3lanesReducer.reducer())
+		var store = d3ringsStore.createStore(d3ringsReducer.reducer, d3ringsReducer.reducer())
 
 		/* container */
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
@@ -46,19 +46,19 @@ if (typeof require === "function") {
 		var createParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.createParticles,
-			d3lanesPayloadsParticles.createParticles_Payload
+			d3ringsPayloadsParticles.createParticles_Payload
 		)
 
 		var introduceParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
-			d3lanesPayloadsParticles.introduceParticles_Payload
+			d3ringsPayloadsParticles.introduceParticles_Payload
 		)
 
 		var tickParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.tickParticles,
-			d3lanesPayloadsParticles.tickParticles_Payload
+			d3ringsPayloadsParticles.tickParticles_Payload
 		)
 	
 		var startParticles_Launcher = store.compose(
@@ -74,13 +74,13 @@ if (typeof require === "function") {
 		var setRecordsCollection_Launcher = store.compose(
 			store.dispatch,
 			actions.setRecordsCollection,
-			d3lanesPayloadsTracks.setRecordsCollection_Payload
+			d3ringsPayloadsLanes.setRecordsCollection_Payload
 		)
 	
 		var setRecords_Launcher = store.compose(
 			store.dispatch,
 			actions.setRecords,
-			d3lanesPayloadsTracks.setRecords_Payload
+			d3ringsPayloadsLanes.setRecords_Payload
 		)
 	
 		var startRangs_Launcher = store.compose(
@@ -96,19 +96,19 @@ if (typeof require === "function") {
 		var updateRangsDurationLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsDuration,
-			d3lanesPayloadsWhirls.updateRangsDuration_Payload			
+			d3ringsPayloadsWhirls.updateRangsDuration_Payload			
 		)
 			
 		var updateRangsNumberLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsNumber,
-			d3lanesPayloadsWhirls.updateRangsNumber_Payload			
+			d3ringsPayloadsWhirls.updateRangsNumber_Payload			
 		)
 			
 		var createRings_Launcher = store.compose(
 			store.dispatch,
 			actions.createRings,
-			d3lanesPayloadsWhirls.createRings_Payload
+			d3ringsPayloadsWhirls.createRings_Payload
 		)
 
 		var startRings_Launcher = store.compose(
@@ -122,32 +122,32 @@ if (typeof require === "function") {
 		)	
 
 		var KeyDown_Launcher = store.compose(
-				d3lanesPayloadsCourt.KeyDown_Payload
+				d3ringsPayloadsCourt.KeyDown_Payload
 		)	
 
 		/* listerners */
-		var mouseDown = d3lanesControls.mouseDownControl(store).start(d3.select('svg'))
-		var touchStart = d3lanesControls.touchStartControl(store).start(d3.select('svg'))
-		var mouseMove = d3lanesControls.mouseMoveControl(store).start(d3.select('svg'))
-		var touchMove = d3lanesControls.touchMoveControl(store).start(d3.select('svg'))
-		var mouseUp = d3lanesControls.mouseUpControl(store).start(d3.select('svg'))
-		var touchEnd = d3lanesControls.touchEndControl(store).start(d3.select('svg'))
-		var mouseLeave = d3lanesControls.mouseLeaveControl(store).start(d3.select('svg'))
-		var mouseEnter = d3lanesControls.mouseEnterControl(store).start(d3.select('svg'))
-		var ticker = d3lanesControls.tickControls(store).start()
-		var stepper = d3lanesControls.stepControls(store).start()
-		var keyDown = d3lanesControls.keyDownControl(store).start()
-		var keyRelease = d3lanesControls.keyReleaseControl(store).start()
+		var mouseDown = d3ringsControls.mouseDownControl(store).start(d3.select('svg'))
+		var touchStart = d3ringsControls.touchStartControl(store).start(d3.select('svg'))
+		var mouseMove = d3ringsControls.mouseMoveControl(store).start(d3.select('svg'))
+		var touchMove = d3ringsControls.touchMoveControl(store).start(d3.select('svg'))
+		var mouseUp = d3ringsControls.mouseUpControl(store).start(d3.select('svg'))
+		var touchEnd = d3ringsControls.touchEndControl(store).start(d3.select('svg'))
+		var mouseLeave = d3ringsControls.mouseLeaveControl(store).start(d3.select('svg'))
+		var mouseEnter = d3ringsControls.mouseEnterControl(store).start(d3.select('svg'))
+		var ticker = d3ringsControls.tickControls(store).start()
+		var stepper = d3ringsControls.stepControls(store).start()
+		var keyDown = d3ringsControls.keyDownControl(store).start()
+		var keyRelease = d3ringsControls.keyReleaseControl(store).start()
 
 		/* launches */
-		store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
+		store.subscribe(store.compose(d3ringsComponentCourt.render, store.getState))
 		keyDown.subscribe(KeyDown_Launcher)
 
-		store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
+		store.subscribe(store.compose(d3ringsComponentLanes.render, store.getState))
 		stepper.subscribe(setRecordsCollection_Launcher)
 		stepper.subscribe(setRecords_Launcher)
 			
-		store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
+		store.subscribe(store.compose(d3ringsComponentParticles.render, store.getState))	
 		mouseDown.subscribe(startParticles_Launcher)
 		touchStart.subscribe(startParticles_Launcher)
 		mouseDown.subscribe(createParticles_Launcher)
@@ -161,7 +161,7 @@ if (typeof require === "function") {
 		ticker.subscribe(createParticles_Launcher)
 		stepper.subscribe(introduceParticles_Launcher)
 
-		store.subscribe(store.compose(d3lanesComponentWhirls.render, store.getState))
+		store.subscribe(store.compose(d3ringsComponentWhirls.render, store.getState))
 		mouseDown.subscribe(startRangs_Launcher)
 		mouseEnter.subscribe(startRangs_Launcher)
 		mouseLeave.subscribe(stopRangs_Launcher)

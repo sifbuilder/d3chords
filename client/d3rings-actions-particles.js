@@ -1,11 +1,11 @@
 /* 																	*/
-/* d3lanes-actions-particles.js 		*/
+/* d3rings-actions-particles.js 		*/
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesActionsParticles = global.d3lanesActionsParticles || {})));
+  (factory((global.d3ringsActionsParticles = global.d3ringsActionsParticles || {})));
 }(this, function (exports) { 'use strict';
 
 // ____________________ keyMirror

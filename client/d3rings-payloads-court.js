@@ -1,11 +1,11 @@
 /* 													  			*/
-/*    d3lanes-payloads-court.js    */
+/*    d3rings-payloads-court.js    */
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesPayloadsCourt = global.d3lanesPayloadsCourt || {})));
+  (factory((global.d3ringsPayloadsCourt = global.d3ringsPayloadsCourt || {})));
 }(this, function (exports) { 'use strict';
 
 			var KeyDown_Payload = function () { 

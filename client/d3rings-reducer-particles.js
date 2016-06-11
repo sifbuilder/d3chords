@@ -1,16 +1,16 @@
 /* 														*/
-/*    d3lanes-reducer-particles.js      */
+/*    d3rings-reducer-particles.js      */
 /* 														*/
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-alpha.44.js')
-		var d3lanesActions = require('./d3lanes-actions-particles.js')
+		var d3ringsActions = require('./d3rings-actions-particles.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesReducerParticles = global.d3lanesReducerParticles || {})));
+  (factory((global.d3ringsReducerParticles = global.d3ringsReducerParticles || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -57,7 +57,7 @@ var initialStateParticles = {
 
 function reducerParticles(state = initialStateParticles, action) {
 	if (action == null) return state
-	var ActionTypes = d3lanesActions.ActionTypes
+	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
 					console.log("START_PARTICLES")

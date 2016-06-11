@@ -1,11 +1,11 @@
 /* 																	*/
-/* d3lanes-payloads-tracks.js   	  */
+/* d3rings-payloads-lanes.js   	  */
 /* 																	*/
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesPayloadsTracks = global.d3lanesPayloadsTracks || {})));
+  (factory((global.d3ringsPayloadsLanes = global.d3ringsPayloadsLanes || {})));
 }(this, function (exports) { 'use strict';
 
 		var setRecords_Payload = function () { return {

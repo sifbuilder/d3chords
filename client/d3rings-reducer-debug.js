@@ -1,16 +1,16 @@
 /* 														*/
-/*    d3lanes-reducer.js      */
+/*    d3rings-reducer.js      */
 /* 														*/
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-alpha.44.js')
-		var d3lanesActions = require('./d3lanes-actions-debug.js')
+		var d3ringsActions = require('./d3rings-actions-debug.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesReducerDebug = global.d3lanesReducerDebug || {})));
+  (factory((global.d3ringsReducerDebug = global.d3ringsReducerDebug || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -54,7 +54,7 @@ var initialStateDebug = {
 function reducerDebug(state = initialStateDebug, action) {
 	if (action == null) return state
 
-	var ActionTypes = d3lanesActions.ActionTypes
+	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
 				case ActionTypes.SET_FPS:			
 						return setFps(state, action)

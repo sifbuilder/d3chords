@@ -1,16 +1,16 @@
 /* 														*/
-/*    d3lanes-reducer.js      */
+/*    d3rings-reducer.js      */
 /* 														*/
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-alpha.44.js')
-		var d3lanesActions = require('./d3lanes-actions-court.js')
+		var d3ringsActions = require('./d3rings-actions-court.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesReducerCourt = global.d3lanesReducerCourt || {})));
+  (factory((global.d3ringsReducerCourt = global.d3ringsReducerCourt || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -63,7 +63,7 @@ var initialStateCourt = {
 
 function reducerCourt(state = initialStateCourt, action) {
 	if (action == null) return state
-	var ActionTypes = d3lanesActions.ActionTypes
+	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
 				case ActionTypes.SET_KEYBKEY:
 						console.log('SET_KEYBKEY', action)

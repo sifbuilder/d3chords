@@ -1,16 +1,16 @@
 /* 													  			*/
-/*    d3lanes-reducer-lanes.js      */
+/*    d3rings-reducer-lanes.js      */
 /* 																	*/
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-alpha.44.js')
-		var d3lanesActions = require('./d3lanes-actions-lanes.js')
+		var d3ringsActions = require('./d3rings-actions-lanes.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesReducerLanes = global.d3lanesReducerLanes || {})));
+  (factory((global.d3ringsReducerLanes = global.d3ringsReducerLanes || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -60,7 +60,7 @@ var initialStateLanes = {
 	
 function reducerLanes(state = initialStateLanes, action) {
 	if (action == null) return state
-	var ActionTypes = d3lanesActions.ActionTypes
+	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
 				case ActionTypes.DELETE_LANE:		// deleteLane
 					var lanes = state.lanes

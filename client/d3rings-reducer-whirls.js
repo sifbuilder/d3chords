@@ -1,16 +1,16 @@
 /* 														*/
-/*    d3lanes-reducer-whirls.js      */
+/*    d3rings-reducer-whirls.js      */
 /* 														*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.44.js')
-	var d3lanesActions = require('./d3lanes-actions-whirls.js')
+	var d3ringsActions = require('./d3rings-actions-whirls.js')
 }
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesReducerWhirls = global.d3lanesReducerWhirls || {})));
+  (factory((global.d3ringsReducerWhirls = global.d3ringsReducerWhirls || {})));
 }(this, function (exports) { 'use strict';
 
 // http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
@@ -78,7 +78,7 @@ var initialStateThis = {
 	
 function reducerThis(state = initialStateThis, action) {
 	if (action == null) return state
-	var ActionTypes = d3lanesActions.ActionTypes
+	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
 		
        case ActionTypes.DELETE_RANG:

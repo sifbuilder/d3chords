@@ -9,7 +9,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesControls = global.d3lanesControls || {})));
+  (factory((global.d3ringsControls = global.d3ringsControls || {})));
 }(this, function (exports) { 'use strict';
 
 /*  -------------          */

@@ -1,12 +1,12 @@
 /* 														*/
-/*    d3lanes-store.js        */
+/*    d3rings-store.js        */
 /* 														*/
 
 /* adapted from REDUX http://redux.js.org/		*/
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesStore = global.d3lanesStore || {})));
+  (factory((global.d3ringsStore = global.d3ringsStore || {})));
 }(this, function (exports) { 'use strict';
 
 		var createStore = function createStore(reducer, initialState) {

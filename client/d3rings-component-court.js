@@ -1,5 +1,5 @@
 /* 																	*/
-/* d3lanes-component-court.js   		*/
+/* d3rings-component-court.js   		*/
 /* 																	*/
 
 if (typeof require === "function") {
@@ -9,7 +9,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesComponentCourt = global.d3lanesComponentCourt || {})));
+  (factory((global.d3ringsComponentCourt = global.d3ringsComponentCourt || {})));
 }(this, function (exports) { 'use strict';
 
 	function render(newState) {
