@@ -1,13 +1,13 @@
 {
-  "name": "d3lanes",
+  "name": "d3rings",
   "version": "0.0.1",
   "private": true,
-  "description": "REDUX model implementation of an unframed window and d3v4 animation",
+  "description": "the big listener, irritating game but needed template to probe #d3js transitions through unwired #redux store",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server -d --history-api-fallback --hot --inline --progress --colors --port 3000",
-		"build": "NODE_ENV=production webpack --progress --colors",
+    "build": "NODE_ENV=production webpack --progress --colors",
     "buildw": "echo \"npm run buildw (get prod build)\" && set NODE_ENV=production && webpack --progress --colors"
   },
   "license": "MIT",
@@ -27,6 +27,7 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.7.1",
     "babel-runtime": "^6.5.0",
-    "classnames": "^2.2.3"
+    "classnames": "^2.2.3",
+    "html-webpack-plugin": "^2.21.0"
   }
 }
