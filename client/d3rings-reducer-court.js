@@ -103,26 +103,20 @@ function reducerCourt(state = initialStateCourt, action) {
 						
 							if (keys[ctrlKeyCode] !== true && keys[altKeyCode] == true && keys[vKeyCode] == true) {		// alt-v
 								keyEvents.altvKey =  guid()
-								console.log("___________________________ alt-v")
 							}
 							if (keys[ctrlKeyCode] !== true && keys[altKeyCode] !== true && keys[vKeyCode] == true) {		// v
-								console.log("___________________________ v")
 								keyEvents.vKey =  guid()
 							}
 							if (keys[leftArrow] == true) {		// leftArrow
-								console.log("___________________________ leftArrow")
 								keyEvents.leftArrow =  guid()
 							}
 							if (keys[rightArrow] == true) {		// rightArrow
-								console.log("___________________________ rightArrow")
 								keyEvents.rightArrow =  guid()
 							}
 							if (keys[upArrow] == true) {		// upArrow
-								console.log("___________________________ upArrow")
 								keyEvents.upArrow =  guid()
 							}
 							if (keys[downArrow] == true) {		// downArrow
-								console.log("___________________________ downArrow")
 								keyEvents.downArrow =  guid()
 							}
 						
