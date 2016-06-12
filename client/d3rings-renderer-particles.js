@@ -20,8 +20,10 @@ var rendering = false
 var intransition = false
 
 	// _______________________ renderer
-	function renderer(store) {
+	function renderer(payload) {
 
+		var store = payload.store
+		var actions = payload.actions
 		var newState = store.getState()
 		
 		if (rendering == true) return

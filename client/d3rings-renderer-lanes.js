@@ -106,12 +106,12 @@ var stateLanes = {
 var intransition = false
 	
 // _____________ renderer
-	function renderer(store) {
+	function renderer(payload) {
 
+		var store = payload.store
+		var actions = payload.actions
 		var newState = store.getState()
-		
 	
-// console.log("______________________ renderer", stateLanes.reducerLanes.records)	
 		// return on transition
 		if (intransition == true) return
 

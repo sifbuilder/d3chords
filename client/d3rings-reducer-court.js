@@ -86,13 +86,51 @@ function reducerCourt(state = initialStateCourt, action) {
             });
         case ActionTypes.SET_MODE:
   						console.log('SET_MODE')
+						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = action.payload.keys
+							
+						var currentMode = state.currentMode	
+						var newMode = currentMode
+							
+						if (keys[leftArrow] == true) {										// leftArrow
+								newMode = 'walkMode'
+								}
+							if (keys[rightArrow] == true) {										// rightArrow
+								newMode = 'autoMode'
+							}
+							if (keys[upArrow] == true) {												// upArrow
+								if (currentMode == 'autoMode') {
+										newMode = 'walkMode'
+								} 
+							}
+							if (keys[downArrow] == true) {											// downArrow
+								if (currentMode == 'autoMode') {
+										newMode = 'walkMode'
+								}
+							}
            return Object.assign({}, state, {
-                currentMode: action.currentMode,
-            });
-        case ActionTypes.SET_VIEW:
-  						console.log('SET_VIEW')
-           return Object.assign({}, state, {
-                currentView: action.currentView,
+                currentMode: newMode
+            })
+						
+       case ActionTypes.SET_VIEW:		// setView	// views currentView
+ 						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = action.payload.keys
+						
+						var views = action.payload.views
+						var currentView = action.payload.currentView
+						var currentViewIndex = views.indexOf(currentView)
+						var newViewIndex = currentView
+
+						if (keys[vKeyCode] == true && keys[altKeyCode] == true) {		// alt-v
+							 newViewIndex = views[Math.abs(currentViewIndex + 1) % views.length]
+						}	
+						
+						return Object.assign({}, state, {
+                currentView: newViewIndex,
             });
         case ActionTypes.SET_NOTICE:
   						console.log('SET_NOTICE')
@@ -110,8 +148,12 @@ function reducerCourt(state = initialStateCourt, action) {
                 tickerStarted: false
             });
         case ActionTypes.UPDATE_MOUSE_POS:
+							var coords  = d3.mouse(action.svg)
+							var x = coords[0]
+							var y = coords[1]
+
             return Object.assign({}, state, {
-                mousePos: [action.x, action.y]
+                mousePos: [x, y]
             });
         case ActionTypes.RESIZE_SCREEN:
   						console.log('RESIZE_SCREEN')
@@ -121,16 +163,51 @@ function reducerCourt(state = initialStateCourt, action) {
             });
         case ActionTypes.RESIZE_WIDTH:
  						console.log('RESIZE_WIDTH')
+						var svgWidth = state.svgWidth
+						var delta = 10
+
+ 						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = action.payload.keys
+						
+						var newSvgWidth = svgWidth
+
+						if (keys[rightArrow] == true && keys[ctrlKeyCode] == true) {		// rightArrow-Ctrl
+							 newSvgWidth = svgWidth + delta
+						}	
+						if (keys[leftArrow] == true && keys[ctrlKeyCode] == true) {		// lefftArrow-Ctrl
+							 newSvgWidth = svgWidth - delta
+						}	
+
             return Object.assign({}, state, {
-                svgWidth: state.svgWidth + action.delta
-            });
+                svgWidth: newSvgWidth
+            })
+						
         case ActionTypes.RESIZE_HEIGHT:
    					console.log('RESIZE_HEIGHT')
-						return Object.assign({}, state, {
-                svgHeight: state.svgHeight + action.delta
-            });
-					default:
-            return state;
+						var svgHeight = state.svgHeight
+						var delta = 10
+
+ 						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = action.payload.keys
+						
+						var newSvgHeight = svgHeight
+						if (keys[upArrow] == true && keys[ctrlKeyCode] == true) {		// upArrow-Ctrl
+							 newSvgHeight = svgHeight + delta
+						}	
+					if (keys[downArrow] == true && keys[ctrlKeyCode] == true) {		// downArrow-Ctrl
+							 newSvgHeight = svgHeight - delta
+						}	
+
+            return Object.assign({}, state, {
+                svgHeight: newSvgHeight
+            })
+
+						default:
+							return state;
 	}
 }	
 

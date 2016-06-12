@@ -1,5 +1,5 @@
 /* 																	*/
-/* 				d3controls.js   					*/
+/* 				d3rings-controls.js   		*/
 /* 																	*/
 
 if (typeof require === "function") {
@@ -703,12 +703,12 @@ if (typeof require === "function") {
 		var controlAction = function controlAction(e) {
 			pauseEvent(e)
 			
-			store.dispatch(actions.setKeybKey(e.keyCode))
-			var keys = store.getState().reducerCourt.keys
+			// store.dispatch(actions.setKeybKey(e.keyCode))
+			// var keys = store.getState().reducerCourt.keys
 			
 			var listeners = currentListeners = nextListeners
 			for (var i = 0; i < listeners.length; i++) {
-				listeners[i]()
+				listeners[i](e)
 			}									
 		}
 
@@ -771,10 +771,10 @@ if (typeof require === "function") {
 
 		var controlAction = function controlAction(e) {
 			pauseEvent(e);
-			store.dispatch(actions.releaseKeybKey(e.keyCode))
+			// store.dispatch(actions.releaseKeybKey(e.keyCode))
 			var listeners = currentListeners = nextListeners
 			for (var i = 0; i < listeners.length; i++) {
-				listeners[i]()
+				listeners[i](e)
 			}									
 		}
 

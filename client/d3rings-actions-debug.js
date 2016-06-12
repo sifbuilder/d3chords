@@ -48,9 +48,10 @@ var ActionCreators = {
         fps: fps,
 		}
   },
-	switchDebugMode() {
+	switchDebugMode(payload) {
     return {
-        type: ActionTypes.SWITCH_DEBUGMODE
+        type: ActionTypes.SWITCH_DEBUGMODE,
+        payload: payload,
     };
 	},
 }

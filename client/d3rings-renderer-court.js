@@ -12,8 +12,10 @@ if (typeof require === "function") {
   (factory((global.d3ringsRendererCourt = global.d3ringsRendererCourt || {})));
 }(this, function (exports) { 'use strict';
 
-	function renderer(store) {
+	function renderer(payload) {
 
+		var store = payload.store
+		var actions = payload.actions
 		var newState = store.getState()
 		
 		var state

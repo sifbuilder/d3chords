@@ -35,21 +35,24 @@ if (typeof require === "function") {
 						.style('border', '1px solid darkgrey')
 						.attr('viewbox',"0 0 3 2")										
 
-		/* payloads renderers */
-		var getStore_Payload = function () { return store }
+			/* payloads renderers */
+			var logicAndData_Listener = function () { return {
+				store: store,
+				actions: actions
+			}}
 			
-		/* payloads lanes */
-		var setRecords_Payload = function () { return {
+			/* payloads lanes */
+			var setRecords_Payload = function () { return {
 				itemSpan: store.getState().reducerConfig.itemSpan,
 				currentMode: store.getState().reducerCourt.currentMode
 			}}
 				
-		var setRecordsCollection_Payload = function () { return {
+			var setRecordsCollection_Payload = function () { return {
 				recordsCollection: store.getState().reducerConfig.recordsCollection
 			}}
 
-		/* payloads particles */
-		var createParticles_Payload = function () { return {
+			/* payloads particles */
+			var createParticles_Payload = function () { return {
 					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 					x: 								store.getState().reducerCourt.mousePos[0], 
 					y: 								store.getState().reducerCourt.mousePos[1],
@@ -60,9 +63,9 @@ if (typeof require === "function") {
 					lanes: 						store.getState().reducerLanes.lanes,
 					particlesGenerating: 			store.getState().reducerParticles.particlesGenerating,
 					currentView: 			store.getState().reducerCourt.currentView,
-		}}
+			}}
 
-		var introduceParticles_Payload = function () { return {
+			var introduceParticles_Payload = function () { return {
 					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 					x: 								store.getState().reducerCourt.mousePos[0], 
 					y: 								store.getState().reducerCourt.mousePos[1],
@@ -73,10 +76,10 @@ if (typeof require === "function") {
 					lanes: 						store.getState().reducerLanes.lanes,
 					particlesGenerating: 			store.getState().reducerParticles.particlesGenerating,
 					currentView: 			store.getState().reducerCourt.currentView,
-		}}
+			}}
 
-		
-		var tickParticles_Payload = function () { return {
+			
+			var tickParticles_Payload = function () { return {
 				width: store.getState().reducerCourt.svgWidth,
 				height: store.getState().reducerCourt.svgHeight,
 				gravity: store.getState().reducerConfig.gravity,
@@ -107,231 +110,283 @@ if (typeof require === "function") {
 			
 						
 		/* payloads court */
-			var KeyDown_Payload = function () { 
-					var keys = store.getState().reducerCourt.keys
-					var altKeyCode = 18, ctrlKeyCode = 17 
-					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
-					var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
-					
-					if (keys[vKeyCode] == true && keys[altKeyCode] == true) {		// alt-v
-						console.log("alt-v", store.getState().reducerCourt.keys)
-						var _views = store.getState().reducerConfig.views
-						var _currentView = store.getState().reducerCourt.currentView
-						var _currentViewIndex = _views.indexOf(_currentView)
-						var newViewIndex = _views[Math.abs(_currentViewIndex + 1) % _views.length]
-						store.dispatch(actions.setView(newViewIndex))					
-					}
-					if (keys[dKeyCode] == true && keys[altKeyCode] == true) {		// alt-d
-						store.dispatch(actions.switchDebugMode())
-					}
-					if (keys[leftArrow] == true) {										// leftArrow
-						var currentMode = 'walkMode'
-						store.dispatch(actions.setMode(currentMode))				
-					}
-					if (keys[rightArrow] == true) {										// rightArrow
-						var currentMode = 'autoMode'
-						store.dispatch(actions.setMode(currentMode))				
-					}
-					if (keys[upArrow] == true) {												// upArrow
-						var currentMode = store.getState().reducerCourt.currentMode
-						if (currentMode == 'autoMode') {
-							var newMode = 'walkMode'
-							store.dispatch(actions.setMode(newMode))
-						} else if (currentMode == 'walkMode') {
-							var itemSpan = store.getState().reducerConfig.itemSpan
-							store.dispatch(actions.walkUpRecords(itemSpan, currentMode))
-						}
-					}
-					if (keys[downArrow] == true) {											// downArrow
-						var currentMode = store.getState().reducerCourt.currentMode
-						if (currentMode == 'autoMode') {
-							var newMode = 'walkMode'
-							store.dispatch(actions.setMode(newMode))
-						} else if (currentMode == 'walkMode') {
-							var itemSpan = store.getState().reducerConfig.itemSpan
-							store.dispatch(actions.walkDownRecords(itemSpan, currentMode))
-						}
-					}
-					if (keys[leftArrow] == true && keys[ctrlKeyCode] == true) {		// leftArrow-Ctrl
-						console.log("leftArrowCtrlFn")
-						store.dispatch(actions.resizeWidth(-10))
-					}
-					if (keys[rightArrow] == true  && keys[ctrlKeyCode] == true) {		// rightArrow-Ctrl
-						console.log("rightArrowCtrlFn")
-						store.dispatch(actions.resizeWidth(10))
-					}
-					if (keys[upArrow] == true && keys[ctrlKeyCode] == true) {			// upArrow-Ctrl
-						console.log("upArrowCtrlFn")
-						store.dispatch(actions.resizeWidth(-10))
-					}
+			var KeyDown_Payload = function (e) { 
+					return e
 			}
 			
 			var mouseMove_Payload = function (svg) { 
 				return (svg)
 			}
+			
+			var KeyDownKeys_Payload = function () { return {
+						keys: store.getState().reducerCourt.keys,
+						views: store.getState().reducerConfig.views,
+						currentView: store.getState().reducerCourt.currentView,
+			}}
+
+			var KeyDownKeysLanes_Payload = function () { return {
+						keys: store.getState().reducerCourt.keys,
+						currentMode: store.getState().reducerConfig.currentMode,
+						itemSpan: store.getState().reducerCourt.itemSpan,
+			}}
+					
 						
 		/* launchers particles*/
-		var createParticles_Launcher = store.compose(
+		var createParticles_particles_Listener = store.compose(
 			store.dispatch,
 			actions.createParticles,
 			createParticles_Payload
 		)
 
-		var introduceParticles_Launcher = store.compose(
+		var introduceParticles_particles_Listener = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
 			introduceParticles_Payload
 		)
 
-		var tickParticles_Launcher = store.compose(
+		var tickParticles_particles_Listener = store.compose(
 			store.dispatch,
 			actions.tickParticles,
 			tickParticles_Payload
 		)
 	
-		var startParticles_Launcher = store.compose(
+		var startParticles_particles_Listener = store.compose(
 			store.dispatch,
 			actions.startParticles
 		)	
 		
-		var stopParticles_Launcher = store.compose(
+		var stopParticles_particles_Listener = store.compose(
 			store.dispatch,
 			actions.stopParticles
 		)		
 		
 		/* launchers lanes */
-		var setRecordsCollection_Launcher = store.compose(
+		var setRecordsCollection_lanes_Listener = store.compose(
 			store.dispatch,
 			actions.setRecordsCollection,
 			setRecordsCollection_Payload
 		)
 	
-		var setRecords_Launcher = store.compose(
+		var setRecords_lanes_Listener = store.compose(
 			store.dispatch,
 			actions.setRecords,
 			setRecords_Payload
 		)
 	
 		/* launchers rings */
-		var startRangs_Launcher = store.compose(
+		var startRangs_rings_Listener = store.compose(
 			store.dispatch,
 			actions.startRangs
 		)
 			
-		var stopRangs_Launcher = store.compose(
+		var stopRangs_rings_Listener = store.compose(
 			store.dispatch,
 			actions.stopRangs
 		)
 			
-		var updateRangsDurationLuncher = store.compose(
+		var updateRangsDuration_rings_Listener = store.compose(
 			store.dispatch,
 			actions.updateRangsDuration,
 			updateRangsDuration_Payload			
 		)
 			
-		var updateRangsNumberLuncher = store.compose(
+		var updateRangsNumber_rings_Listener = store.compose(
 			store.dispatch,
 			actions.updateRangsNumber,
 			updateRangsNumber_Payload			
 		)
 			
-		var createRings_Launcher = store.compose(
+		var createRings_rings_Listener = store.compose(
 			store.dispatch,
 			actions.createRings,
 			createRings_Payload
 		)
 
-		var startRings_Launcher = store.compose(
+		var startRings_rings_Listener = store.compose(
 			store.dispatch,
 			actions.startRings
 		)	
 		
-		var stopRings_Launcher = store.compose(
+		var stopRings_rings_Listener = store.compose(
 			store.dispatch,
 			actions.stopRings
 		)	
 
+		/* launchers debug */
+		var setFps_debug_Listener = store.compose(
+			store.dispatch,
+			actions.setFps
+		)
+
 		/* launchers court */
-		var keyDown_Launcher = store.compose(
+		var keyDown_court_Listener = store.compose(
+			store.dispatch,
+			actions.setKeybKey,
 			KeyDown_Payload
 		)	
 
-		var updateMousePos_Launcher = store.compose(
+		var releaseKeybKey_court_Listener = store.compose(
+			store.dispatch,
+			actions.releaseKeybKey
+		)	
+
+		var updateMousePos_court_Listener = store.compose(
 			store.dispatch,
 			actions.updateMousePos,
 			mouseMove_Payload
 		)	
 
-		/* launchers debug */
-		var setFpsDebug_Launcher = store.compose(
+		var keyDownAltV_court_Listener = store.compose(
 			store.dispatch,
-			actions.setFps
-		)
-		
-		
-		/* listerners */
-		var mouseDown = d3ringsControls.mouseDownControl(store, actions).start(d3.select('svg'))
-		var touchStart = d3ringsControls.touchStartControl(store, actions).start(d3.select('svg'))
-		var mouseMove = d3ringsControls.mouseMoveControl(store, actions).start(d3.select('svg'))
-		var touchMove = d3ringsControls.touchMoveControl(store, actions).start(d3.select('svg'))
-		var mouseUp = d3ringsControls.mouseUpControl(store, actions).start(d3.select('svg'))
-		var touchEnd = d3ringsControls.touchEndControl(store, actions).start(d3.select('svg'))
-		var mouseLeave = d3ringsControls.mouseLeaveControl(store, actions).start(d3.select('svg'))
-		var mouseEnter = d3ringsControls.mouseEnterControl(store, actions).start(d3.select('svg'))
-		var ticker = d3ringsControls.tickControls(store, actions).start()
-		var stepper = d3ringsControls.stepControls(store, actions).start()
-		var keyDown = d3ringsControls.keyDownControl(store, actions).start()
-		var keyRelease = d3ringsControls.keyReleaseControl(store, actions).start()
+			actions.setView,
+			KeyDownKeys_Payload
+		)	
+		var keyDownAltD_court_Listener = store.compose(
+			store.dispatch,
+			actions.switchDebugMode,
+			KeyDownKeys_Payload
+		)	
+		var keyLeftArrow_court_Listener = store.compose(
+			store.dispatch,
+			actions.setMode,
+			KeyDownKeys_Payload
+		)	
+		var keyRightArrow_court_Listener = store.compose(
+			store.dispatch,
+			actions.setMode,
+			KeyDownKeys_Payload
+		)	
+		var keyUpArrow_court_Listener = store.compose(
+			store.dispatch,
+			actions.setMode,
+			KeyDownKeys_Payload
+		)	
+		var keyDownArrow_court_Listener = store.compose(
+			store.dispatch,
+			actions.setMode,
+			KeyDownKeys_Payload
+		)	
 
-		
-		
-		
-		
-		/* launches */
-		store.subscribe(store.compose(d3ringsRendererCourt.renderer, getStore_Payload))
+		var keyLeftArrowCtr_court_Listener = store.compose(
+			store.dispatch,
+			actions.resizeWidth,
+			KeyDownKeys_Payload
+		)	
+		var keyRightArrowCtrl_court_Listener = store.compose(
+			store.dispatch,
+			actions.resizeHeight,
+			KeyDownKeys_Payload
+		)	
+		var keyUpArrowCtrl_court_Listener = store.compose(
+			store.dispatch,
+			actions.resizeWidth,
+			KeyDownKeys_Payload
+		)	
+		var keyDownArrowCtrl_court_Listener = store.compose(
+			store.dispatch,
+			actions.resizeHeight,
+			KeyDownKeys_Payload
+		)	
 
-		mouseMove.subscribe(updateMousePos_Launcher)
-		mouseDown.subscribe(updateMousePos_Launcher)
-		mouseUp.subscribe(updateMousePos_Launcher)
-		mouseLeave.subscribe(updateMousePos_Launcher)
-		mouseEnter.subscribe(updateMousePos_Launcher)
-		touchStart.subscribe(updateMousePos_Launcher)
-		touchMove.subscribe(updateMousePos_Launcher)
-		touchEnd.subscribe(updateMousePos_Launcher)
-
-		keyDown.subscribe(keyDown_Launcher)
-
-		ticker.subscribe(setFpsDebug_Launcher)
+		var keyUpArrow_lanes_Listener = store.compose(
+			store.dispatch,
+			actions.walkDownRecords,
+			KeyDownKeysLanes_Payload
+		)	
 		
-		store.subscribe(store.compose(d3ringsRendererLanes.renderer, getStore_Payload))
-		stepper.subscribe(setRecordsCollection_Launcher)
-		stepper.subscribe(setRecords_Launcher)
-			
-		store.subscribe(store.compose(d3ringsRendererParticles.renderer, getStore_Payload))
-		mouseDown.subscribe(startParticles_Launcher)
-		touchStart.subscribe(startParticles_Launcher)
-		mouseDown.subscribe(createParticles_Launcher)
-		touchStart.subscribe(createParticles_Launcher)
-		mouseMove.subscribe(createParticles_Launcher)
-		touchMove.subscribe(createParticles_Launcher)
-		mouseUp.subscribe(stopParticles_Launcher)
-		touchEnd.subscribe(stopParticles_Launcher)
-		mouseLeave.subscribe(stopParticles_Launcher)
-		ticker.subscribe(tickParticles_Launcher)
-		ticker.subscribe(createParticles_Launcher)
-		stepper.subscribe(introduceParticles_Launcher)
+		var keyDownArrow_lanes_Listener = store.compose(
+			store.dispatch,
+			actions.walkUpRecords,
+			KeyDownKeysLanes_Payload
+		)	
+		
+		var renderer_court_Listener = store.compose(
+			d3ringsRendererCourt.renderer,
+			logicAndData_Listener
+		)	
+		
+		var renderer_lanes_Listener = store.compose(
+			d3ringsRendererLanes.renderer,
+			logicAndData_Listener
+		)	
 
-		store.subscribe(store.compose(d3ringsRendererWhirls.renderer, getStore_Payload))
-		mouseDown.subscribe(startRangs_Launcher)
-		mouseEnter.subscribe(startRangs_Launcher)
-		mouseLeave.subscribe(stopRangs_Launcher)
-		mouseDown.subscribe(startRings_Launcher)
-		mouseDown.subscribe(createRings_Launcher)
-		mouseMove.subscribe(createRings_Launcher)
-		mouseUp.subscribe(stopRings_Launcher)
-		mouseLeave.subscribe(stopRings_Launcher)		
-		stepper.subscribe(updateRangsDurationLuncher)
-		stepper.subscribe(updateRangsNumberLuncher)
+		var renderer_particles_Listener = store.compose(
+			d3ringsRendererParticles.renderer,
+			logicAndData_Listener
+		)	
+		
+		var renderer_whirls_Listener = store.compose(
+			d3ringsRendererWhirls.renderer,
+			logicAndData_Listener
+		)	
+
+		/* launchers */
+		var mouseDown_Launcher = d3ringsControls.mouseDownControl(store, actions).start(d3.select('svg'))
+		var touchStart_Launcher = d3ringsControls.touchStartControl(store, actions).start(d3.select('svg'))
+		var mouseMove_Launcher = d3ringsControls.mouseMoveControl(store, actions).start(d3.select('svg'))
+		var touchMove_Launcher = d3ringsControls.touchMoveControl(store, actions).start(d3.select('svg'))
+		var mouseUp_Launcher = d3ringsControls.mouseUpControl(store, actions).start(d3.select('svg'))
+		var touchEnd_Launcher = d3ringsControls.touchEndControl(store, actions).start(d3.select('svg'))
+		var mouseLeave_Launcher = d3ringsControls.mouseLeaveControl(store, actions).start(d3.select('svg'))
+		var mouseEnter_Launcher = d3ringsControls.mouseEnterControl(store, actions).start(d3.select('svg'))
+		var ticker_Launcher = d3ringsControls.tickControls(store, actions).start()
+		var stepper_Launcher = d3ringsControls.stepControls(store, actions).start()
+		var keyDown_Launcher = d3ringsControls.keyDownControl(store, actions).start()
+		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(store, actions).start()
+		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(store, actions).start()
+		
+		/* listeners */
+		store.subscribe(renderer_court_Listener)
+		keyRelease_Launcher.subscribe(releaseKeybKey_court_Listener)
+		keyDown_Launcher.subscribe(keyDown_court_Listener)
+		keyDown_Launcher.subscribe(keyDownAltV_court_Listener)
+		keyDown_Launcher.subscribe(keyDownAltD_court_Listener)
+		keyDown_Launcher.subscribe(keyLeftArrow_court_Listener)
+		keyDown_Launcher.subscribe(keyRightArrow_court_Listener)
+		keyDown_Launcher.subscribe(keyUpArrow_court_Listener)
+		keyDown_Launcher.subscribe(keyDownArrow_court_Listener)
+		keyDown_Launcher.subscribe(keyLeftArrowCtr_court_Listener)
+		keyDown_Launcher.subscribe(keyRightArrowCtrl_court_Listener)
+		keyDown_Launcher.subscribe(keyUpArrowCtrl_court_Listener)
+		keyDown_Launcher.subscribe(keyDownArrowCtrl_court_Listener)
+		mouseMove_Launcher.subscribe(updateMousePos_court_Listener)
+		mouseDown_Launcher.subscribe(updateMousePos_court_Listener)
+		mouseUp_Launcher.subscribe(updateMousePos_court_Listener)
+		mouseLeave_Launcher.subscribe(updateMousePos_court_Listener)
+		mouseEnter_Launcher.subscribe(updateMousePos_court_Listener)
+		touchStart_Launcher.subscribe(updateMousePos_court_Listener)
+		touchMove_Launcher.subscribe(updateMousePos_court_Listener)
+		touchEnd_Launcher.subscribe(updateMousePos_court_Listener)
+		ticker_Launcher.subscribe(setFps_debug_Listener)
+		store.subscribe(renderer_lanes_Listener)
+		stepper_Launcher.subscribe(setRecordsCollection_lanes_Listener)
+		stepper_Launcher.subscribe(setRecords_lanes_Listener)
+		stepper_Launcher.subscribe(keyUpArrow_lanes_Listener)
+		stepper_Launcher.subscribe(keyDownArrow_lanes_Listener)
+		store.subscribe(renderer_particles_Listener)
+		mouseDown_Launcher.subscribe(startParticles_particles_Listener)
+		touchStart_Launcher.subscribe(startParticles_particles_Listener)
+		mouseDown_Launcher.subscribe(createParticles_particles_Listener)
+		touchStart_Launcher.subscribe(createParticles_particles_Listener)
+		mouseMove_Launcher.subscribe(createParticles_particles_Listener)
+		touchMove_Launcher.subscribe(createParticles_particles_Listener)
+		mouseUp_Launcher.subscribe(stopParticles_particles_Listener)
+		touchEnd_Launcher.subscribe(stopParticles_particles_Listener)
+		mouseLeave_Launcher.subscribe(stopParticles_particles_Listener)
+		ticker_Launcher.subscribe(tickParticles_particles_Listener)
+		ticker_Launcher.subscribe(createParticles_particles_Listener)
+		stepper_Launcher.subscribe(introduceParticles_particles_Listener)
+		store.subscribe(renderer_whirls_Listener)
+		mouseDown_Launcher.subscribe(startRangs_rings_Listener)
+		mouseEnter_Launcher.subscribe(startRangs_rings_Listener)
+		mouseLeave_Launcher.subscribe(stopRangs_rings_Listener)
+		mouseDown_Launcher.subscribe(startRings_rings_Listener)
+		mouseDown_Launcher.subscribe(createRings_rings_Listener)
+		mouseMove_Launcher.subscribe(createRings_rings_Listener)
+		mouseUp_Launcher.subscribe(stopRings_rings_Listener)
+		mouseLeave_Launcher.subscribe(stopRings_rings_Listener)		
+		stepper_Launcher.subscribe(updateRangsDuration_rings_Listener)
+		stepper_Launcher.subscribe(updateRangsNumber_rings_Listener)
 
 					
 					

@@ -102,18 +102,16 @@ var ActionCreators = {
        cursorHigh: cursorHigh,
 		}
   },
-	walkDownRecords(itemSpan, mode) {	// WALK_DOWN_RECORDS
+	walkDownRecords(payload) {	// WALK_DOWN_RECORDS
     return {
         type: ActionTypes.WALK_DOWN_RECORDS,
-        itemSpan: itemSpan,
-        mode: mode,
+        payload: payload,
     }
   },
-	walkUpRecords(itemSpan, mode) {	// WALK_UP_RECORDS
+	walkUpRecords(payload) {	// WALK_UP_RECORDS
     return {
         type: ActionTypes.WALK_UP_RECORDS,
-        itemSpan: itemSpan,
-        mode: mode,
+        payload: payload,
     }
   },
 }

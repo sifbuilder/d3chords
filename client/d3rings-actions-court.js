@@ -45,12 +45,6 @@ var ActionTypes = keyMirror(cttsCourt, '')
 
 // ____________________ actions COURT
 var ActionCreators = {
-	resizeHeight(height) {
-    return {
-        type: ActionTypes.RESIZE_HEIGHT,
-        delta: height
-		}
-  },
 	resizeScreen(width, height) {
     return {
         type: ActionTypes.RESIZE_SCREEN,
@@ -58,28 +52,34 @@ var ActionCreators = {
         height: height
 		}
   },
-	resizeWidth(width) {
+	resizeHeight(payload) {
+    return {
+        type: ActionTypes.RESIZE_HEIGHT,
+        payload: payload
+		}
+  },
+	resizeWidth(payload) {
     return {
         type: ActionTypes.RESIZE_WIDTH,
-        delta: width
+        payload: payload
 		}
   },
-	releaseKeybKey(keyCode) {
+	releaseKeybKey(e) {
     return {
         type: ActionTypes.RELEASE_KEYBKEY,
-        keyCode: keyCode,
+        keyCode: e.keyCode,
 		}
   },
-	setKeybKey(keyCode) {
+	setKeybKey(e) {
     return {
         type: ActionTypes.SET_KEYBKEY,
-        keyCode: keyCode,
+        keyCode: e.keyCode,
 		}
   },
-	setMode(currentMode) {
+	setMode(payload) {
     return {
-        type: ActionTypes.SET_MODE,
-        currentMode: currentMode,
+        type: ActionTypes.SET_MODE,	// setMode
+        payload: payload,
 		}
   },
 	setNotice(notice) {
@@ -88,10 +88,10 @@ var ActionCreators = {
         notice: notice,
 		}
   },
-	setView(currentView) {
+	setView(payload) {
     return {
         type: ActionTypes.SET_VIEW,
-        currentView: currentView,
+        payload: payload,
 		}
   },
 	startKeybKeyEvents() {
@@ -100,13 +100,9 @@ var ActionCreators = {
     }
 	},
 	updateMousePos(svg) {
-		var coords  = d3.mouse(svg)
-		var x = coords[0]
-		var y = coords[1]
     return {
         type: ActionTypes.UPDATE_MOUSE_POS,
-        x: x,
-        y: y
+        svg: svg,
     }
 	},
 }

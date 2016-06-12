@@ -64,8 +64,10 @@ function reducerDebug(state = initialStateDebug, action) {
     switch (action.type) {
 				case ActionTypes.SET_FPS:			
 						return setFps(state, action)
+						
 				case ActionTypes.SWITCH_DEBUGMODE:
 						return switchDebugMode(state, action)
+						
 				default:
 					return state;
 	}
@@ -93,8 +95,19 @@ function setFps(state, action) {
 		})
 }
 function switchDebugMode(state, action) {
+			var altKeyCode = 18, ctrlKeyCode = 17 
+			var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+			var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+
+			var keys = action.payload.keys
+			var debugMode = state.debugMode
+			var newdebugMode = debugMode
+
+			if (keys[dKeyCode] == true && keys[altKeyCode] == true) {		// alt-d
+				 newdebugMode = !state.debugMode
+			}	
 		 return Object.assign({}, state, {
-             debugMode: !state.debugMode
+             debugMode: newdebugMode
 		})
 }
 

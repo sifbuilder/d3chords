@@ -183,38 +183,52 @@ function reducerLanes(state = initialStateLanes, action) {
 						}
 						return r
 
-				case ActionTypes.WALK_UP_RECORDS:
-						console.log('WALK_UP_RECORDS')
+				case ActionTypes.WALK_UP_RECORDS:			// walkDownRecords
+						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = action.payload.keys
+						
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
-						var itemSpan = action.itemSpan
-						var mode = action.mode
+						var itemSpan = action.payload.itemSpan
+						var mode = action.payload.mode
 						var r = state
-						if (mode == 'walkMode') {
-								vLow = Math.max(0, --vLow)
-								r = Object.assign({}, state, {
-									records: state.recordsCollection.slice(vLow, vHigh),
-									messagesCursorLow: vLow,
-									messagesCursorHigh: vHigh,
-							})
+						if (keys[upArrow] == true) {												// upArrow
+								if (mode == 'walkMode') {
+										vLow = Math.max(0, --vLow)
+										r = Object.assign({}, state, {
+											records: state.recordsCollection.slice(vLow, vHigh),
+											messagesCursorLow: vLow,
+											messagesCursorHigh: vHigh,
+									})
+								}
 						}
 						return r
 						
 				case ActionTypes.WALK_DOWN_RECORDS:
-						console.log('WALK_DOWN_RECORDS')
+						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = action.payload.keys
+console.log("________________________________________________ keys[40] ", JSON.stringify(keys[40], null, 2))
+						
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
-						var itemSpan = action.itemSpan
-						var mode = action.mode
+						var itemSpan = action.payload.itemSpan
+						var mode = action.payload.mode
 						var r = state
-						if (mode == 'walkMode') {
-							if ((vHigh - vLow)  > itemSpan) ++vLow
-							++vHigh
-								r = Object.assign({}, state, {
-									records: state.recordsCollection.slice(vLow, vHigh),
-									messagesCursorLow: vLow,
-									messagesCursorHigh: vHigh,
-							})
+						if (keys[downArrow] == true) {												// downArrow
+console.log("________________________________________________ mode ", mode)
+								if (mode == 'walkMode') {
+										if ((vHigh - vLow)  > itemSpan) ++vLow
+										++vHigh
+											r = Object.assign({}, state, {
+												records: state.recordsCollection.slice(vLow, vHigh),
+												messagesCursorLow: vLow,
+												messagesCursorHigh: vHigh,
+										})
+									}
 						}
 						return r
 						

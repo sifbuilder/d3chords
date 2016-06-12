@@ -50,8 +50,10 @@ var intransition_newRing = false
 
 	
 // _____________ renderer
-	function renderer(store) {
+	function renderer(payload) {
 
+		var store = payload.store
+		var actions = payload.actions
 		var newState = store.getState()
 		
 		// return on transition
