@@ -52,6 +52,7 @@ var initialStateLanes = {
 			lanesIndex: 0,
 			messages: [],
 			records: [],
+			keyEventsOnLanes: {},
 			recordsCollection: [],
 			areRecordsFetched: false,
 			messagesCursorLow: 0,
@@ -183,7 +184,8 @@ function reducerLanes(state = initialStateLanes, action) {
 						}
 						return r
 
-				case ActionTypes.WALK_UP_RECORDS:			// walkDownRecords
+				case ActionTypes.WALK_UP_RECORDS:			// walkUpRecords
+						var keyEventsOnLanes = state.keyEventsOnLanes
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
@@ -192,11 +194,13 @@ function reducerLanes(state = initialStateLanes, action) {
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
 						var itemSpan = action.payload.itemSpan
-						var mode = action.payload.mode
+						var currentMode = action.payload.mode
 						var r = state
-						if (keys[upArrow] == true) {												// upArrow
-								if (mode == 'walkMode') {
+						if (currentMode == 'walkMode') {
+							if (keyEventsOnLanes.upArrow !== null && keyEventsOnLanes.upArrow !== action.payload.keyEvents.upArrow) {			// upArrow
+										keyEventsOnLanes.upArrow = action.payload.keyEvents.upArrow
 										vLow = Math.max(0, --vLow)
+										r = Object.assign({}, state, keyEventsOnLanes) 
 										r = Object.assign({}, state, {
 											records: state.recordsCollection.slice(vLow, vHigh),
 											messagesCursorLow: vLow,
@@ -206,29 +210,30 @@ function reducerLanes(state = initialStateLanes, action) {
 						}
 						return r
 						
-				case ActionTypes.WALK_DOWN_RECORDS:
+				case ActionTypes.WALK_DOWN_RECORDS:			// walkDownRecords
+						var keyEventsOnLanes = state.keyEventsOnLanes
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
 						var keys = action.payload.keys
-console.log("________________________________________________ keys[40] ", JSON.stringify(keys[40], null, 2))
 						
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
 						var itemSpan = action.payload.itemSpan
-						var mode = action.payload.mode
-						var r = state
-						if (keys[downArrow] == true) {												// downArrow
-console.log("________________________________________________ mode ", mode)
-								if (mode == 'walkMode') {
-										if ((vHigh - vLow)  > itemSpan) ++vLow
-										++vHigh
-											r = Object.assign({}, state, {
-												records: state.recordsCollection.slice(vLow, vHigh),
-												messagesCursorLow: vLow,
-												messagesCursorHigh: vHigh,
-										})
-									}
+						var currentMode = action.payload.currentMode
+						var r = Object.assign({}, state)
+						if (currentMode == 'walkMode') {
+							if (keyEventsOnLanes.downArrow !== null && keyEventsOnLanes.downArrow !== action.payload.keyEvents.downArrow) {			// downArrow
+								keyEventsOnLanes.downArrow = action.payload.keyEvents.downArrow
+								r = Object.assign({}, state, keyEventsOnLanes) 
+								if ((vHigh - vLow)  >= itemSpan) ++vLow
+								++vHigh
+									r = Object.assign({}, state, {
+										records: state.recordsCollection.slice(vLow, vHigh),
+										messagesCursorLow: vLow,
+										messagesCursorHigh: vHigh,
+								})
+							}
 						}
 						return r
 						
@@ -236,8 +241,6 @@ console.log("________________________________________________ mode ", mode)
             return state
     }
 }
-
-
 
 exports.reducerLanes = reducerLanes;
 }));

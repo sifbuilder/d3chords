@@ -15,9 +15,9 @@ if (typeof require === "function") {
 /*  -------------          */
 /*    stepControls        */
 /*  -------------          */
-	function stepControls(store, actions) {
+	function stepControls(payload) {
 	
-		var store = store
+		var store = payload.store
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -84,9 +84,8 @@ if (typeof require === "function") {
 /*  -------------          */
 /*    tickControls        */
 /*  -------------          */
-	function tickControls(store, actions) {
+	function tickControls(payload) {
 	
-		var store = store
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -144,8 +143,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    mouseDownControls        */
 /*  -------------       		   */
-	function mouseDownControl(store, actions) {
-		var store = store
+	function mouseDownControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -202,7 +200,6 @@ if (typeof require === "function") {
 				var index = nextListeners.indexOf(listener)
 				nextListeners.splice(index, 1)
 			}
-			
 		}
 		
 		return controlApi
@@ -211,8 +208,7 @@ if (typeof require === "function") {
 	/*  -------------       		   */
 /*    touchStartControls        */
 /*  -------------       		   */
-	function touchStartControl(store, actions) {
-		var store = store
+	function touchStartControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -269,7 +265,6 @@ if (typeof require === "function") {
 				var index = nextListeners.indexOf(listener)
 				nextListeners.splice(index, 1)
 			}
-
 		}
 		
 		return controlApi
@@ -279,8 +274,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    mouseMoveControls        */
 /*  -------------       		   */
-	function mouseMoveControl(store, actions) {
-		var store = store
+	function mouseMoveControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -345,8 +339,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    touchMoveControls        */
 /*  -------------       		   */
-	function touchMoveControl(store, actions) {
-		var store = store
+	function touchMoveControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -391,8 +384,7 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			// return controlApi
-						return function unsubscribe() {
+			return function unsubscribe() {
 				if (!isSubscribed) {
 					return
 				}
@@ -411,8 +403,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    mouseUpControls        */
 /*  -------------       		   */
-	function mouseUpControl(store, actions) {
-		var store = store
+	function mouseUpControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -469,7 +460,6 @@ if (typeof require === "function") {
 				var index = nextListeners.indexOf(listener)
 				nextListeners.splice(index, 1)
 			}
-
 		}
 		
 		return controlApi
@@ -477,8 +467,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    touchEndControls        */
 /*  -------------       		   */
-	function touchEndControl(store, actions) {
-		var store = store
+	function touchEndControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -522,8 +511,7 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			// return controlApi
-						return function unsubscribe() {
+			return function unsubscribe() {
 				if (!isSubscribed) {
 					return
 				}
@@ -544,8 +532,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    mouseLeaveControls        */
 /*  -------------       		   */
-	function mouseLeaveControl(store, actions) {
-		var store = store
+	function mouseLeaveControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -602,7 +589,6 @@ if (typeof require === "function") {
 				var index = nextListeners.indexOf(listener)
 				nextListeners.splice(index, 1)
 			}
-
 		}
 		
 		return controlApi
@@ -611,8 +597,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    mouseEnterControls        */
 /*  -------------       		   */
-	function mouseEnterControl(store, actions) {
-		var store = store
+	function mouseEnterControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -657,8 +642,7 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			// return controlApi
-						return function unsubscribe() {
+			return function unsubscribe() {
 				if (!isSubscribed) {
 					return
 				}
@@ -675,13 +659,11 @@ if (typeof require === "function") {
 		return controlApi
 	}	
 					
-
 					
 /*  -------------       		   */
 /*    keyDownControl        */
 /*  -------------       		   */
-	function keyDownControl(store, actions) {
-		var store = store
+	function keyDownControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -702,10 +684,6 @@ if (typeof require === "function") {
 
 		var controlAction = function controlAction(e) {
 			pauseEvent(e)
-			
-			// store.dispatch(actions.setKeybKey(e.keyCode))
-			// var keys = store.getState().reducerCourt.keys
-			
 			var listeners = currentListeners = nextListeners
 			for (var i = 0; i < listeners.length; i++) {
 				listeners[i](e)
@@ -749,8 +727,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    keyReleaseControl        */
 /*  -------------       		   */
-	function keyReleaseControl(store, actions) {
-		var store = store
+	function keyReleaseControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -771,7 +748,6 @@ if (typeof require === "function") {
 
 		var controlAction = function controlAction(e) {
 			pauseEvent(e);
-			// store.dispatch(actions.releaseKeybKey(e.keyCode))
 			var listeners = currentListeners = nextListeners
 			for (var i = 0; i < listeners.length; i++) {
 				listeners[i](e)
@@ -794,8 +770,7 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			// return controlApi
-						return function unsubscribe() {
+				return function unsubscribe() {
 				if (!isSubscribed) {
 					return
 				}
@@ -815,8 +790,7 @@ if (typeof require === "function") {
 /*  -------------       		   */
 /*    keyPressControl        */
 /*  -------------       		   */
-	function keyPressControl(store, actions) {
-		var store = store
+	function keyPressControl(payload) {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
@@ -859,8 +833,7 @@ if (typeof require === "function") {
 			var isSubscribed = true
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
-			// return controlApi
-						return function unsubscribe() {
+			return function unsubscribe() {
 				if (!isSubscribed) {
 					return
 				}
@@ -871,12 +844,10 @@ if (typeof require === "function") {
 				var index = nextListeners.indexOf(listener)
 				nextListeners.splice(index, 1)
 			}
-
 		}
 		
 		return controlApi
 	}	
-		
 
 exports.keyDownControl = keyDownControl
 exports.keyReleaseControl = keyReleaseControl

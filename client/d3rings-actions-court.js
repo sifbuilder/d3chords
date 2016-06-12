@@ -27,9 +27,10 @@ var keyMirror = function(obj, prefix) {
 // ____________________ action TYPES
 var cttsCourt = {
 	FETCH_RECORDS: '',
+	KEYB_DISPATCH: '',
+	PROCESS_KEYB_KEYS: '',
 	RELEASE_KEYBKEY: '',
 	RESET_KEYS_EVENTS: '',
-	RESIZE_SCREEN: '',
 	RESIZE_HEIGHT: '',
 	RESIZE_WIDTH: '',
 	SET_KEYBKEY: '',
@@ -45,13 +46,7 @@ var ActionTypes = keyMirror(cttsCourt, '')
 
 // ____________________ actions COURT
 var ActionCreators = {
-	resizeScreen(width, height) {
-    return {
-        type: ActionTypes.RESIZE_SCREEN,
-        width: width,
-        height: height
-		}
-  },
+
 	resizeHeight(payload) {
     return {
         type: ActionTypes.RESIZE_HEIGHT,
@@ -74,6 +69,12 @@ var ActionCreators = {
     return {
         type: ActionTypes.SET_KEYBKEY,
         keyCode: e.keyCode,
+		}
+  },
+	processKeybKeys(payload) {
+    return {
+        type: ActionTypes.PROCESS_KEYB_KEYS,	// processKeybKeys
+        payload: payload,
 		}
   },
 	setMode(payload) {

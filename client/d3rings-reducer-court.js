@@ -13,6 +13,14 @@
   (factory((global.d3ringsReducerCourt = global.d3ringsReducerCourt || {})));
 }(this, function (exports) { 'use strict';
 
+// http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
+function guid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
 
 // _____________ adapted from redux combineReducers	
 function combineReducers(reducers) {
@@ -51,6 +59,7 @@ var initialStateCourt = {
 			svgHeight: 400,		// 
 			svgWidth: 600,		// 
 			keys: [],
+			keysEvents: {},
 			notice: 'auto lanes',
 			currentMode: 'autoMode',
 			currentView: 'ringsView',
@@ -65,27 +74,64 @@ function reducerCourt(state = initialStateCourt, action) {
 	if (action == null) return state
 	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
-				case ActionTypes.SET_KEYBKEY:
-						console.log('SET_KEYBKEY', action)
+        case ActionTypes.START_KEYBKEY_EVENTS:	// startKeybKeyEvents
+						console.log('START_KEYBKEY_EVENTS')
+            return Object.assign({}, state, {
+                keybKeyEventsStarted: true
+            })
+				case ActionTypes.SET_KEYBKEY:				// setKeybkey
+						console.log('SET_KEYBKEY')
 						var ks = state.keys
 						ks[action.keyCode] = true
             return Object.assign({}, state, {
                 keys: ks
-            });
-        case ActionTypes.RELEASE_KEYBKEY:
+            })
+        case ActionTypes.RELEASE_KEYBKEY:	// releaseKeybkey
 						// console.log('RELEASE_KEYBKEY')
  						var ks = state.keys
 						ks[action.keyCode] = false
             return Object.assign({}, state, {
                 keys: ks
-            });
-        case ActionTypes.START_KEYBKEY_EVENTS:	// startKeybKeyEvents
-						console.log('START_KEYBKEY_EVENTS')
-            return Object.assign({}, state, {
-                keybKeyEventsStarted: true
-            });
-        case ActionTypes.SET_MODE:
-  						console.log('SET_MODE')
+            })
+        case ActionTypes.PROCESS_KEYB_KEYS:		// processKeybKeys
+ 					// console.log('PROCESS_KEYB_KEYS state keys', state.keys)
+						var keyEvents = Object.assign({}, state.keyEvents)
+						var altKeyCode = 18, ctrlKeyCode = 17 
+						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+						var keys = state.keys
+						
+							if (keys[ctrlKeyCode] !== true && keys[altKeyCode] == true && keys[vKeyCode] == true) {		// alt-v
+								keyEvents.altvKey =  guid()
+								console.log("___________________________ alt-v")
+							}
+							if (keys[ctrlKeyCode] !== true && keys[altKeyCode] !== true && keys[vKeyCode] == true) {		// v
+								console.log("___________________________ v")
+								keyEvents.vKey =  guid()
+							}
+							if (keys[leftArrow] == true) {		// leftArrow
+								console.log("___________________________ leftArrow")
+								keyEvents.leftArrow =  guid()
+							}
+							if (keys[rightArrow] == true) {		// rightArrow
+								console.log("___________________________ rightArrow")
+								keyEvents.rightArrow =  guid()
+							}
+							if (keys[upArrow] == true) {		// upArrow
+								console.log("___________________________ upArrow")
+								keyEvents.upArrow =  guid()
+							}
+							if (keys[downArrow] == true) {		// downArrow
+								console.log("___________________________ downArrow")
+								keyEvents.downArrow =  guid()
+							}
+						
+	          return Object.assign({}, state, {
+								keyEvents: keyEvents
+						})
+					
+       case ActionTypes.SET_MODE:
+  					console.log('SET_MODE')
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
@@ -154,12 +200,6 @@ function reducerCourt(state = initialStateCourt, action) {
 
             return Object.assign({}, state, {
                 mousePos: [x, y]
-            });
-        case ActionTypes.RESIZE_SCREEN:
-  						console.log('RESIZE_SCREEN')
-            return Object.assign({}, state, {
-                svgWidth: action.width,
-                svgHeight: action.height
             });
         case ActionTypes.RESIZE_WIDTH:
  						console.log('RESIZE_WIDTH')

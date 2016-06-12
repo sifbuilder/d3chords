@@ -2,7 +2,7 @@
   "name": "d3rings",
   "version": "0.0.1",
   "private": true,
-  "description": "the big listener, irritating game but needed template to probe #d3js transitions through unwired #redux store",
+  "description": "the big listener, irritating game but needed template to probe #d3js transitions and actions travelling through an unwired #redux store",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
