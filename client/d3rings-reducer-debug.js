@@ -49,7 +49,13 @@ function combineReducers(reducers) {
 // _____________ DEBUG
 var initialStateDebug = {
 				debugMode: true,
-				fps: 0
+				debugTickerStarted: false,
+				rfps: 60,
+				fps: 0,
+				fpsMax: 0,
+				timeStamp: 0,
+				timeLastFrame: 0,
+				tickLastFrame: 0,
 }
 function reducerDebug(state = initialStateDebug, action) {
 	if (action == null) return state
@@ -59,15 +65,31 @@ function reducerDebug(state = initialStateDebug, action) {
 				case ActionTypes.SET_FPS:			
 						return setFps(state, action)
 				case ActionTypes.SWITCH_DEBUGMODE:
-						console.log('SWITCH_DEBUGMODE')
 						return switchDebugMode(state, action)
 				default:
 					return state;
 	}
 }
 function setFps(state, action) {
-		 return Object.assign({}, state, {
-             fps: action.fps
+			// tbc
+			var timeLastFrame0 = state.timeLastFrame 
+			var tickLastFrame0 = state.tickLastFrame
+			var timeLastFrame = performance.now()
+			var tickLastFrame = tickLastFrame0 + 1
+			var timeDelta = timeLastFrame - timeLastFrame0
+			
+			var fps0 = state.fps
+			var fpsMax = state.fpsMax
+			
+			var fps = (timeLastFrame != 0) ? parseFloat(Math.round(1000 / timeDelta)).toFixed(0) : 0
+			var fpsMax = Math.max(fpsMax, fps)
+			
+		  return Object.assign({}, state, {
+						fps: fps,
+						fpsMax: fpsMax,
+             debugTickerStarted: true,
+             timeLastFrame: timeLastFrame,
+             tickLastFrame: tickLastFrame
 		})
 }
 function switchDebugMode(state, action) {

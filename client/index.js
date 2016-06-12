@@ -14,14 +14,7 @@ if (typeof require === "function") {
 	var d3ringsStore = require('./d3rings-store.js')
 	var d3ringsActions = require('./d3rings-actions.js')
 	var d3ringsControls = require('./d3rings-controls.js')
-	
-	var d3ringsPayloadsLanes = require('./d3rings-payloads-lanes.js')
-	var d3ringsPayloadsCourt = require('./d3rings-payloads-court.js')
-	var d3ringsPayloadsParticles = require('./d3rings-payloads-particles.js')
-	var d3ringsPayloadsWhirls = require('./d3rings-payloads-whirls.js')
-	
 }	
-
 		/* actions */
 		var actions = d3ringsActions.ActionCreators
 
@@ -41,24 +34,159 @@ if (typeof require === "function") {
 						.style('background', 'oldlace')
 						.style('border', '1px solid darkgrey')
 						.attr('viewbox',"0 0 3 2")										
+
+		/* payloads renderers */
+		var getStore_Payload = function () { return store }
+			
+		/* payloads lanes */
+		var setRecords_Payload = function () { return {
+				itemSpan: store.getState().reducerConfig.itemSpan,
+				currentMode: store.getState().reducerCourt.currentMode
+			}}
+				
+		var setRecordsCollection_Payload = function () { return {
+				recordsCollection: store.getState().reducerConfig.recordsCollection
+			}}
+
+		/* payloads particles */
+		var createParticles_Payload = function () { return {
+					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
+					x: 								store.getState().reducerCourt.mousePos[0], 
+					y: 								store.getState().reducerCourt.mousePos[1],
+					xInit: 						store.getState().reducerCourt.leftBorder,
+					xEnd: 						store.getState().reducerCourt.svgWidth, 
+					randNormal: 			store.getState().reducerConfig.randNormal,
+					randNormal2: 			store.getState().reducerConfig.randNormal2,
+					lanes: 						store.getState().reducerLanes.lanes,
+					particlesGenerating: 			store.getState().reducerParticles.particlesGenerating,
+					currentView: 			store.getState().reducerCourt.currentView,
+		}}
+
+		var introduceParticles_Payload = function () { return {
+					particlesPerTick: store.getState().reducerParticles.particlesPerTick,
+					x: 								store.getState().reducerCourt.mousePos[0], 
+					y: 								store.getState().reducerCourt.mousePos[1],
+					xInit: 						store.getState().reducerCourt.leftBorder,
+					xEnd: 						store.getState().reducerCourt.svgWidth, 
+					randNormal: 			store.getState().reducerConfig.randNormal,
+					randNormal2: 			store.getState().reducerConfig.randNormal2,
+					lanes: 						store.getState().reducerLanes.lanes,
+					particlesGenerating: 			store.getState().reducerParticles.particlesGenerating,
+					currentView: 			store.getState().reducerCourt.currentView,
+		}}
+
+		
+		var tickParticles_Payload = function () { return {
+				width: store.getState().reducerCourt.svgWidth,
+				height: store.getState().reducerCourt.svgHeight,
+				gravity: store.getState().reducerConfig.gravity,
+				lanes: store.getState().reducerLanes.lanes
+			}}
+			
+		/* payloads whirls */
+			var createRings_Payload = function () { return {
+						ringsPerTick: store.getState().reducerWhirls.ringsPerTick,
+						x: store.getState().reducerCourt.mousePos[0], 
+						y: store.getState().reducerCourt.mousePos[1],
+						randNormal: store.getState().reducerConfig.randNormal,
+						randNormal2: store.getState().reducerConfig.randNormal2,
+						rings: store.getState().reducerWhirls.rings,
+						rangs: store.getState().reducerWhirls.rangs,
+						ringsGenerating: store.getState().reducerWhirls.ringsGenerating,
+			}}
+			
+			var updateRangsDuration_Payload = function () { return {
+						rangsAlways: store.getState().reducerWhirls.rangsAlways,
+						rangsHitsIndex: store.getState().reducerWhirls.rangsHitsIndex, 
+			}}
+			
+			var updateRangsNumber_Payload = function () { return {
+						rangsAlways: store.getState().reducerWhirls.rangsAlways,
+						rangsHitsIndex: store.getState().reducerWhirls.rangsHitsIndex, 
+			}}
+			
 						
-		/* launchers */
+		/* payloads court */
+			var KeyDown_Payload = function () { 
+					var keys = store.getState().reducerCourt.keys
+					var altKeyCode = 18, ctrlKeyCode = 17 
+					var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
+					var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
+					
+					if (keys[vKeyCode] == true && keys[altKeyCode] == true) {		// alt-v
+						console.log("alt-v", store.getState().reducerCourt.keys)
+						var _views = store.getState().reducerConfig.views
+						var _currentView = store.getState().reducerCourt.currentView
+						var _currentViewIndex = _views.indexOf(_currentView)
+						var newViewIndex = _views[Math.abs(_currentViewIndex + 1) % _views.length]
+						store.dispatch(actions.setView(newViewIndex))					
+					}
+					if (keys[dKeyCode] == true && keys[altKeyCode] == true) {		// alt-d
+						store.dispatch(actions.switchDebugMode())
+					}
+					if (keys[leftArrow] == true) {										// leftArrow
+						var currentMode = 'walkMode'
+						store.dispatch(actions.setMode(currentMode))				
+					}
+					if (keys[rightArrow] == true) {										// rightArrow
+						var currentMode = 'autoMode'
+						store.dispatch(actions.setMode(currentMode))				
+					}
+					if (keys[upArrow] == true) {												// upArrow
+						var currentMode = store.getState().reducerCourt.currentMode
+						if (currentMode == 'autoMode') {
+							var newMode = 'walkMode'
+							store.dispatch(actions.setMode(newMode))
+						} else if (currentMode == 'walkMode') {
+							var itemSpan = store.getState().reducerConfig.itemSpan
+							store.dispatch(actions.walkUpRecords(itemSpan, currentMode))
+						}
+					}
+					if (keys[downArrow] == true) {											// downArrow
+						var currentMode = store.getState().reducerCourt.currentMode
+						if (currentMode == 'autoMode') {
+							var newMode = 'walkMode'
+							store.dispatch(actions.setMode(newMode))
+						} else if (currentMode == 'walkMode') {
+							var itemSpan = store.getState().reducerConfig.itemSpan
+							store.dispatch(actions.walkDownRecords(itemSpan, currentMode))
+						}
+					}
+					if (keys[leftArrow] == true && keys[ctrlKeyCode] == true) {		// leftArrow-Ctrl
+						console.log("leftArrowCtrlFn")
+						store.dispatch(actions.resizeWidth(-10))
+					}
+					if (keys[rightArrow] == true  && keys[ctrlKeyCode] == true) {		// rightArrow-Ctrl
+						console.log("rightArrowCtrlFn")
+						store.dispatch(actions.resizeWidth(10))
+					}
+					if (keys[upArrow] == true && keys[ctrlKeyCode] == true) {			// upArrow-Ctrl
+						console.log("upArrowCtrlFn")
+						store.dispatch(actions.resizeWidth(-10))
+					}
+			}
+			
+			var mouseMove_Payload = function (svg) { 
+				return (svg)
+			}
+						
+		/* launchers particles*/
 		var createParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.createParticles,
-			d3ringsPayloadsParticles.createParticles_Payload
+			createParticles_Payload
 		)
 
 		var introduceParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.introduceParticles,
-			d3ringsPayloadsParticles.introduceParticles_Payload
+			introduceParticles_Payload
 		)
 
 		var tickParticles_Launcher = store.compose(
 			store.dispatch,
 			actions.tickParticles,
-			d3ringsPayloadsParticles.tickParticles_Payload
+			tickParticles_Payload
 		)
 	
 		var startParticles_Launcher = store.compose(
@@ -71,18 +199,20 @@ if (typeof require === "function") {
 			actions.stopParticles
 		)		
 		
+		/* launchers lanes */
 		var setRecordsCollection_Launcher = store.compose(
 			store.dispatch,
 			actions.setRecordsCollection,
-			d3ringsPayloadsLanes.setRecordsCollection_Payload
+			setRecordsCollection_Payload
 		)
 	
 		var setRecords_Launcher = store.compose(
 			store.dispatch,
 			actions.setRecords,
-			d3ringsPayloadsLanes.setRecords_Payload
+			setRecords_Payload
 		)
 	
+		/* launchers rings */
 		var startRangs_Launcher = store.compose(
 			store.dispatch,
 			actions.startRangs
@@ -96,19 +226,19 @@ if (typeof require === "function") {
 		var updateRangsDurationLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsDuration,
-			d3ringsPayloadsWhirls.updateRangsDuration_Payload			
+			updateRangsDuration_Payload			
 		)
 			
 		var updateRangsNumberLuncher = store.compose(
 			store.dispatch,
 			actions.updateRangsNumber,
-			d3ringsPayloadsWhirls.updateRangsNumber_Payload			
+			updateRangsNumber_Payload			
 		)
 			
 		var createRings_Launcher = store.compose(
 			store.dispatch,
 			actions.createRings,
-			d3ringsPayloadsWhirls.createRings_Payload
+			createRings_Payload
 		)
 
 		var startRings_Launcher = store.compose(
@@ -121,33 +251,63 @@ if (typeof require === "function") {
 			actions.stopRings
 		)	
 
-		var KeyDown_Launcher = store.compose(
-				d3ringsPayloadsCourt.KeyDown_Payload
+		/* launchers court */
+		var keyDown_Launcher = store.compose(
+			KeyDown_Payload
 		)	
 
+		var updateMousePos_Launcher = store.compose(
+			store.dispatch,
+			actions.updateMousePos,
+			mouseMove_Payload
+		)	
+
+		/* launchers debug */
+		var setFpsDebug_Launcher = store.compose(
+			store.dispatch,
+			actions.setFps
+		)
+		
+		
 		/* listerners */
-		var mouseDown = d3ringsControls.mouseDownControl(store).start(d3.select('svg'))
-		var touchStart = d3ringsControls.touchStartControl(store).start(d3.select('svg'))
-		var mouseMove = d3ringsControls.mouseMoveControl(store).start(d3.select('svg'))
-		var touchMove = d3ringsControls.touchMoveControl(store).start(d3.select('svg'))
-		var mouseUp = d3ringsControls.mouseUpControl(store).start(d3.select('svg'))
-		var touchEnd = d3ringsControls.touchEndControl(store).start(d3.select('svg'))
-		var mouseLeave = d3ringsControls.mouseLeaveControl(store).start(d3.select('svg'))
-		var mouseEnter = d3ringsControls.mouseEnterControl(store).start(d3.select('svg'))
-		var ticker = d3ringsControls.tickControls(store).start()
-		var stepper = d3ringsControls.stepControls(store).start()
-		var keyDown = d3ringsControls.keyDownControl(store).start()
-		var keyRelease = d3ringsControls.keyReleaseControl(store).start()
+		var mouseDown = d3ringsControls.mouseDownControl(store, actions).start(d3.select('svg'))
+		var touchStart = d3ringsControls.touchStartControl(store, actions).start(d3.select('svg'))
+		var mouseMove = d3ringsControls.mouseMoveControl(store, actions).start(d3.select('svg'))
+		var touchMove = d3ringsControls.touchMoveControl(store, actions).start(d3.select('svg'))
+		var mouseUp = d3ringsControls.mouseUpControl(store, actions).start(d3.select('svg'))
+		var touchEnd = d3ringsControls.touchEndControl(store, actions).start(d3.select('svg'))
+		var mouseLeave = d3ringsControls.mouseLeaveControl(store, actions).start(d3.select('svg'))
+		var mouseEnter = d3ringsControls.mouseEnterControl(store, actions).start(d3.select('svg'))
+		var ticker = d3ringsControls.tickControls(store, actions).start()
+		var stepper = d3ringsControls.stepControls(store, actions).start()
+		var keyDown = d3ringsControls.keyDownControl(store, actions).start()
+		var keyRelease = d3ringsControls.keyReleaseControl(store, actions).start()
 
+		
+		
+		
+		
 		/* launches */
-		store.subscribe(store.compose(d3ringsRendererCourt.renderer, store.getState))
-		keyDown.subscribe(KeyDown_Launcher)
+		store.subscribe(store.compose(d3ringsRendererCourt.renderer, getStore_Payload))
 
-		store.subscribe(store.compose(d3ringsRendererLanes.renderer, store.getState))
+		mouseMove.subscribe(updateMousePos_Launcher)
+		mouseDown.subscribe(updateMousePos_Launcher)
+		mouseUp.subscribe(updateMousePos_Launcher)
+		mouseLeave.subscribe(updateMousePos_Launcher)
+		mouseEnter.subscribe(updateMousePos_Launcher)
+		touchStart.subscribe(updateMousePos_Launcher)
+		touchMove.subscribe(updateMousePos_Launcher)
+		touchEnd.subscribe(updateMousePos_Launcher)
+
+		keyDown.subscribe(keyDown_Launcher)
+
+		ticker.subscribe(setFpsDebug_Launcher)
+		
+		store.subscribe(store.compose(d3ringsRendererLanes.renderer, getStore_Payload))
 		stepper.subscribe(setRecordsCollection_Launcher)
 		stepper.subscribe(setRecords_Launcher)
 			
-		store.subscribe(store.compose(d3ringsRendererParticles.renderer, store.getState))	
+		store.subscribe(store.compose(d3ringsRendererParticles.renderer, getStore_Payload))
 		mouseDown.subscribe(startParticles_Launcher)
 		touchStart.subscribe(startParticles_Launcher)
 		mouseDown.subscribe(createParticles_Launcher)
@@ -161,7 +321,7 @@ if (typeof require === "function") {
 		ticker.subscribe(createParticles_Launcher)
 		stepper.subscribe(introduceParticles_Launcher)
 
-		store.subscribe(store.compose(d3ringsRendererWhirls.renderer, store.getState))
+		store.subscribe(store.compose(d3ringsRendererWhirls.renderer, getStore_Payload))
 		mouseDown.subscribe(startRangs_Launcher)
 		mouseEnter.subscribe(startRangs_Launcher)
 		mouseLeave.subscribe(stopRangs_Launcher)

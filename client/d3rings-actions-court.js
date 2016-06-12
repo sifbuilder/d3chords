@@ -99,7 +99,10 @@ var ActionCreators = {
         type: ActionTypes.START_KEYBKEY_EVENTS	// startKeybKeyEvents
     }
 	},
-	updateMousePos(x, y) {
+	updateMousePos(svg) {
+		var coords  = d3.mouse(svg)
+		var x = coords[0]
+		var y = coords[1]
     return {
         type: ActionTypes.UPDATE_MOUSE_POS,
         x: x,

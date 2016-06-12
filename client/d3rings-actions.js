@@ -7,8 +7,7 @@ if (typeof require === "function") {
 	var d3ringsActionsDebug = require('./d3rings-actions-debug.js')
 	var d3ringsActionsLanes = require('./d3rings-actions-lanes.js')
 	var d3ringsActionsParticles = require('./d3rings-actions-particles.js')
-	var d3ringsActionsRangs = require('./d3rings-actions-whirls.js')
-	// var d3ringsActionsRings = require('./d3rings-actions-rings.js')
+	var d3ringsActionsWhirls = require('./d3rings-actions-whirls.js')
 }	
 
 
@@ -34,8 +33,6 @@ var ActionTypes = merge_objects(
 		d3ringsActionsLanes.ActionTypes,
 		d3ringsActionsParticles.ActionTypes,
 		d3ringsActionsWhirls.ActionTypes
-		// d3ringsActionsRangs.ActionTypes
-		// d3ringsActionsRings.ActionTypes
 	)
 		
 var ActionCreators = merge_objects(
@@ -44,8 +41,6 @@ var ActionCreators = merge_objects(
 		d3ringsActionsLanes.ActionCreators, 
 		d3ringsActionsParticles.ActionCreators,
 		d3ringsActionsWhirls.ActionCreators
-		// d3ringsActionsRangs.ActionCreators
-		// d3ringsActionsRings.ActionCreators
 	)
 
 exports.ActionTypes = ActionTypes;

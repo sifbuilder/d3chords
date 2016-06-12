@@ -1,13 +1,9 @@
 
-# d3lanes
+# d3rings
 
-REDUX model implementation of an unframed window and d3v4 animation
+the big listerner, an irritating game but a needed template to probe coordination of #d3js transitions using #redux unwired store homage to spacex where the logic is the lauchers and the data the payload
 
 ## Author
-
-inspired on
-- [x] [Swizec Teller's particles](http://swizec.com/blog/animating-with-react-redux-and-d3/swizec/6775)
-- [x] [Michael Shapiro's message sequence](https://github.com/koudelka/d3-message-sequence)
 
 built upon
 - [x] [Mike Bostock's D3jsv4](https://github.com/d3)
