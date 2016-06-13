@@ -106,13 +106,13 @@ function reducerLanes(state = initialStateLanes, action) {
 						return r
 						
         case ActionTypes.SET_LANES:		// setLanes
- 						console.log('SET_LANES')
+ 						// console.log('SET_LANES')
             return Object.assign({}, state, {
                 lanes: action.lanes,
                 lanesIndex: Object.keys(action.lanes).length
             })
 				case ActionTypes.FETCH_RECORDS:	// fetchRecords
-						console.log('FETCH_RECORDS')
+						// console.log('FETCH_RECORDS')
 						var processRecord = function processRecord(d) {
 							d.amount = +d.amount;
 							d.risk = +d.risk;
@@ -137,13 +137,13 @@ function reducerLanes(state = initialStateLanes, action) {
             return Object.assign({}, state);
 
         case ActionTypes.SET_MESSAGES:			
- 						console.log('SET_MESSAGES')
+ 						// console.log('SET_MESSAGES')
            return Object.assign({}, state, {
 										messages: action.messages,
             })
 						
 				case ActionTypes.SET_RECORDS_FETCHED:
-						console.log('SET_RECORDS_FETCHED')
+						// console.log('SET_RECORDS_FETCHED')
            return Object.assign({}, state, {
                 areRecordsFetched: action.areRecordsFetched
             })
@@ -151,7 +151,7 @@ function reducerLanes(state = initialStateLanes, action) {
 				case ActionTypes.SET_RECORDS_COLLECTION:	// setRecordsCollection
 						var r = state
 						if (state.areRecordsFetched == false) {
-							console.log('SET_RECORDS_COLLECTION')
+							// console.log('SET_RECORDS_COLLECTION')
 							var r = Object.assign({}, state, {
 									recordsCollection: action.recordsCollection,
 									areRecordsFetched: true,
@@ -160,7 +160,7 @@ function reducerLanes(state = initialStateLanes, action) {
 						return r
 						
 				case ActionTypes.SET_RECORDS:
-						console.log('SET_RECORDS')
+						// console.log('SET_RECORDS')
 						var vLow = state.messagesCursorLow
 						var vHigh = state.messagesCursorHigh
 						var itemSpan = action.itemSpan

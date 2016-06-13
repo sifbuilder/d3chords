@@ -12,6 +12,59 @@ if (typeof require === "function") {
   (factory((global.d3ringsControls = global.d3ringsControls || {})));
 }(this, function (exports) { 'use strict';
 
+
+/*  -------------          */
+/*    timeControls        */
+/*  -------------          */
+	function timeControls(payload) {
+	
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+		// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+		
+		// ____________________ timer
+		function timer() {}
+		
+		// ____________________ start
+		timer.start = function start() {
+				var started = false
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					// listeners[i]()
+				}
+				return timer
+			}
+		// ____________________ subscribe
+	 timer.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			
+			d3.timer(listener)
+
+			return function unsubscribe() {
+				if (!isSubscribed) {
+					return
+				}
+
+				isSubscribed = false
+				ensureCanMutateNextListeners()
+				var index = nextListeners.indexOf(listener)
+				nextListeners.splice(index, 1)
+			}
+		}
+		return timer
+}		
+
 /*  -------------          */
 /*    stepControls        */
 /*  -------------          */
@@ -863,5 +916,6 @@ exports.mouseEnterControl = mouseEnterControl
 
 exports.stepControls = stepControls
 exports.tickControls = tickControls
+exports.timeControls = timeControls
 
 }));		

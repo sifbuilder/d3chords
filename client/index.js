@@ -196,7 +196,7 @@ if (typeof require === "function") {
 		)
 	
 		/* launchers rings */
-		var startRangs_rings_Listener = store.compose(
+		var startRangs_rangs_Listener = store.compose(
 			store.dispatch,
 			actions.startRangs
 		)
@@ -346,6 +346,7 @@ if (typeof require === "function") {
 		var mouseLeave_Launcher = d3ringsControls.mouseLeaveControl(logicAndData_Payload()).start(d3.select('svg'))
 		var mouseEnter_Launcher = d3ringsControls.mouseEnterControl(logicAndData_Payload()).start(d3.select('svg'))
 		var ticker_Launcher = 		d3ringsControls.tickControls(logicAndData_Payload()).start()
+		var d3timer_Launcher = 			d3ringsControls.timeControls(logicAndData_Payload()).start()
 		var stepper_Launcher =		d3ringsControls.stepControls(logicAndData_Payload()).start()
 		var keyDown_Launcher = 		d3ringsControls.keyDownControl(logicAndData_Payload()).start()
 		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(logicAndData_Payload()).start()
@@ -375,7 +376,7 @@ if (typeof require === "function") {
 			 touchEnd_Launcher.subscribe(updateMousePos_court_Listener)
 				 ticker_Launcher.subscribe(processKeybKeys_court_Listener)
 			 
-				 ticker_Launcher.subscribe(setFps_debug_Listener)
+				 d3timer_Launcher.subscribe(setFps_debug_Listener)
 				 
 									 store.subscribe(renderer_lanes_Listener)
 				stepper_Launcher.subscribe(setRecordsCollection_lanes_Listener)
@@ -398,8 +399,8 @@ if (typeof require === "function") {
 				stepper_Launcher.subscribe(introduceParticles_particles_Listener)
 				
 									 store.subscribe(renderer_whirls_Listener)
-			mouseDown_Launcher.subscribe(startRangs_rings_Listener)
-		 mouseEnter_Launcher.subscribe(startRangs_rings_Listener)
+			mouseDown_Launcher.subscribe(startRangs_rangs_Listener)
+		 mouseEnter_Launcher.subscribe(startRangs_rangs_Listener)
 		 mouseLeave_Launcher.subscribe(stopRangs_rings_Listener)
 			mouseDown_Launcher.subscribe(startRings_rings_Listener)
 			mouseDown_Launcher.subscribe(createRings_rings_Listener)

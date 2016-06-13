@@ -56,13 +56,13 @@ function combineReducers(reducers) {
 // _____________ RANGS
 var initialStateThis = {
 			duration: 2500,
-			n: 1,
+			n: 3,
 			s0: 200,
 			s: 200,
 			rangs: [],
 			rangsNow: 0,
 			rangsAlways: 0,
-			startRangs: false,
+			startRangs: true,
 			
 			rings: [],
 			ringsNew: [],
@@ -71,9 +71,9 @@ var initialStateThis = {
 			rangsHitsIndex: 0,
 			rangsHits: [],
 			ringsIntroduced: false,
-			ringsPerTick: 1,
+			ringsPerTick: 3,
 			ringsRadio: 9,
-			ringsGenerating: false,			
+			ringsGenerating: true,			
 	}
 	
 function reducerThis(state = initialStateThis, action) {
@@ -99,9 +99,9 @@ function reducerThis(state = initialStateThis, action) {
             })
 
        case ActionTypes.STOP_RANGS:
- 						console.log('STOP_RANGS')
+ 						// console.log('STOP_RANGS')
             return Object.assign({}, state, {
-                startRangs: false
+                // startRangs: false
             })
 
 			case ActionTypes.SET_RANG:					// setRang
@@ -152,7 +152,7 @@ function reducerThis(state = initialStateThis, action) {
 					return r
 		
         case ActionTypes.SET_RANGS:						// setRangs
- 						console.log('SET_RANGS')
+ 						// console.log('SET_RANGS')
             return Object.assign({}, state, {
                 rangs: action.rangs,
                 rangsNow: Object.keys(action.rangs).length
@@ -169,9 +169,11 @@ function reducerThis(state = initialStateThis, action) {
        case ActionTypes.UPDATE_RANGS_NUMBER:		// updateRangsNumber
 						var n = state.n
 						var hitsLostPct = Math.round(100 * (action.rangsAlways - action.rangsHitsIndex) / action.rangsAlways) || 0
- 						if (hitsLostPct < 20) n = Math.min(Math.max(Math.round((50 - hitsLostPct)/10), 1), 3)
+						var hitsPctBy10 = Math.floor((100 - hitsLostPct)/10)
+						var rangsMax = Math.max(hitsPctBy10, 2)
+						var rangsNumber = Math.min(rangsMax, 8)
 						return Object.assign({}, state, {
-                n: n,
+                n: rangsNumber,
              })
 
 						
@@ -206,13 +208,15 @@ function reducerThis(state = initialStateThis, action) {
 											var t = rang.t
 											var s = rang.s
 											var s0 = rang.s0
-											var r = ringsRadio || 0
+											var r0 = (ringsRadio * s / s0) || 0
+											var r = (ringsRadio * s / s0) || 0
 												
 											for (i = 0; i < action.ringsPerTick; i++) {
 													var ring = {
 																id: guid(),
 																cx: cx,
 																cy: cy,
+																r0: r0,
 																r: r,
 																rid: rid,
 																grid: grid,
@@ -258,22 +262,22 @@ function reducerThis(state = initialStateThis, action) {
 							return r
 		
         case ActionTypes.SET_DURATION:				// setDuration
-					console.log("SET_DURATION")		
+					// console.log("SET_DURATION")		
           return Object.assign({}, state, {
                 duration: action.duration
             })
 						
 		
         case ActionTypes.START_RINGS:				// startRings
-					console.log("START_RINGS")		
+					// console.log("START_RINGS")		
           return Object.assign({}, state, {
                 ringsGenerating: true
             })
 						
         case ActionTypes.STOP_RINGS:			// stopRings
-					console.log("STOP_RINGS")
+					// console.log("STOP_RINGS")
             return Object.assign({}, state, {
-                ringsGenerating: false
+                // ringsGenerating: false
             });
 
 						
@@ -308,6 +312,7 @@ function reducerThis(state = initialStateThis, action) {
 												var dcx = d.cx
 												var dcy = d.cy
 												var dr = d.r
+												var dr0 = d.r0
 												
 												if (dr > deltas) {
 															if (dcx - dr < xw) randx = - randx
@@ -319,7 +324,7 @@ function reducerThis(state = initialStateThis, action) {
 															var ynp1 = dcy + randy
 
 															d.tn = t
-															d.r = (1 - t) * ringsRadio
+															d.r = (1 - t) * dr0
 															d.vector[0] = randx
 															d.vector[1] = randy
 															
@@ -348,8 +353,6 @@ function reducerThis(state = initialStateThis, action) {
             return state;
     }
 }
-
-
 
 exports.reducer = reducerThis
 }));

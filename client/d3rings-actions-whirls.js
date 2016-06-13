@@ -160,6 +160,7 @@ var ActionCreators = {
 					 rid: arg.rid,
 					 cx: arg.cx,
 					 cy: arg.cy,
+					 r0: arg.r0,
 					 r: arg.r,
 					 vector: arg.vector,
 					 t: arg.t,

@@ -49,7 +49,7 @@ function combineReducers(reducers) {
 var initialStateParticles = {
 			particles: [],
 			particleIndex: 0,
-			particlesGenerating: false,
+			particlesGenerating: true,
 			particlesIntroduced: false,
 			particlesPerTick: 10,
 			particleRadio: 9,
@@ -60,15 +60,15 @@ function reducerParticles(state = initialStateParticles, action) {
 	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
-					console.log("START_PARTICLES")
+					// console.log("START_PARTICLES")
           return Object.assign({}, state, {
                 particlesGenerating: true
             })
 						
         case ActionTypes.STOP_PARTICLES:			// stopParticles
-					console.log("STOP_PARTICLES")
+					// console.log("STOP_PARTICLES")
             return Object.assign({}, state, {
-                particlesGenerating: false
+                // particlesGenerating: false
             });
 						
         case ActionTypes.INTRODUCE_PARTICLES:			// introduceParticles
