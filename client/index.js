@@ -1,3 +1,4 @@
+
 /* 														*/
 /*    		 index.js           */
 /* 														*/
@@ -409,12 +410,3 @@ if (typeof require === "function") {
 		 mouseLeave_Launcher.subscribe(stopRings_rings_Listener)		
 				stepper_Launcher.subscribe(updateRangsDuration_rings_Listener)
 				stepper_Launcher.subscribe(updateRangsNumber_rings_Listener)
-
-					
-					
-					
-					
-					
-					
-		
-			

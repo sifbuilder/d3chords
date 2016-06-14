@@ -1,5 +1,6 @@
+
 /* 																	*/
-/* d3rings-actions-whirls.js   						*/
+/* d3rings-actions-whirls.js   			*/
 /* 																	*/
 
 (function (global, factory) {

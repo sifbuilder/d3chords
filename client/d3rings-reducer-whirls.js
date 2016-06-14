@@ -1,6 +1,6 @@
-/* 														*/
-/*    d3rings-reducer-whirls.js      */
-/* 														*/
+/* 																*/
+/*    d3rings-reducer-whirls.js   */
+/* 																*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.44.js')

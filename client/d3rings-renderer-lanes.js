@@ -1,5 +1,6 @@
+
 /* 																	*/
-/* d3rings-renderer-lanes.js   		*/
+/* d3rings-renderer-lanes.js   			*/
 /* 																	*/
 
 if (typeof require === "function") {
@@ -561,4 +562,4 @@ var intransition = false
 	}
 	
 	exports.renderer = renderer;
-}))
+}));

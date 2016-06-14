@@ -1,5 +1,6 @@
+
 /* 																	*/
-/* d3rings-renderer-particles.js   */
+/* d3rings-renderer-particles.js    */
 /* 																	*/
 
 if (typeof require === "function") {
@@ -91,4 +92,4 @@ var intransition = false
 } // renderer
 	
 	exports.renderer = renderer;
-}))
+}));

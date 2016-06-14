@@ -1,5 +1,6 @@
+
 /* 																	*/
-/* d3rings-renderer-court.js   		*/
+/* d3rings-renderer-court.js   			*/
 /* 																	*/
 
 if (typeof require === "function") {
@@ -145,4 +146,5 @@ if (typeof require === "function") {
 	}
 	
 	exports.renderer = renderer;
-}))
+}));
+
