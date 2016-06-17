@@ -174,7 +174,7 @@ if (typeof require === "function") {
 			keyUpKeysChords_Payload
 		)	
 		
-		/*   setRecordsCollection_lanes_Listener    */
+		/*   data - setRecordsCollection_lanes_Listener    */
 		var src = store.getState().reducerChords.src
 		var processRecord = function processRecord(d) {
 			d.amount = +d.amount;

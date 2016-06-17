@@ -90,17 +90,17 @@ var intransition = false
 				var format = d3.format(",.3r");
 
 				// The color scale, for different categories of ?worrisome? risk.
-				var fill = d3LanesChordsUtils.d3_scale_ordinal()
+				var fill = d3ringsChordsUtils.d3_scale_ordinal()
 						.domain([0, 1, 2])
 						.range(["#DB704D", "#D2D0C6", "#ECD08D", "#F8EDD3"]);
 
 				// The arc generator, for the groups.
-				var arc = d3LanesChordsUtils.d3_svg_arc()
+				var arc = d3ringsChordsUtils.d3_svg_arc()
 						.innerRadius(innerRadius)
 						.outerRadius(outerRadius);
 
 				// The chord generator (quadratic B?zier), for the chords.
-				var chord = d3LanesChordsUtils.d3_svg_chord()
+				var chord = d3ringsChordsUtils.d3_svg_chord()
 						.radius(innerRadius);
 						
 		// -------------------------------------------
@@ -110,9 +110,7 @@ var intransition = false
 				var debits = []
 
 				// The chord layout, for computing the angles of chords and groups.
-				var layout = d3LanesChordsUtils.d3_layout_chord()
-						//.sortGroups(d3.descending)
-						//.sortSubgroups(d3.descending)
+				var layout = d3ringsChordsUtils.d3_layout_chord()
 						.sortChords(d3.descending)
 						.padding(.04);
 
@@ -120,12 +118,12 @@ var intransition = false
 						countryIndex = -1,
 						actionsList = []
 
-			var fill = d3LanesChordsUtils.d3_scale_ordinal()
+			var fill = d3ringsChordsUtils.d3_scale_ordinal()
 					.domain([0, 1, 2, 3])
 					.range(["#D2D0C6", "#ECD08D", "#F8EDD3", "#DB704D"]);
 			
 						
-			var arc = d3LanesChordsUtils.d3_svg_arc()
+			var arc = d3ringsChordsUtils.d3_svg_arc()
 					.innerRadius(innerRadius)
 					.outerRadius(outerRadius);						
 						
@@ -258,8 +256,7 @@ var intransition = false
 						groupElems
 							.select('path')
 								.attr("d", arc)
-								.style("fill", function(d) { 
-																	return fill(subjectByIndex[d.index].risk); })			
+								.style("fill", function(d) { return fill(subjectByIndex[d.index].risk); })			
 							.style("stroke", "gray")
 							.style("stroke-width", 1)
 				
@@ -314,7 +311,6 @@ var intransition = false
 											var ty = outerRadius * Math.sin(d3Angle)
 											translate = "translate(" + (tx) + "," + (ty) + ") "
 											var transform = rotate + translate + mirror
-											// console.log("____ d chord NOTE enter transform: " + transform)
 											return translate
 										})
 
@@ -345,8 +341,6 @@ var intransition = false
 					noteElems.exit()
 						.remove()
 
-					
-					// CHORD cont.	
 				 //  chords update
 					chordsElems
 						.select("path")

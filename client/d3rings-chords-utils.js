@@ -8,7 +8,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3LanesChordsUtils = global.d3LanesChordsUtils || {})));
+  (factory((global.d3ringsChordsUtils = global.d3ringsChordsUtils || {})));
 }(this, function (exports) { 'use strict';
 
 
