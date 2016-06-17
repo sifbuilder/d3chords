@@ -10,6 +10,7 @@ if (typeof require === "function") {
 	var d3ringsRendererLanes = require('./d3rings-renderer-lanes.js')
 	var d3ringsRendererParticles = require('./d3rings-renderer-particles.js')
 	var d3ringsRendererWhirls = require('./d3rings-renderer-whirls.js')
+	var d3ringsRendererChords = require('./d3rings-renderer-chords.js')
 
 	var d3ringsReducer = require('./d3rings-reducer.js')
 	var d3ringsStore = require('./d3rings-store.js')
@@ -42,21 +43,17 @@ if (typeof require === "function") {
 				actions: actions
 			}}
 			
-			var container_Payload = function () { return 
-				d3.select('svg')
-			}
-			
 			/* payloads lanes */
 			var keyDownKeysLanes_Payload = function () { return {
-						keyEvents: store.getState().reducerCourt.keyEvents,
-						currentMode: store.getState().reducerCourt.currentMode,
-						itemSpan: store.getState().reducerConfig.itemSpan,
+				keyEvents: store.getState().reducerCourt.keyEvents,
+				currentMode: store.getState().reducerCourt.currentMode,
+				itemSpan: store.getState().reducerConfig.itemSpan,
 			}}
 
 			var keyUpKeysLanes_Payload = function () { return {
-						keys: store.getState().reducerCourt.keys,
-						currentMode: store.getState().reducerCourt.currentMode,
-						itemSpan: store.getState().reducerConfig.itemSpan,
+				keys: store.getState().reducerCourt.keys,
+				currentMode: store.getState().reducerCourt.currentMode,
+				itemSpan: store.getState().reducerConfig.itemSpan,
 			}}
 
 			var setRecords_Payload = function () { return {
@@ -140,8 +137,49 @@ if (typeof require === "function") {
 						views: store.getState().reducerConfig.views,
 						currentView: store.getState().reducerCourt.currentView,
 			}}
-					
-						
+		
+		/* payloads chords */
+			var fetchChords_Payload = function () { return {
+						src: store.getState().reducerChords.src,
+		}}
+		
+				
+		/* launchers chords */
+		var keyDownArrow_chords_Listener = store.compose(
+			store.dispatch,
+			actions.walkDownChords
+		)
+
+		var keyUpArrow_chords_Listener = store.compose(
+			store.dispatch,
+			actions.walkUpChords
+		)	
+		
+		// var fetchChords_chords_Listener = store.compose(
+			// store.dispatch,
+			// actions.fetchChords,
+			// fetchChords_Payload
+		// )
+
+		/*   data    */
+		var src = store.getState().reducerChords.src
+		var processRecord = function processRecord(d) {
+			d.amount = +d.amount;
+			d.risk = +d.risk;
+			d.valueOf = function value() {
+				return this.amount;
+			}	
+			return d;
+		}
+		var processData = function processData(error, dataCsv) {
+			store.dispatch(actions.fetchChords({chords: dataCsv}))
+		}
+		
+		d3.queue()
+			.defer(d3.csv, src, processRecord)
+			.await(processData)					
+								
+		
 		/* launchers particles*/
 		var createParticles_particles_Listener = store.compose(
 			store.dispatch,
@@ -316,7 +354,8 @@ if (typeof require === "function") {
 			actions.resizeHeight,
 			keyDownKeys_Payload
 		)	
-
+		
+		// renderers
 		var renderer_court_Listener = store.compose(
 			d3ringsRendererCourt.renderer,
 			logicAndData_Payload
@@ -337,6 +376,11 @@ if (typeof require === "function") {
 			logicAndData_Payload
 		)	
 
+		var renderer_chords_Listener = store.compose(
+			d3ringsRendererChords.renderer,
+			logicAndData_Payload
+		)	
+		
 		/* launchers */
 		var mouseDown_Launcher = 	d3ringsControls.mouseDownControl(logicAndData_Payload()).start(d3.select('svg'))
 		var touchStart_Launcher = d3ringsControls.touchStartControl(logicAndData_Payload()).start(d3.select('svg'))
@@ -354,6 +398,11 @@ if (typeof require === "function") {
 		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(logicAndData_Payload()).start()
 		
 		/* listeners */
+									 store.subscribe(renderer_chords_Listener)
+				// stepper_Launcher.subscribe(fetchChords_chords_Listener)
+				// stepper_Launcher.subscribe(keyUpArrow_chords_Listener)
+				// stepper_Launcher.subscribe(keyDownArrow_chords_Listener)	
+		
 									 store.subscribe(renderer_court_Listener)
 		 keyRelease_Launcher.subscribe(releaseKeybKey_court_Listener)
 				keyDown_Launcher.subscribe(keyDown_court_Listener)

@@ -15,38 +15,6 @@
 }(this, function (exports) { 'use strict';
 
 
-// _____________ adapted from redux combineReducers	
-function combineReducers(reducers) {
-  var reducerKeys = Object.keys(reducers)
-  var finalReducers = {}
-  for (var i = 0; i < reducerKeys.length; i++) {
-    var key = reducerKeys[i]
-    if (typeof reducers[key] === 'function') {
-      finalReducers[key] = reducers[key]
-    }
-  }
-  var finalReducerKeys = Object.keys(finalReducers)
-
-  return function combination(state = {}, action) {
-    var hasChanged = false
-    var nextState = {}
-    for (var i = 0; i < finalReducerKeys.length; i++) {
-      var key = finalReducerKeys[i]
-      var reducer = finalReducers[key]
-      var previousStateForKey = state[key]
-      var nextStateForKey = reducer(previousStateForKey, action)
-      if (typeof nextStateForKey === 'undefined') {
-        var errorMessage = getUndefinedStateErrorMessage(key, action)
-        throw new Error(errorMessage)
-      }
-      nextState[key] = nextStateForKey
-      hasChanged = hasChanged || nextStateForKey !== previousStateForKey
-    }
-    return hasChanged ? nextState : state
-  }
-}
-
-
 // _____________ LANES
 var initialStateLanes = {
 			lanes: [],

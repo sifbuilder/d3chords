@@ -22,6 +22,11 @@ function guid() {
     return _p8() + _p8(true) + _p8(true) + _p8();
 }
 
+function inSquare (cx, cy, xl, yl, xh, yh) {
+	if (cx > xl && cx < xh && cy > yl && cy < yh) return true
+	else return false											
+}
+
 // _____________ adapted from redux combineReducers	
 function combineReducers(reducers) {
   var reducerKeys = Object.keys(reducers)
@@ -192,10 +197,6 @@ function reducerThis(state = initialStateThis, action) {
 									var cx = action.x
 									var cy = action.y
 								
-									function inSquare (cx, cy, xl, yl, xh, yh) {
-										if (cx > xl && cx < xh && cy > yl && cy < yh) return true
-										else return false											
-									}
 
 									var xl = action.rangs[j].x
 									var yl = action.rangs[j].y

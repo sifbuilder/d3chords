@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions.js   						*/
+/* d3rings-actions-lanes.js   			*/
 /* 																	*/
 
 (function (global, factory) {

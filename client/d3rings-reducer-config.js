@@ -50,7 +50,7 @@ function combineReducers(reducers) {
 var initialStateConfig = {
 			modes: {autoMode: 'autoMode', walkMode: 'walkMode'},
 			modeLabels: {autoMode: 'auto', walkMode: 'walk'},
-			views: ['lanesView', 'ringsView'],
+			views: ['chordsView', 'lanesView', 'ringsView'],
 			gravity: 0.5,
 			randNormal: d3.randomNormal(1.3, 2),
 			randNormal2: d3.randomNormal(0.5, 1.8),

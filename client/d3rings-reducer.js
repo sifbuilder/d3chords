@@ -4,14 +4,13 @@
 /* 														*/
 
 if (typeof require === "function") {
-	var d3ringsReducerConfig = require('./d3rings-reducer-config.js')
-	var d3ringsReducerCourt = require('./d3rings-reducer-court.js')
-	var d3ringsReducerDebug = require('./d3rings-reducer-debug.js')
-	var d3ringsReducerLanes = require('./d3rings-reducer-lanes.js')
+	var d3ringsReducerConfig = 		require('./d3rings-reducer-config.js')
+	var d3ringsReducerCourt = 		require('./d3rings-reducer-court.js')
+	var d3ringsReducerDebug = 		require('./d3rings-reducer-debug.js')
+	var d3ringsReducerLanes = 		require('./d3rings-reducer-lanes.js')
 	var d3ringsReducerParticles = require('./d3rings-reducer-particles.js')
-	var d3ringsReducerWhirls = require('./d3rings-reducer-whirls.js')
-	// var d3ringsReducerRangs = require('./d3rings-reducer-rangs.js')
-	// var d3ringsReducerRings = require('./d3rings-reducer-rings.js')
+	var d3ringsReducerWhirls = 		require('./d3rings-reducer-whirls.js')
+	var d3ringsReducerChords = 		require('./d3rings-reducer-chords.js')
 }
 	
 (function (global, factory) {
@@ -52,7 +51,6 @@ function combineReducers(reducers) {
   }
 }
 
-
 // _____________ combined reducer
 var reducer = combineReducers({
 		reducerConfig: d3ringsReducerConfig.reducerConfig,
@@ -61,10 +59,8 @@ var reducer = combineReducers({
 		reducerLanes: d3ringsReducerLanes.reducerLanes,
 		reducerParticles: d3ringsReducerParticles.reducerParticles,
 		reducerWhirls: d3ringsReducerWhirls.reducer,
-		// reducerRangs: d3ringsReducerRangs.reducer,
-		// reducerRings: d3ringsReducerRings.reducer,
+		reducerChords: d3ringsReducerChords.reducer,
 })
-
 
 var r = reducer()
 
