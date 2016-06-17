@@ -26,26 +26,38 @@ var keyMirror = function(obj, prefix) {
 }
 
 var actionConstants = {
-	FETCH_CHORDS: '',
-	SET_CHORDS_FETCHED: '',
-}
+	SET_CHORDS_COLLECTION: '',
+	SET_CHORDS: '',
+	WALK_DOWN_CHORDS: '',
+	WALK_UP_CHORDS: '',}
 
 var ActionTypes = keyMirror(actionConstants, '')
 
 // ____________________ actions
 var ActionCreators = {
 
-	fetchChords(payload) {		// FETCH_CHORDS
+	setChordsCollection(payload) {		// SET_CHORDS_COLLECTION
     return {
-        type: ActionTypes.FETCH_CHORDS,
+        type: ActionTypes.SET_CHORDS_COLLECTION,
         payload: payload,
     }
   },
-
-	setRecordsFetched(areRecordsFetched) {
+	setChords(payload) {				// SET_CHORDS
     return {
-        type: ActionTypes.SET_RECORDS_FETCHED,
-        areRecordsFetched: areRecordsFetched,
+        type: ActionTypes.SET_CHORDS,
+        payload: payload,
+    }
+  },
+	walkDownChords(payload) {	// WALK_DOWN_CHORDS
+    return {
+        type: ActionTypes.WALK_DOWN_CHORDS,
+        payload: payload,
+    }
+  },
+	walkUpChords(payload) {	// WALK_UP_CHORDS
+    return {
+        type: ActionTypes.WALK_UP_CHORDS,
+        payload: payload,
     }
   },
 

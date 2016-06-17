@@ -139,29 +139,42 @@ if (typeof require === "function") {
 			}}
 		
 		/* payloads chords */
-			var fetchChords_Payload = function () { return {
-						src: store.getState().reducerChords.src,
+			var keyDownKeysChords_Payload = function () { return {
+				keyEvents: store.getState().reducerCourt.keyEvents,
+				currentMode: store.getState().reducerCourt.currentMode,
+				itemSpan: store.getState().reducerConfig.itemSpan,
+			}}
+
+			var keyUpKeysChords_Payload = function () { return {
+				keys: store.getState().reducerCourt.keys,
+				currentMode: store.getState().reducerCourt.currentMode,
+				itemSpan: store.getState().reducerConfig.itemSpan,
+			}}
+
+			var setChords_Payload = function () { return {
+				itemSpan: store.getState().reducerConfig.itemSpan,
+				currentMode: store.getState().reducerCourt.currentMode
+			}}
+				
+			var setChordsCollection_Payload = function () { return {
+				src: store.getState().reducerChords.src,
 		}}
 		
 				
 		/* launchers chords */
 		var keyDownArrow_chords_Listener = store.compose(
 			store.dispatch,
-			actions.walkDownChords
+			actions.walkDownChords,
+			keyDownKeysChords_Payload
 		)
 
 		var keyUpArrow_chords_Listener = store.compose(
 			store.dispatch,
-			actions.walkUpChords
+			actions.walkUpChords,
+			keyUpKeysChords_Payload
 		)	
 		
-		// var fetchChords_chords_Listener = store.compose(
-			// store.dispatch,
-			// actions.fetchChords,
-			// fetchChords_Payload
-		// )
-
-		/*   data    */
+		/*   setRecordsCollection_lanes_Listener    */
 		var src = store.getState().reducerChords.src
 		var processRecord = function processRecord(d) {
 			d.amount = +d.amount;
@@ -172,13 +185,17 @@ if (typeof require === "function") {
 			return d;
 		}
 		var processData = function processData(error, dataCsv) {
-			store.dispatch(actions.fetchChords({chords: dataCsv}))
-		}
-		
+			store.dispatch(actions.setChordsCollection({chords: dataCsv}))
+		}	
 		d3.queue()
 			.defer(d3.csv, src, processRecord)
 			.await(processData)					
 								
+		var setChords_chords_Listener = store.compose(
+			store.dispatch,
+			actions.setChords,
+			setChords_Payload
+		)
 		
 		/* launchers particles*/
 		var createParticles_particles_Listener = store.compose(
@@ -399,9 +416,10 @@ if (typeof require === "function") {
 		
 		/* listeners */
 									 store.subscribe(renderer_chords_Listener)
-				// stepper_Launcher.subscribe(fetchChords_chords_Listener)
-				// stepper_Launcher.subscribe(keyUpArrow_chords_Listener)
-				// stepper_Launcher.subscribe(keyDownArrow_chords_Listener)	
+				// stepper_Launcher.subscribe(setChordsCollection_chords_Listener)
+				stepper_Launcher.subscribe(setChords_chords_Listener)
+				stepper_Launcher.subscribe(keyUpArrow_chords_Listener)
+				stepper_Launcher.subscribe(keyDownArrow_chords_Listener)	
 		
 									 store.subscribe(renderer_court_Listener)
 		 keyRelease_Launcher.subscribe(releaseKeybKey_court_Listener)

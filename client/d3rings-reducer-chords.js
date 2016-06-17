@@ -22,6 +22,9 @@ var initialStateThis = {
 			chordsIndex: 0,
 			areChordsFetched: false,
 			src: 'chords.csv',
+			itemsCursorLow: 0,
+			itemsCursorHigh: 0,
+			keyEventsOnChords: {},
 	}
 	
 function reducerThis(state = initialStateThis, action) {
@@ -29,85 +32,91 @@ function reducerThis(state = initialStateThis, action) {
 	var ActionTypes = d3ringsActions.ActionTypes
     switch (action.type) {
 
-				case ActionTypes.FETCH_CHORDS:	// fetchChords
+				case ActionTypes.SET_CHORDS_COLLECTION:	// setChordsCollection
+					console.log("SET_CHORDS_COLLECTION")
 					var r = Object.assign({}, state,
-							{chords: action.payload.chords,
+							{chordsCollection: action.payload.chords,
 								areChordsFetched: true
 							})
 	        return r
 						
 				case ActionTypes.SET_CHORDS:	// setChords
-						var vLow = state.messagesCursorLow
-						var vHigh = state.messagesCursorHigh
-						var itemSpan = action.itemSpan
-						var mode = action.mode
+					// console.log("SET_CHORDS")
+						var vLow = state.itemsCursorLow
+						var vHigh = state.itemsCursorHigh
+						var itemSpan = action.payload.itemSpan
+						var mode = action.payload.currentMode
 						var r = state
 						if (mode == 'autoMode') {
-							var records = state.chordsCollection
-							var numRecords = records.length
+							var chords = state.chordsCollection
+							var numChords = chords.length
 							if (vHigh >= vLow) vHigh = vHigh + 1	// add one to upper border
-							if (vHigh > numRecords) vHigh = -1		// upper border
+							if (vHigh > numChords) vHigh = -1		// upper border
 							if (((vHigh - vLow) > itemSpan) 			// all spteps full
 									|| (vHigh == -1) 									// infinitum with vLow active
 									|| (vLow == -1) 									// get always from reset
 									) vLow = vLow + 1									// increase lower border
-							if (vLow > numRecords) vLow = -1			// reset at end of cycle
+							if (vLow > numChords) vLow = -1			// reset at end of cycle
+
+					var rs = state.chordsCollection.slice(vLow, vHigh)		
 							r = Object.assign({}, state, {
-								records: state.chordsCollection.slice(vLow, vHigh),
-								messagesCursorLow: vLow,
-								messagesCursorHigh: vHigh,
+								chords: rs,
+								itemsCursorLow: vLow,
+								itemsCursorHigh: vHigh,
 							})
 						}
 						return r
 
-				case ActionTypes.WALK_UP_RECORDS:			// walkUpChords
-						var keyEventsOnLanes = state.keyEventsOnLanes
+				case ActionTypes.WALK_UP_CHORDS:			// walkUpChords
+						// console.log("WALK_UP_CHORDS", action)
+					var keyEventsOnChords = state.keyEventsOnChords
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
 						var keys = action.payload.keys
 						
-						var vLow = state.messagesCursorLow
-						var vHigh = state.messagesCursorHigh
+						var vLow = state.itemsCursorLow
+						var vHigh = state.itemsCursorHigh
 						var itemSpan = action.payload.itemSpan
 						var currentMode = action.payload.mode
 						var r = state
 						if (currentMode == 'walkMode') {
-							if (keyEventsOnLanes.upArrow !== null && keyEventsOnLanes.upArrow !== action.payload.keyEvents.upArrow) {			// upArrow
-										keyEventsOnLanes.upArrow = action.payload.keyEvents.upArrow
+							if (keyEventsOnChords.upArrow !== null && keyEventsOnChords.upArrow !== action.payload.keyEvents.upArrow) {			// upArrow
+										keyEventsOnChords.upArrow = action.payload.keyEvents.upArrow
 										vLow = Math.max(0, --vLow)
-										r = Object.assign({}, state, keyEventsOnLanes) 
+										r = Object.assign({}, state, keyEventsOnChords) 
 										r = Object.assign({}, state, {
-											records: state.recordsCollection.slice(vLow, vHigh),
-											messagesCursorLow: vLow,
-											messagesCursorHigh: vHigh,
+											chords: state.chordsCollection.slice(vLow, vHigh),
+											itemsCursorLow: vLow,
+											itemsCursorHigh: vHigh,
 									})
 								}
 						}
 						return r
 						
-				case ActionTypes.WALK_DOWN_RECORDS:			// walkDownChords
-						var keyEventsOnLanes = state.keyEventsOnLanes
+				case ActionTypes.WALK_DOWN_CHORDS:			// walkDownChords
+						// console.log("WALK_DOWN_CHORDS")
+						var keyEventsOnChords = state.keyEventsOnChords
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
 						var keys = action.payload.keys
 						
-						var vLow = state.messagesCursorLow
-						var vHigh = state.messagesCursorHigh
+						var vLow = state.itemsCursorLow
+						var vHigh = state.itemsCursorHigh
 						var itemSpan = action.payload.itemSpan
 						var currentMode = action.payload.currentMode
 						var r = Object.assign({}, state)
 						if (currentMode == 'walkMode') {
-							if (keyEventsOnLanes.downArrow !== null && keyEventsOnLanes.downArrow !== action.payload.keyEvents.downArrow) {			// downArrow
-								keyEventsOnLanes.downArrow = action.payload.keyEvents.downArrow
-								r = Object.assign({}, state, keyEventsOnLanes) 
+							if (keyEventsOnChords.downArrow !== null && keyEventsOnChords.downArrow !== action.payload.keyEvents.downArrow) {			// downArrow
+								keyEventsOnChords.downArrow = action.payload.keyEvents.downArrow
+								r = Object.assign({}, state, keyEventsOnChords) 
 								if ((vHigh - vLow)  >= itemSpan) ++vLow
 								++vHigh
 									r = Object.assign({}, state, {
-										records: state.recordsCollection.slice(vLow, vHigh),
-										messagesCursorLow: vLow,
-										messagesCursorHigh: vHigh,
+										chords: state.chordsCollection.slice(vLow, vHigh),
+										itemsCursorLow: vLow,
+										itemsCursorHigh: vHigh,
 								})
 							}
 						}
