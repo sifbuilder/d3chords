@@ -177,10 +177,10 @@ if (typeof require === "function") {
 		/*   data - setRecordsCollection_lanes_Listener    */
 		var src = store.getState().reducerChords.src
 		var processRecord = function processRecord(d) {
-			d.amount = +d.amount;
-			d.risk = +d.risk;
+			d.predicate = d.predicate;
+			d.weigh = +d.weigh;
 			d.valueOf = function value() {
-				return this.amount;
+				return Math.max(this.weigh, 1)
 			}	
 			return d;
 		}

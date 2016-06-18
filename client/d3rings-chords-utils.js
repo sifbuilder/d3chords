@@ -1,9 +1,12 @@
-	// ------------------------------			
-	if (typeof require === "function") {
-		var d3 = require('d3.v4.0.0-alpha.29.js')
+	
+/* 																						*/
+/* d3rings-chords-utils.js      							*/
+/* ref. https://bl.ocks.org/mbostock/1308257	*/
+/* 																						*/
 
+	if (typeof require === "function") {
+		var d3 = require('d3.v4.0.0-alpha.44.js')
 	}
-	// ------------------------------	
 	
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
