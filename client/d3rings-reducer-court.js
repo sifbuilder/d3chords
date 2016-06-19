@@ -1,7 +1,7 @@
 
-/* 														*/
-/*    d3rings-reducer.js      */
-/* 														*/
+/* 																*/
+/*    d3rings-reducer-court.js    */
+/* 																*/
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-alpha.44.js')
@@ -62,7 +62,7 @@ var initialStateCourt = {
 			keys: [],
 			keysEvents: {},
 			notice: 'auto lanes',
-			currentMode: 'autoMode',
+			currentMode: 'walkMode',
 			currentView: 'chordsView',
 			arrowKeysStarted: false,
 			keybKeyEventsStarted: false,

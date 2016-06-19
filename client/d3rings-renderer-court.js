@@ -52,7 +52,7 @@ if (typeof require === "function") {
 					.classed("notices", true)	// items
 			// _________________________________ render Notice Update
 				var errorNotice = (state.reducerCourt.notice) ? state.reducerCourt.notice : ""
-				var noticeToShow = " "
+				var noticeToShow = ". "
 				var currentView = state.reducerCourt.currentView
 				var labelMode = state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]]
 				var size = parseInt(svg.style("width")) + " x " + parseInt(svg.style("height"))
@@ -84,6 +84,11 @@ if (typeof require === "function") {
 						'  (' + 'try alt-v' + ')'
 				}
 				
+				if (currentView == 'chordsView') {
+					noticeToShow = noticeToShow +
+						currentView + " " + labelMode
+				}
+
 				var winWidthPixels = parseInt(svg.style("width"))
 				var winHeightPixels = parseInt(svg.style("height"))
 				

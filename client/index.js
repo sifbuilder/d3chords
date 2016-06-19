@@ -152,7 +152,6 @@ if (typeof require === "function") {
 			}}
 
 			var setChords_Payload = function () { return {
-				itemSpan: store.getState().reducerConfig.itemSpan,
 				currentMode: store.getState().reducerCourt.currentMode
 			}}
 				
@@ -176,7 +175,8 @@ if (typeof require === "function") {
 		
 		/*   data - setRecordsCollection_lanes_Listener    */
 		var src = store.getState().reducerChords.src
-		var processRecord = function processRecord(d) {
+		var processRecord = function processRecord(d, i) {
+			d.prx = i
 			d.predicate = d.predicate;
 			d.weigh = +d.weigh;
 			d.valueOf = function value() {

@@ -40,7 +40,7 @@
   }
 	var eps = 1e-6, eps2 = eps * eps, pi = Math.PI, tau = 2 * pi, taueps = tau - eps, halfpi = pi / 2, d3_radians = pi / 180, d3_degrees = 180 / pi;
 
-	// ___________________________
+	// ___________________________ d3_svg_chord
   var d3_svg_chord = function() {
     var source = d3_source, target = d3_target, radius = d3_svg_chordRadius, startAngle = d3_svg_arcStartAngle, endAngle = d3_svg_arcEndAngle;
     function chord(d, i) {
@@ -94,7 +94,7 @@
     return chord;
   };
 
-	// _____________________________
+	// _____________________________ d3_layout_chord
   var d3_layout_chord = function() {
     var chord = {}, chords, groups, matrix, n, padding = 0, sortGroups, sortSubgroups, sortChords;
     function relayout() {
@@ -129,7 +129,7 @@
         x0 = x, j = -1;
         while (++j < n) {
           var di = groupIndex[i], dj = subgroupIndex[di][j], v = matrix[di][dj], a0 = x, a1 = x += v * k;
-          subgroups[di + "-" + dj] = {
+					subgroups[di + "-" + dj] = {
             index: di,
             subindex: dj,
             startAngle: a0,
@@ -208,8 +208,7 @@
     };
     return chord;
   };
-// ----------------------------------------
-// ----------------------------------------
+
 	exports.d3_layout_chord = d3_layout_chord
 	exports.d3_scale_ordinal = d3_scale_ordinal
 	exports.d3_svg_arc = d3_svg_arc
