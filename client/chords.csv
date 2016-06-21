@@ -1,4 +1,14 @@
 source,target,predicate,weigh
+Britain,Britain,0,1
+Ireland,Ireland,0,1
+Japan,Japan,0,1
+Spain,Spain,0,1
+Germany,Germany,0,1
+France,France,0,1
+Greece,Greece,0,1
+Italy,Italy,0,1
+Portugal,Portugal,0,1
+United States,United States,0,1
 Britain,Ireland,12,2
 Britain,Japan,28.2,2
 Britain,Spain,326,2

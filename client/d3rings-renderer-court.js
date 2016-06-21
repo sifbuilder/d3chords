@@ -86,7 +86,8 @@ if (typeof require === "function") {
 				
 				if (currentView == 'chordsView') {
 					noticeToShow = noticeToShow +
-						currentView + " " + labelMode
+						labelMode + " the " + currentView +
+						" the key point is the arrow key"
 				}
 
 				var winWidthPixels = parseInt(svg.style("width"))

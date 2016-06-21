@@ -26,16 +26,24 @@ var keyMirror = function(obj, prefix) {
 }
 
 var actionConstants = {
+	FETCH_CHORDS_COLLECTION: '',
 	SET_CHORDS_COLLECTION: '',
 	SET_CHORDS: '',
 	WALK_DOWN_CHORDS: '',
-	WALK_UP_CHORDS: '',}
+	WALK_UP_CHORDS: '',
+}
 
 var ActionTypes = keyMirror(actionConstants, '')
 
 // ____________________ actions
 var ActionCreators = {
 
+	fetchChordsCollection(payload) {		// FETCH_CHORDS_COLLECTION
+    return {
+        type: ActionTypes.FETCH_CHORDS_COLLECTION,
+        payload: payload,
+    }
+  },
 	setChordsCollection(payload) {		// SET_CHORDS_COLLECTION
     return {
         type: ActionTypes.SET_CHORDS_COLLECTION,

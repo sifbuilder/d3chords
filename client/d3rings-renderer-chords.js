@@ -50,16 +50,27 @@ var intransition = false
 		var _svgid = state.reducerConfig.container
 		var _currentView = state.reducerCourt.currentView
 
+		var subjectByNameAll = state.reducerChords.subjectByNameAll
+		var subjectByIndexAll = state.reducerChords.subjectByIndexAll
+		var actionsListAll = state.reducerChords.actionsListAll
+		var outerRate = state.reducerChords.outerRate
+		var outerDelta = state.reducerChords.outerDelta
 		// 
-		// chord color last fill(subjectByIndex[d.index].weigh
-		// chord color other
-		var _groupNameColorFrom = 'Red'
-		var _groupNameColorTo = 'darkGrey'
-		var _groupNameColorOther = 'orange'
+		var _groupNameColorFrom = 'black'
+		var _groupNameColorTo = 'darkgrey'
+		var _groupNameColorOther = 'SaddleBrown'
+		// chord color  fill(subjectByIndex[d.index].weigh
+				
+		var _groupArcColorFrom = 'white'
+		var _groupArcColorTo = 'white'
+
 		var _groupToolTipColorOther = 'gray'
 		var _groupBorderColor = "gray"
+		
 		var _chordColorLast = "gold"
-		var _chordColorColorOther = 'yellow'
+		var _chordColorOther = 'yellow'
+		// chordColor:  fill(subjectByIndex[d.index]
+		
 		var _predicateColorLast = "gold"
 		var _predicatColorOther = 'yellow'
 		
@@ -95,11 +106,26 @@ var intransition = false
 			.append("g")
 				.classed("chords", true)	// items
 				.attr("transform", "translate(" + _width / 2 + "," + _height / 2 + ")")
-				
-			
+
+	// -------------------------------------------
+  // http://bl.ocks.org/brattonc/b1abb535227b2f722b51.
+  		var dummyText = svgContainer.select(".dummyText")
+			if (dummyText.node() == null) {
+					dummyText = svgContainer
+							.append("text")
+								.attr("id", "dummyText")
+								.attr("class", "dummyText")
+								.text("N")
+						.attr("x", 6)
+						.attr("dy", 15)
+			}
+			var textHeight = dummyText.node().getBBox().height				
+			var textWidth = dummyText.node().getBBox().width				
+// console.log("text size", textHeight, textWidth)
+	
 		// -------------------------------------------
-			var outerRadius = (3/8) * Math.min(_width, _height) - 4,
-					innerRadius = outerRadius - 20;
+			var outerRadius = outerRate * Math.min(_width, _height),
+					innerRadius = outerRadius - outerDelta;
 
 			var format = d3.format(",.3r");
 
@@ -125,14 +151,6 @@ var intransition = false
 					.radius(innerRadius);
 						
 			// -------------------------------------------
-			 // Square matrices, asynchronously loaded
-				var entries = []
-
-				// The chord layout, for computing the angles of chords and groups.
-				var layout = d3ringsChordsUtils.d3_layout_chord()
-						// .sortChords(d3.descending)
-						.padding(.04);
-
 				var subjectByName = d3.map(),
 						subjectIndex = -1,
 						actionsList = []
@@ -148,8 +166,9 @@ var intransition = false
 						return d3map
 				}
 				subjectByName = subjectByNameCreate(data)
-// console.log("subjectByName", subjectByName)
+console.log("subjectByName", JSON.stringify(subjectByName, null, 2))
 	
+// console.log("data", JSON.stringify(data, null, 2))
 				function subjectByIndexCreate (dataParam) {
 						var ci = -1
 						var subjectIndex = {}
@@ -173,7 +192,7 @@ var intransition = false
 						return subjectIndex
 				}
 				var subjectByIndex = subjectByIndexCreate(data)
-// console.log("subjectByIndex", subjectByIndex)
+// console.log("subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
 				
 				function actionsListCreate (dataParam) {
 						var cbn = []
@@ -202,7 +221,16 @@ var intransition = false
 						return cbn
 				}
 				actionsList = actionsListCreate(data)
-// console.log("actionsList", actionsList)
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^ actionsList", JSON.stringify(actionsList, null, 2))
+			// ================================
+			 // Square matrices, asynchronously loaded
+				var entries = []
+
+				// The chord layout, for computing the angles of chords and groups.
+				var layout = d3ringsChordsUtils.d3_layout_chord()
+						// .sortChords(d3.descending)
+						.padding(.07);
+
 
 				// initialize matrix
 				for (var i = 0; i < subjectByName.size(); i++) {
@@ -216,32 +244,46 @@ var intransition = false
 					
 				actionsList.forEach(function(d) {
 								entries[d.source.index][d.target.index] = d;
-								entries[d.target.index][d.source.index] = d;
+								// entries[d.target.index][d.source.index] = d;
 				});
 				layout.matrix(entries)		
 
 
-// console.log("layout.groups()", JSON.stringify(layout.groups(), null, 2))
-// console.log("subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
-				
-					// GROUPS
+					console.log("layout.groups()", JSON.stringify(layout.groups(), null, 2))
+					console.log("layout.chords()", JSON.stringify(layout.chords(), null, 2))
+
+// ---------------------------------------				
+					// console.log("layout.groups()", JSON.stringify(layout.groups(), null, 2))
+					// console.log("subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
+
+// console.log("groups layout.groups(): ", JSON.stringify(layout.groups(), null, 2))	
+
+					// GROUPS DATA
 					var groupElems = svgContainer
 							.select(".groups")
 							.selectAll(".group")
-							.data(layout.groups())
+							.data(layout.groups(), function(d) { // groups data by group name
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^ d", JSON.stringify(d, null, 2))
+								var r = subjectByIndex[d.index].name || d.index
+								return r
+							})		
 
+					// GROUPS EXIT			
+					groupElems.exit()
+						.remove()
+						
 					// GROUPS ENTER
 					var groupsElemsNew = groupElems
 						.enter().append("g")
 						.classed("group", true)
 
-					// GROUPS ARCS, TITLES APPEND
+					// GROUPS ARCS, NAMES, TITLES APPEND
 					groupsElemsNew
 						.append("path")
-							// .style("fill", function(d) { return fill(d.index); })			
-			        .style("fill", function(d) { 		// arcs
-										var r =  fill(d.index)
-										if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+			        .style("fill", function(d) { 		// arcs - new by index in chart
+										var r = fill(d.index)
+										if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorFrom
+										if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
 										return r
 									})			
 							.style("stroke", _groupToolTipColorOther)
@@ -260,31 +302,31 @@ var intransition = false
 						.append("textPath")
 							.attr("xlink:href", function(d) { return "#group" + d.index; })
 							.text(function(d) { 
-										var text = (d.value > 0) ? subjectByIndex[d.index].name : ""
+										var text = (d.value > 0) ? subjectByIndex[d.index].name : ""		// group name enter
 										return text
 										})
-							.style("stroke", function(d, i , a) { 
-							var r = _groupNameColorOther	
-							if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
-							if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
-							return r
-							})
+							.style("stroke", function(d, i , a) { 		// group name enter
+								var r = _groupNameColorOther
+								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+								if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
+								return r
+								})
 
 				 // GROUPS NAMES UPDATE
 						groupElems
 							.select('textPath')
 							.text(function(d) { 
-										var text = (d.value > 0) ? subjectByIndex[d.index].name : ""
+										var text = (d.value > 0) ?subjectByIndex[d.index].name : ""		// group name update
 										return text
 										})
-							.style("stroke", function(d, i , a) { 
-							var r = _groupNameColorOther	
+							.style("stroke", function(d, i , a) { 		// group name update
+							var r = _groupNameColorOther
 							if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
-							if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
+							// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
 							return r
 							})
 							
-				 // GROUPS TITLES UPDATE
+				 // GROUPS ToolTips UPDATE
 						groupElems
 							.select('title')
 			        .text(function(d) { return subjectByIndex[d.index].name + " " + " predicates " + format(d.value) + "with weigh " + subjectByIndex[d.index].weigh; });
@@ -293,22 +335,26 @@ var intransition = false
 						groupElems
 							.select('path')
 								.attr("d", arc)
-				        // .style("fill", function(d) { return fill(subjectByIndex[d.index]); })			
-				        .style("fill", function(d) { 
+				        .style("fill", function(d) { 				// group arcs update
 										var r =  fill(d.index)
-										if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+										if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorFrom
+										if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
 										return r
 									})			
 							.style("stroke", _groupBorderColor)
 							.style("stroke-width", 1)
 				
+				// ---------------------------------------				
 					// CHORDS
 					var chordsElems = svgContainer
 						.select("g.chords")
 						.selectAll("g.chord")
-							.data(layout.chords)		// source (index, subindex, startangle, endangle, value), target
+							.data(layout.chords, function(d) {
+									var r = d.source.value.prx
+									return r
+							})		// source (index, subindex, startAngle, endAngle, value), target
 							
-					// CHORDS ENTER
+					// CHORDS PATHS, ToolTips, ENTER
 					var chordsElemsNew = chordsElems
 						.enter()
 							.append("g")
@@ -316,9 +362,9 @@ var intransition = false
 							.append("path")
 								.attr("class","chord")	
 			        // .style("fill", function(d) { return fill(d.source.index) })			
-				        .style("fill", function(d) { 
+				        .style("fill", function(d) { 		// chord path enter
 										var r =  fill(d.source.value.source.index)
-										if (d.source.value.source.name == lastDataItem.source) r = _groupNameColorFrom
+										if (d.source.value.source.name == lastDataItem.source) r = _chordColorLast
 										return r
 									})			
 									.style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
@@ -332,19 +378,17 @@ var intransition = false
 					chordsElems
 						.select("path")
 							.attr("d", chord)	
-				        .style("fill", function(d) { 
-console.log("^^^^^^^^^^^^", JSON.stringify(d, null, 2))								
+				        .style("fill", function(d) { 		// chord path update
 										var r =  fill(d.source.value.source.index)
-										if (d.source.value.prx == lastDataItem.prx) r = _groupNameColorFrom
 										return r
 									})			
 
 					// CHORDS TITLE
 					chordsElems
 						.select("title")
-								.text(function(d) {		// source (index, subindex, startAngle, endAngle, value), target
-									var r = d.source.value.source.name + " to " + d.source.value.target.name + ":" + format(d.source.value)
-									return r})
+						.text(function(d) {		// source (index, subindex, startAngle, endAngle, value), target
+							var r = d.source.value.source.name + " to " + d.source.value.target.name + ":" + format(d.source.value)
+							return r})
 										
 				// CHORDS EXIT
 					chordsElems.exit()
@@ -354,7 +398,9 @@ console.log("^^^^^^^^^^^^", JSON.stringify(d, null, 2))
 					var noteElems = svgContainer
 							.select("g.chords")
 							.selectAll("g.note")
-								.data(layout.chords(), function(d) {return d.source.value.prx})
+								.data(layout.chords(), function(d) { 
+// console.log("^^^^^^^^^^ prx ", JSON.stringify(d.source.value.prx, null, 2))	
+									return	d.source.value.prx})		// chords data by chords abs index
 								
 					// PREDICATES ENTER
 					var noteElemsNew = noteElems			// ^^^^^^^^^^^^^^ CONVERSATION
@@ -367,7 +413,8 @@ console.log("^^^^^^^^^^^^", JSON.stringify(d, null, 2))
 									// .style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
 										.attr("d", chord)
 										.text(function(d) {
-											var r = d.source.value.source.name + " - " + d.source.value.target.name + " - " + d.source.value.predicate
+											var r = "[" + d.source.value.source.name + ":" + d.source.value.target.name + "]:" + d.source.value.predicate
+											// var r = d.source.value.predicate
 											return r
 										})
 										// .attr("text-anchor", function(d) {
@@ -376,7 +423,13 @@ console.log("^^^^^^^^^^^^", JSON.stringify(d, null, 2))
 											// })										
 										.attr("transform", function(d) {
 											var angle = (d.source.startAngle + d.source.endAngle) / 2
+// console.log("^^^^^^^^^^ d ", JSON.stringify(d, null, 2))	
+// console.log("^^^^^^^^^^ startAngle ", d.source.startAngle)	
+// console.log("^^^^^^^^^^ endAngle ", d.source.endAngle)	
+// console.log("^^^^^^^^^^ midAngle ", (d.source.startAngle + d.source.endAngle) / 2)	
+							
 											var d3Angle =  - (Math.PI / 2) + (d.source.startAngle + d.source.endAngle) / 2
+// console.log("^^^^^^^^^^ d3Angle ", d3Angle)	
 											var rotate = "rotate(" + (angle * 180 / Math.PI - 90) + ") "
 											var translate = "translate(" + (innerRadius + 26) + ") "
 											var mirror = (angle > Math.PI ? "rotate(180)" : "")
@@ -398,12 +451,14 @@ console.log("^^^^^^^^^^^^", JSON.stringify(d, null, 2))
 						.select("text.note")
 							.attr("d", chord)	
 										.text(function(d) {
-											var r = d.source.value.source.name + " - " + d.source.value.target.name + " - " + d.source.value.predicate
+											var r = "[" + d.source.value.source.name + ":" + d.source.value.target.name + "]:" + d.source.value.predicate
+											// var r = d.source.value.predicate
 											return r
 										})
 										.attr("text-anchor", function(d) {
 												var angle = (d.source.startAngle + d.source.endAngle) / 2
-												return angle > (Math.PI / 2) ? "end" : "start"
+// console.log("------- 	angle: " , angle)												
+												return angle > (Math.PI) ? "end" : "start"
 										})
 										.attr("transform", function(d) {
 												var angle = (d.source.startAngle + d.source.endAngle) / 2
@@ -424,7 +479,7 @@ console.log("^^^^^^^^^^^^", JSON.stringify(d, null, 2))
 										return r
 									})			
 				.style("opacity", function(d) {
-																return 0.1
+																return 0.7
 								})
 
 					// PREDICATES EXTI						

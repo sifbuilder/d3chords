@@ -1,8 +1,9 @@
 	
-/* 																						*/
-/* d3rings-chords-utils.js      							*/
-/* ref. https://bl.ocks.org/mbostock/1308257	*/
-/* 																						*/
+/* 																												*/
+/* d3rings-chords-utils.js      													*/
+/* ref. https://bl.ocks.org/mbostock/1308257							*/
+/* ref. http://bl.ocks.org/nbremer/c11409af47b5950f0289		*/
+/* 																												*/
 
 	if (typeof require === "function") {
 		var d3 = require('d3.v4.0.0-alpha.44.js')
@@ -96,8 +97,10 @@
 
 	// _____________________________ d3_layout_chord
   var d3_layout_chord = function() {
+		// console.log("chords utils d3_layout_chord")
     var chord = {}, chords, groups, matrix, n, padding = 0, sortGroups, sortSubgroups, sortChords;
     function relayout() {
+	console.log("===================== relayout ")		
       var subgroups = {}, groupSums = [], groupIndex = d3.range(n), subgroupIndex = [], k, x, x0, i, j;
       chords = [];
       groups = [];
@@ -129,7 +132,8 @@
         x0 = x, j = -1;
         while (++j < n) {
           var di = groupIndex[i], dj = subgroupIndex[di][j], v = matrix[di][dj], a0 = x, a1 = x += v * k;
-					subgroups[di + "-" + dj] = {
+	console.log("===================== subgroups di dj", di, dj)		
+				subgroups[di + "-" + dj] = {
             index: di,
             subindex: dj,
             startAngle: a0,
@@ -137,10 +141,18 @@
             value: v
           };
         }
+				
+console.log("===================== subgroups i", i, JSON.stringify(subgroups, null, 2))		
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ di", JSON.stringify(di, null, 2))		
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^dj", JSON.stringify( dj, null, 2))				
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^v", JSON.stringify(v, null, 2))			
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^a0", JSON.stringify(a0, null, 2))					
+// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^a1", JSON.stringify(a1, null, 2))							
         groups[di] = {
           index: di,
           startAngle: x0,
           endAngle: x,
+          v: v,
           value: groupSums[di]
         };
         x += padding;
@@ -150,6 +162,8 @@
         j = i - 1;
         while (++j < n) {
           var source = subgroups[i + "-" + j], target = subgroups[j + "-" + i];
+// console.log("source:", JSON.stringify(source, null, 2))					
+// console.log("target:", JSON.stringify(target, null, 2))					
           if (source.value || target.value) {
             chords.push(source.value < target.value ? {
               source: target,
@@ -159,11 +173,20 @@
               target: target
             });
           }
+
+          // if (source.value || target.value) {
+	          // chords.push({
+              // source: target,
+              // target: source
+            // })
+					// }
+						
         }
       }
       if (sortChords) resort();
     }
     function resort() {
+			console.log("chords utils resort")
       chords.sort(function(a, b) {
         return sortChords((a.source.value + a.target.value) / 2, (b.source.value + b.target.value) / 2);
       });

@@ -98,9 +98,7 @@ if (typeof require === "function") {
 					var vHigh = store.getState().reducerLanes.messagesCursorHigh
 
 					var tickfn = setInterval(function() {
-						
-						var currentMode = store.getState().reducerCourt.currentMode
-																	
+																		
 						var listeners = currentListeners = nextListeners
 						for (var i = 0; i < listeners.length; i++) {
 							listeners[i]()
