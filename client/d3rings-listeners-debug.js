@@ -1,7 +1,7 @@
 
-/* 														*/
-/*    		 index.js           */
-/* 														*/
+/* 																				*/
+/*    		 d3rings-listeners-debug.js     */
+/* 																				*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.50.js')
@@ -16,34 +16,26 @@ if (typeof require === "function") {
 	var d3ringsStore = require('./d3rings-store.js')
 	var d3ringsActions = require('./d3rings-actions.js')
 	var d3ringsControls = require('./d3rings-controls.js')
-	
 }	
 		/* actions */
 		var actions = d3ringsActions.ActionCreators
 
 		/* store */
-		// var store = d3ringsStore.createStore(d3ringsReducer.reducer, d3ringsReducer.reducer())
 		var store = d3ringsStore.store
-		
+
 			/* payloads renderers */
 			var logicAndData_Payload = function () { return {
 				store: store,
 				actions: actions
 			}}
+			
 
-		/* container */
-		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
-			.selectAll('svg')
-				.data(['svg'])
-				.enter()
-					.append("svg")
-						.attr("id", store.getState().reducerConfig.containerId)
-						.attr('class', 'chart')
-						.style('width', store.getState().reducerCourt.svgWidth)
-						.style('height', store.getState().reducerCourt.svgHeight)
-						.style('background', 'oldlace')
-						.style('border', '1px solid darkgrey')
-						.attr('viewbox',"0 0 3 2")										
+
+		/* launchers debug */
+		var setFps_debug_Listener = store.compose(
+			store.dispatch,
+			actions.setFps
+		)
 
 		
 		/* launchers */
@@ -62,3 +54,6 @@ if (typeof require === "function") {
 		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(logicAndData_Payload()).start()
 		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(logicAndData_Payload()).start()
 		
+		/* listeners */
+				 d3timer_Launcher.subscribe(setFps_debug_Listener)
+

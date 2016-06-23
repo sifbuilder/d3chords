@@ -3,6 +3,16 @@
 /*    d3rings-store.js        */
 /* 														*/
 
+
+
+if (typeof require === "function") {
+	var d3ringsReducer = require('./d3rings-reducer.js')
+	var d3ringsStore = require('./d3rings-store.js')
+	var d3ringsActions = require('./d3rings-actions.js')
+	var d3ringsControls = require('./d3rings-controls.js')
+}
+	
+
 /* adapted from REDUX http://redux.js.org/		*/
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -102,6 +112,10 @@
 			getState: getState,
 		}
 	}
+	
+			/* store */
+		var store = createStore(d3ringsReducer.reducer, d3ringsReducer.reducer())
 
-		exports.createStore = createStore;
+		exports.createStore = createStore
+		exports.store = store
 }));

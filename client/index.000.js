@@ -1,7 +1,7 @@
 
-/* 																				*/
-/*    		 d3rings-listeners-debug.js     */
-/* 																				*/
+/* 														*/
+/*    		 index.js           */
+/* 														*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.50.js')
@@ -16,12 +16,14 @@ if (typeof require === "function") {
 	var d3ringsStore = require('./d3rings-store.js')
 	var d3ringsActions = require('./d3rings-actions.js')
 	var d3ringsControls = require('./d3rings-controls.js')
+	
 }	
 		/* actions */
 		var actions = d3ringsActions.ActionCreators
 
 		/* store */
-		var store = d3ringsStore.createStore(d3ringsReducer.reducer, d3ringsReducer.reducer())
+		// var store = d3ringsStore.createStore(d3ringsReducer.reducer, d3ringsReducer.reducer())
+		var store = d3ringsStore.store
 
 		/* container */
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
@@ -313,10 +315,10 @@ if (typeof require === "function") {
 		)	
 
 		/* launchers debug */
-		var setFps_debug_Listener = store.compose(
-			store.dispatch,
-			actions.setFps
-		)
+		// var setFps_debug_Listener = store.compose(
+			// store.dispatch,
+			// actions.setFps
+		// )
 
 		/* launchers court */
 		var processKeybKeys_court_Listener = store.compose(
@@ -467,7 +469,7 @@ if (typeof require === "function") {
 			 touchEnd_Launcher.subscribe(updateMousePos_court_Listener)
 				 ticker_Launcher.subscribe(processKeybKeys_court_Listener)
 			 
-				 d3timer_Launcher.subscribe(setFps_debug_Listener)
+				 // d3timer_Launcher.subscribe(setFps_debug_Listener)
 				 
 									 store.subscribe(renderer_lanes_Listener)
 				stepper_Launcher.subscribe(setRecordsCollection_lanes_Listener)
