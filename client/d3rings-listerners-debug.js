@@ -1,7 +1,7 @@
 
-/* 														*/
-/*    		 index.js           */
-/* 														*/
+/* 																				*/
+/*    		 d3rings-listeners-debug.js     */
+/* 																				*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.50.js')

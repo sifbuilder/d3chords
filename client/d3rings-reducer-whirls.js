@@ -3,7 +3,7 @@
 /* 																*/
 
 if (typeof require === "function") {
-	var d3 = require('./d3.v4.0.0-alpha.44.js')
+	var d3 = require('./d3.v4.0.0-alpha.50.js')
 	var d3ringsActions = require('./d3rings-actions-whirls.js')
 }
 
@@ -25,37 +25,6 @@ function guid() {
 function inSquare (cx, cy, xl, yl, xh, yh) {
 	if (cx > xl && cx < xh && cy > yl && cy < yh) return true
 	else return false											
-}
-
-// _____________ adapted from redux combineReducers	
-function combineReducers(reducers) {
-  var reducerKeys = Object.keys(reducers)
-  var finalReducers = {}
-  for (var i = 0; i < reducerKeys.length; i++) {
-    var key = reducerKeys[i]
-    if (typeof reducers[key] === 'function') {
-      finalReducers[key] = reducers[key]
-    }
-  }
-  var finalReducerKeys = Object.keys(finalReducers)
-
-  return function combination(state = {}, action) {
-    var hasChanged = false
-    var nextState = {}
-    for (var i = 0; i < finalReducerKeys.length; i++) {
-      var key = finalReducerKeys[i]
-      var reducer = finalReducers[key]
-      var previousStateForKey = state[key]
-      var nextStateForKey = reducer(previousStateForKey, action)
-      if (typeof nextStateForKey === 'undefined') {
-        var errorMessage = getUndefinedStateErrorMessage(key, action)
-        throw new Error(errorMessage)
-      }
-      nextState[key] = nextStateForKey
-      hasChanged = hasChanged || nextStateForKey !== previousStateForKey
-    }
-    return hasChanged ? nextState : state
-  }
 }
 
 // _____________ RANGS

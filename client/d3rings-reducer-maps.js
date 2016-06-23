@@ -1,60 +1,68 @@
 
 /* 													  			*/
-/*    d3rings-reducer-chords.js     */
+/*    d3rings-reducer-maps.js     */
 /* 																	*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.50.js')
-	var d3ringsActions = require('./d3rings-actions-chords.js')
+	var d3ringsActions = require('./d3rings-actions-maps.js')
 }
 	
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsReducerChords = global.d3ringsReducerChords || {})));
+  (factory((global.d3ringsReducerMaps = global.d3ringsReducerMaps || {})));
 }(this, function (exports) { 'use strict';
 
 
-// _____________ CHORDS
+// _____________ MAPS
 var initialStateThis = {
-			outerRate: 3/8,
-			outerDelta: 20,
-			chords: [],
-			chordsCollection: [],
-			chordsIndex: 0,
-			areChordsFetched: false,
-			src: 'chords.csv',
-			itemsCursorLow: 0,
-			itemsCursorHigh: 0,
-			keyEventsOnChords: {},
-			itemSpan: 50,
-			itemProps: ['source', 'target', 'predicate', 'weigh'],
-			subjectByNameAll: {},
-			subjectByIndexAll: {},
-			actionsListAll: [],
-			chordsCollection: [
-				 {source: "faraon", target: "faraon", predicate: "", weigh: 1},
-				 {source: "friend", target: "friend", predicate: "", weigh: 1},
-				 {source: "girl", target: "girl", predicate: "", weigh: 1},
-				 {source: "architect", target: "architect", predicate: "", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "village .. tebas .. workers", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "uhmm", weigh: 1},
-				 {source: "friend", target: "architect", predicate: "wasteful", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "fortress .. kadesh .. hititas", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "uhmm", weigh: 1},
-				 {source: "girl", target: "architect", predicate: "coward", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "sleeping room ... forever", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 1},
-				 {source: "friend", target: "architect", predicate: "old crock", weigh: 1},
-				 {source: "girl", target: "architect", predicate: "you have heard", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "its all about resources", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: " /\ ", weigh: 1},
-				 {source: "friend", target: "architect", predicate: "stiff", weigh: 1},
-				 {source: "girl", target: "architect", predicate: "bare", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "sitting room together", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 1},
-			],
+	margin: {top: 20, right: 20, bottom: 30, left: 40},
+	duration: 1000,
+	maxiters: 1000,
+
+	legendBarWidth: 30,
+	legendBarHeight: 10,
+	legendOffsetX: 30,
+	legendOffsetY: 400,
+
+	slx: 50,
+	sly: 30,
+	slsize: 20,
+	slmesage: "Trade Agreements",
+
+	pcmargin: {top: 0, right: 10, bottom: 0, left: 0},
+	pcoffsetX: 30,
+	pcoffsetY: 500,
+	pcwidth: 30,
+	pcheight: 30,
+	pcsize: 15,
+
+	_TA_domain_min: 0,
+	_TA_domain_max: 5,
+	_TA_range: 7,
+
+	xAxisLabel: "time",
+	yAxisLabel: "weight",
+	yearLabelDefault: "year",
+
+	opt_header: '_TA_Header',
+	opt_title: '_TA_Title',
+	defaultFill: 'rgb(222,184,135)',
+	colorMap: {
+			q0: 'rgb(198,219,239)',
+			q1: 'rgb(158,202,225)',
+			q2: 'rgb(107,174,214)',
+			q3: 'rgb(66,146,198)',
+			q4: 'rgb(33,113,181)',
+			q5: 'rgb(8,81,156)',
+			q6: 'rgb(8,48,107)'
+		},
+	mapCont: d3.select("body")
+			.append("div")
+			.attr("id", "mapContainer")
+			.style("width", '900px')
+			.style("height", '700px'),
 	}
 	
 function reducerThis(state = initialStateThis, action) {

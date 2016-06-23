@@ -4,7 +4,7 @@
 /* 																	*/
 
 if (typeof require === "function") {
-		var d3 = require('./d3.v4.0.0-alpha.44.js')
+		var d3 = require('./d3.v4.0.0-alpha.50.js')
 	}
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -142,9 +142,7 @@ var intransition_newRing = false
 					.duration(_duration)
 					.ease(d3.easeLinear)
 	
-	
-			var colorScale = d3.scaleCubehelix()
-								.domain([0, 1])
+				var colorScale = d3.interpolateCubehelixLong(0, 1)
 
 					// _________________________________ render rangs
 
