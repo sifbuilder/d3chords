@@ -138,26 +138,28 @@ var initialStateThis = {
 			subjectByIndexAll: {},
 			actionsListAll: [],
 			chordsCollection: [
-				 // {source: "faraon", target: "faraon", predicate: "", weigh: 1},
-				 // {source: "friend", target: "friend", predicate: "", weigh: 1},
-				 // {source: "girl", target: "girl", predicate: "", weigh: 1},
-				 // {source: "architect", target: "architect", predicate: "", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "village .. tebas .. workers", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "uhmm", weigh: 1},
-				 {source: "friend", target: "architect", predicate: "wasteful", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "fortress .. kadesh .. hititas", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "uhmm", weigh: 1},
-				 {source: "girl", target: "architect", predicate: "coward", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "sleeping room ... forever", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 1},
-				 {source: "friend", target: "architect", predicate: "old crock", weigh: 1},
-				 {source: "girl", target: "architect", predicate: "you have heard", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "its all about resources", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 1},
-				 {source: "architect", target: "faraon", predicate: " /\ ", weigh: 1},
-				 {source: "friend", target: "architect", predicate: "stiff", weigh: 1},
-				 {source: "girl", target: "architect", predicate: "bare", weigh: 1},
-				 {source: "faraon", target: "architect", predicate: "sitting room together", weigh: 1},
+				 {source: "architect", target: "faraon", predicate: "did village in tebas, workers!", weigh: 5},
+				 {source: "faraon", target: "architect", predicate: "uhmm!!!", weigh: 10},
+				 {source: "friend", target: "architect", predicate: "what a waste!!!", weigh: 9},
+				 {source: "architect", target: "faraon", predicate: "built fortress in kadesh, hittites!", weigh: 5},
+				 {source: "faraon", target: "architect", predicate: "uhmm!!!", weigh: 10},
+				 {source: "girl friend", target: "architect", predicate: "coward!!!", weigh: 9},
+				 {source: "faraon", target: "architect", predicate: "now sleeping room, eternal", weigh: 15},
+				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 2},
+				 {source: "friend", target: "architect", predicate: "lazy!!!", weigh: 9},
+				 {source: "girl friend", target: "architect", predicate: "do it!!!", weigh: 9},
+				 {source: "faraon", target: "architect", predicate: "resources, all!!!", weigh: 15},
+				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 3},
+				 {source: "architect", target: "faraon", predicate: "  .....  ", weigh: 1},
+				 {source: "architect", target: "faraon", predicate: "  .....  ", weigh: 1},
+				 {source: "architect", target: "faraon", predicate: "  __/^\\__ !!!", weigh: 10},
+				 {source: "faraon", target: "architect", predicate: "uhmm", weigh: 5},
+				 {source: "friend", target: "architect", predicate: "uhmm!!!", weigh: 9},
+				 {source: "girl friend", target: "architect", predicate: "uhmm!!!", weigh: 9},
+				 {source: "faraon", target: "architect", predicate: "sitting room, inside!!!", weigh: 15},
+				 {source: "faraon", target: "architect", predicate: "resources, all!!!", weigh: 15},
+				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 3},
+				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 2},
 				 {source: "architect", target: "faraon", predicate: "uhmm", weigh: 1},
 			],
 	}
@@ -234,13 +236,12 @@ function reducerThis(state = initialStateThis, action) {
 							var chordsCollection = state.chordsCollection
 							var numChords = chordsCollection.length
 							if (vHigh >= vLow) vHigh = vHigh + 1	// add one to upper border
-							if (vHigh > numChords) vHigh = -1		// upper border
+							if (vHigh > numChords) vHigh = 0		// upper border
 							if (((vHigh - vLow) > itemSpan) 			// all spteps full
 									|| (vHigh == -1) 									// infinitum with vLow active
 									|| (vLow == -1) 									// get always from reset
 									) vLow = vLow + 1									// increase lower border
 							if (vLow > numChords) vLow = -1			// reset at end of cycle
-
 								var chords = state.chordsCollection.slice(vLow, vHigh)
 								var actionsSeries = actionsSeriesCreate(chords)	// source, target
 								var subjectByName = subjectByNameCreate(chords)	// source, target
@@ -309,6 +310,7 @@ function reducerThis(state = initialStateThis, action) {
 								r = Object.assign({}, state, keyEventsOnChords) 
 								if ((vHigh - vLow)  >= itemSpan) ++vLow
 								++vHigh
+							if (vHigh > numChords) vHigh = 0		// upper border
 									var chords = state.chordsCollection.slice(vLow, vHigh)
 										var actionsSeries = actionsSeriesCreate(chords)	// source, target
 										var subjectByName = subjectByNameCreate(chords)	// source, target

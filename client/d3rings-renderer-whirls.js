@@ -117,19 +117,7 @@ var intransition_newRing = false
 						.append("g")
 							.classed("rings", true)	// items
 						
-					
-   // http://bl.ocks.org/brattonc/b1abb535227b2f722b51.
-  		var dummyText = svgContainer.select(".dummyText")
-			if (dummyText.node() == null) {
-					dummyText = svgContainer
-							.append("text")
-								.attr("id", "dummyText")
-								.attr("class", "dummyText")
-								.text("N")
-			}
-			var textHeight = dummyText.node().getBBox().height				
-	
-			// elems trasition
+ 			// elems trasition
 				var elemsTransition = d3.transition()
 					.duration(_duration)
 					.ease(d3.easeLinear)

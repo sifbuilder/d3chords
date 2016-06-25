@@ -52,7 +52,7 @@ if (typeof require === "function") {
 					.classed("notices", true)	// items
 			// _________________________________ render Notice Update
 				var errorNotice = (state.reducerCourt.notice) ? state.reducerCourt.notice : ""
-				var noticeToShow = ". "
+				var noticeToShow = ""
 				var currentView = state.reducerCourt.currentView
 				var labelMode = state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]]
 				var size = parseInt(svg.style("width")) + " x " + parseInt(svg.style("height"))
@@ -86,8 +86,8 @@ if (typeof require === "function") {
 				
 				if (currentView == 'chordsView') {
 					noticeToShow = noticeToShow +
-						labelMode + " the " + currentView +
-						" the key point is the arrow key"
+						currentView  + "  " + labelMode+ 
+						" - the key is in the arrow key"
 				}
 
 				var winWidthPixels = parseInt(svg.style("width"))

@@ -50,35 +50,32 @@ var intransition = false
 		var _height = state.reducerCourt.svgHeight
 		var _svgid = state.reducerConfig.container
 		var _currentView = state.reducerCourt.currentView
+		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
 
 		var subjectByName = state.reducerChords.subjectByName
 		var subjectByIndex = state.reducerChords.subjectByIndex
 		var actionsSeries = state.reducerChords.actionsSeries
 		
-// console.log("======== subjectByName", JSON.stringify(subjectByName, null, 2))
-// console.log("======== subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
-// console.log("======== actionsSeries", JSON.stringify(actionsSeries, null, 2))
-		
 		var outerRate = state.reducerChords.outerRate
 		var outerDelta = state.reducerChords.outerDelta
 		// 
-		var _groupNameColorFrom = 'black'
-		var _groupNameColorTo = 'darkgrey'
+		var _groupNameColorFrom = 'white'
+		var _groupNameColorTo = 'white'
 		var _groupNameColorOther = 'SaddleBrown'
-		// chord color  fill(subjectByIndex[d.index].weigh
 				
-		var _groupArcColorFrom = 'white'
-		var _groupArcColorTo = 'white'
+		var _groupArcColorFrom = 'black'
+		var _groupArcColorTo = 'darkgrey'
 
 		var _groupToolTipColorOther = 'gray'
 		var _groupBorderColor = "gray"
 		
 		var _chordColorLast = "gold"
 		var _chordColorOther = 'yellow'
-		// chordColor:  fill(subjectByIndex[d.index]
 		
-		var _predicateColorLast = "gold"
-		var _predicatColorOther = 'yellow'
+		var _predicateColorLast = "sienna"
+		var _predicateColorOther = 'gold'
+		var _predicateTextSize = 12
+		
 		
 			// SVG
 		var svgContainer = d3.select('body')
@@ -94,23 +91,38 @@ var intransition = false
 				.style('width', _width)
 				.style('height', _height)
 
-		// -------------------------------------------
+// ---------------------------------------				
   // http://bl.ocks.org/brattonc/b1abb535227b2f722b51.
-  		var dummyText = svgContainer.select(".dummyText")
-			if (dummyText.node() == null) {
-					dummyText = svgContainer
-							.append("text")
-								.attr("id", "dummyText")
-								.attr("class", "dummyText")
-								.text("N")
-						.attr("x", 6)
-						.attr("dy", 15)
-			}
-			var textHeight = dummyText.node().getBBox().height				
-			var textWidth = dummyText.node().getBBox().width				
-// console.log("text size", textHeight, textWidth)
 	
-		// -------------------------------------------
+		function textWidth(N, s) {
+				var dummyText = svgContainer.select(".dummyText")			
+				if (dummyText.node() == null) {
+						dummyText = svgContainer
+								.append("text")
+									.attr("id", "dummyText")
+									.attr("class", "dummyText")
+									.text(N)
+								.style("font-size", function(d, i) { 
+										return s
+									})
+				}
+				
+				var textHeight = dummyText.node().getBBox().height				
+				var textWidth = dummyText.node().getBBox().width				
+				
+				svgContainer.select(".dummyText").remove()
+			return textWidth
+		}
+	
+// ---------------------------------------				
+
+		// trasition
+			var d3Transition = d3.transition()
+				.duration(_fadeTime)
+				.ease(d3.easeLinear)
+	
+	
+// ---------------------------------------				
 			var outerRadius = outerRate * Math.min(_width, _height),
 					innerRadius = outerRadius - outerDelta;
 
@@ -135,7 +147,7 @@ var intransition = false
 						.range(["#000000", "#FFDD89", "#957244", "#F26223"]);
 		
 
-			// ================================
+// ---------------------------------------				MATRIX
 				var matrix = []
 				for (var i = 0; i < subjectByName.size(); i++) {
 					matrix[i] = [];
@@ -144,20 +156,19 @@ var intransition = false
 					}
 				}		
 				actionsSeries.forEach(function(d) {
-						console.log(" ======== matrix d.source.index", JSON.stringify(d.source.index, null, 2))
 							matrix[d.source.index][d.target.index] = d;
 				})
 
 				var chord = d3.chord()
-					// .radius(innerRadius);
 						.padAngle(0.05)
-					// .sortSubgroups(d3.descending);
+					// .radius(innerRadius
+					// .sortSubgroups(d3.descending)
+					
 				var chordsMatrix = chord(matrix, actionsSeries, subjectByName, subjectByIndex)
+				
+				// var chordsMatrix = chord(matrix)
 						// .sortChords(d3.descending)
 						// .padding(.07);
-					console.log(" ======== chordsMatrix.groups", JSON.stringify(chordsMatrix.groups, null, 2))
-					console.log(" ======== chordsMatrix ribons", JSON.stringify(chordsMatrix, null, 2))
-
 
 				var ribbon = d3.ribbon()
 						.radius(innerRadius);			
@@ -185,7 +196,7 @@ var intransition = false
 						.append("g")
 							.classed("groups", true)
 
-// ---------------------------------------				
+// ---------------------------------------	
 					// GROUPS ELEMS		
 				var groupElems = svgContainer
 						.select("g.groups")
@@ -197,19 +208,39 @@ var intransition = false
 					groupElems.exit()
 						.remove()
 
-						// GROUPS ELEMS ENTER
+					// GROUPS ELEMS ENTER
 				var	groupElemsEnter = groupElems.enter()
 						.append("g")
 							.classed("group", true)		
 						
+	// ---------------------------------------	
+					// var gpath = svgContainer
+							// .select("g.chords")
+							// .selectAll('path')
+							// .data(chordsMatrix.groups, function(d) { 
+								// return d.index })
+					// gpath.attr('id', function(d){return 'path22' + d.index})
+					// gpath.attr('d', d3.arc()
+							// .innerRadius(innerRadius/ 2)
+							// .outerRadius(outerRadius/ 2)
+					// )
+					// gpath.enter().append('path')
+						// .attr('d', d3.arc()
+								// .innerRadius(innerRadius/ 2)
+								// .outerRadius(outerRadius / 2)
+					// )
+					// gpath.exit().remove()
+	
+	
+			 // GROUPS ARCS ENTER
 					groupElemsEnter
 						.append("path")
 			        .style("fill", function(d) { 		// arcs - new by index in chart
 								var r = fill(d.index)
-								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorTo
-								// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
+								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorFrom
+								if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
 								return r
-							})			
+							})
 							.style("stroke", _groupToolTipColorOther)
 							.style("stroke-width", 1)
 							.attr("id", function(d, i) { return "group" + d.index; })
@@ -225,53 +256,69 @@ var intransition = false
 							.attr("d", arc)
 							.style("fill", function(d) { 				// group arcs update
 									var r =  fill(d.index)
-									// r = 'green'
-									if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorTo
-									// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
+									if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorFrom
+									if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
 									return r
 								})			
 						.style("stroke", _groupBorderColor)
 						.style("stroke-width", 1)
 							
-						
+// ---------------------------------------	
 					// GROUPS NAMES ENTER
-					groupElems.append("text")
-						.attr("x", 6)
-						.attr("dy", 15)
-						.append("textPath")
-							.attr("xlink:href", function(d) { return "#group" + d.index; })
-							.text(function(d) { 
-										var text = (d.value > 0) ? subjectByIndex[d.index].name : ""		// group name enter
-										return text
-										})
-							.style("stroke", function(d, i , a) { 		// group name enter
-								var r = _groupNameColorOther
-								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
-								// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
-								return r
+					groupElemsEnter
+						.append("text")
+							.attr("x", 6)
+							.attr("dy", 15)
+							.append("textPath")
+								.attr("xlink:href", function(d) {
+									return "#group" + d.index; 
 								})
+								.text(function(d) { 
+											var text = subjectByIndex[d.index].name		// group name enter
+											return text
+											})
+								.style("stroke", function(d, i , a) { 
+											var r = _groupNameColorOther
+											if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+											if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
+											return r
+									})
+								.style("fill", function(d, i , a) { 
+										var r = _groupNameColorOther
+											if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+											if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
+											return r
+								})
+								.style("stroke-width", function(d, i , a) { 
+											var r = 1
+											return r
+									})
+
+							
 
 				 // GROUPS NAMES UPDATE
-						groupElems
-							.select('textPath')
-							.text(function(d) { 
-										var text = (d.value > 0) ?subjectByIndex[d.index].name : ""		// group name update
-										return text
-										})
-							.style("stroke", function(d, i , a) { 		// group name update
+					groupElems
+						.select('textPath')
+						.text(function(d) { return subjectByIndex[d.index].name })	// group name update
+						.style("stroke", function(d, i , a) { 
+								var r = _groupNameColorOther
+								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+								if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
+								return r
+						})
+						.style("fill", function(d, i , a) { 
 							var r = _groupNameColorOther
-							if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
-							// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
-							return r
-							})
+								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupNameColorFrom
+								if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupNameColorTo
+								return r
+						})
 							
 				 // GROUPS ToolTips UPDATE
-						groupElems
-							.select('title')
-			        .text(function(d) { return subjectByIndex[d.index].name + " " + " predicates " + format(d.value) + "with weigh " + subjectByIndex[d.index].weigh; });
+					groupElems
+						.select('title')
+						.text(function(d) { return subjectByIndex[d.index].name + " " + " predicates " + format(d.value) + "with weigh " + subjectByIndex[d.index].weigh; });
 
-				
-	// ===========================				
+// ---------------------------------------				
 					// RIBBONS GROUP
 					var ribbonsGroup = svgContainer
 						.select('g.ribbons')		
@@ -282,7 +329,7 @@ var intransition = false
 						.append("g")
 							.classed("ribbons", true)
 
-	// ===========================				
+// ---------------------------------------				
 				// RIBBONS ELEMS
 					var ribbonsElems = svgContainer
 						.select("g.chords")
@@ -333,7 +380,7 @@ var intransition = false
 							var r = d.source.value.source.name + " to " + d.source.value.target.name + ":" + format(d.source.value)
 							return r})
 
-	// =============================================
+// ---------------------------------------				
 					// PREDICATES GROUP
 					var predicatesGroup = svgContainer
 						.select('g.chords')		
@@ -351,79 +398,87 @@ var intransition = false
 						.selectAll("g.predicate")
 								.data(chordsMatrix, function(d) { return	d.source.value.prx})
 
-					// PREDICATES EXTI						
+					// PREDICATES EXIT			
 					predicatesElems.exit()
 						.remove()
 						
 					// PREDICATES ENTER
-					var predicatesElemsNew = predicatesElems.enter()		// ^^^^^^^^^^^^^^ CONVERSATION
+					var predicatesElemsEnter = predicatesElems.enter()		// ^^^^^^^^^^^^^^ CONVERSATION
 							.append("g")
 							.attr("class","predicate")
 							.append("text")
+								.attr("x", 0)
+								.attr("y", 0)
 								.attr("class","predicate")	
 										.text(function(d) {
-											var r = "[" + d.source.value.source.name + ":" + d.source.value.target.name + "]:" + d.source.value.predicate
-											// var r = d.source.value.predicate
+											var r = d.source.value.predicate
 											return r
 										})
-										// .attr("text-anchor", function(d) {
-														// var angle = (d.source.startAngle + d.source.endAngle) / 2
-														// return angle > (Math.PI / 2) ? "end" : "start"
-											// })										
-										.attr("transform", function(d) {
-											var angle = (d.source.startAngle + d.source.endAngle) / 2
-											var d3Angle =  - (Math.PI / 2) + (d.source.startAngle + d.source.endAngle) / 2
-											var rotate = "rotate(" + (angle * 180 / Math.PI - 90) + ") "
-											var translate = "translate(" + (innerRadius + 26) + ") "
-											var mirror = (angle > Math.PI ? "rotate(180)" : "")
-											var tx = outerRadius * Math.cos(d3Angle)
-											var ty = outerRadius * Math.sin(d3Angle)
-											translate = "translate(" + (tx) + "," + (ty) + ") "
-													var transform = rotate + translate + mirror		// ^^^^^^^^^^^^^^^
-											return translate
+										.style("font-size", function(d, i) { 
+												return _predicateTextSize
+												})
+									.attr("transform", function(d) {
+											var rotate = ''
+											var translate = ''
+											var mirror = ''
+											var transform = ''
+											var d3Angle = (d.source.startAngle + d.source.endAngle) / 2
+											var mathAngle = (2 * Math.PI) - (d3Angle - (Math.PI / 2))
+											// var rotate = "rotate(" + (d3Angle * 180 / Math.PI - 90) + ") "
+											// var translate = "translate(" + (innerRadius + 26) + ") "
+											// var mirror = (d3Angle > Math.PI ? "rotate(180)" : "")
+											var deltaX, deltaY, tx, ty
+											tx = ty = deltaX = deltaY = 0
+											if (d3Angle > 0/2 * Math.PI && d3Angle < 1/2 * Math.PI ) {	// NE
+												deltaX = 0
+												deltaY = 0
+											} else if (d3Angle > 1/2 * Math.PI && d3Angle < 2/2 * Math.PI ) {	// SE
+												deltaX = 0
+												deltaY = textWidth("N", _predicateTextSize)
+											} else if (d3Angle > 2/2 * Math.PI && d3Angle < 3/2 * Math.PI ) {	// SW
+												deltaX = - textWidth(d.source.value.predicate, _predicateTextSize) - textWidth("N", _predicateTextSize) 
+												deltaY = textWidth("N", _predicateTextSize)
+											} else if (d3Angle > 3/2 * Math.PI && d3Angle < 4/2 * Math.PI) {	// NW
+												deltaX =  - textWidth(d.source.value.predicate, _predicateTextSize) - textWidth("N", _predicateTextSize)
+												deltaY = 0
+											}
+											tx = outerRadius * Math.cos(mathAngle)
+											ty = - outerRadius * Math.sin(mathAngle) // inverse screen metrix
+											translate = "translate(" + (tx + deltaX) + "," + (ty + deltaY) + ") "
+											transform = rotate + translate + mirror		// ^^^^^^^^^^^^^^^
+											return transform
 										})
-									// .style("stroke", function(d) { return _predicateColorLast })
-				        .style("stroke", function(d) { 
-										var r =  fill(d.source.index)
-										if (d.source.value.prx == lastDataItem.prx) r = _groupNameColorFrom
-										return r
-									})			
+									.style("fill", function(d) { 
+											var r = (d.source.value.prx == lastDataItem.prx) ? _predicateColorLast : _predicateColorOther
+											return r
+										})
 
 					// PREDICATES UPDATE
 					predicatesElems
-						.select("text.predicate")
-							// .attr("d", ribbon)	
-										.text(function(d) {
-											var r = "[" + d.source.value.source.name + ":" + d.source.value.target.name + "]:" + d.source.value.predicate
-											// var r = d.source.value.predicate
-											return r
-										})
-										.attr("text-anchor", function(d) {
-												var angle = (d.source.startAngle + d.source.endAngle) / 2
-// console.log("------- 	angle: " , angle)												
-												return angle > (Math.PI) ? "end" : "start"
-										})
-										.attr("transform", function(d) {
-												var angle = (d.source.startAngle + d.source.endAngle) / 2
-												var d3Angle = - (Math.PI / 2) + (d.source.startAngle + d.source.endAngle) / 2
-												var rotate = "rotate(" + (angle * 180 / Math.PI - 90) + ") "
-												var translate = "translate(" + (innerRadius + 26) + ") "
-												var mirror = (angle > Math.PI ? "rotate(180)" : "")
-												var tx = outerRadius * Math.cos(d3Angle)
-												var ty = outerRadius * Math.sin(d3Angle)
-												translate = "translate(" + (tx) + "," + (ty) + ") "
-												var transform = rotate + translate + mirror
-												return translate
+							.select("text.predicate")
+										.style("fill", function(d, i , a) { 
+													var r = _predicateColorOther
+														return r
 											})
-				// .style("stroke", function(d) { return _predicatColorOther })
-				        .style("stroke", function(d) { 
-										var r =  fill(d.source.index)
-										if (d.source.value.prx == lastDataItem.prx) r = _groupNameColorFrom
-										return r
-									})			
-				.style("opacity", function(d) {
-																return 0.7
-								})
+											.style("font-size", function(d, i) { 
+														return 0
+														})
+											.attr("transform", function(d) {
+													var rotate = ''
+														var translate = ''
+														var mirror = ''
+														var transform = ''
+														var d3Angle = (d.target.startAngle + d.target.endAngle) / 2
+														var mathAngle = (2 * Math.PI) - (d3Angle - (Math.PI / 2))
+														var tx = outerRadius * Math.cos(mathAngle) 
+														var ty = - outerRadius * Math.sin(mathAngle) // inverse screen metrix
+														translate = "translate(" + (tx) + "," + (ty) + ") "
+														transform = rotate + translate + mirror		// ^^^^^^^^^^^^^^^
+														return transform
+												})
+											.style("opacity", function(d) {
+													return 0
+											})
 
 
 	}
