@@ -34,7 +34,8 @@
           groupIndex = d3Array.range(n),
           subgroupIndex = [],
           chords = [],
-          groups = chords.groups = new Array(n),
+          // groups = chords.groups = new Array(n),
+          groups = new Array(n),
           subgroups = new Array(n * n),
           k,
           x,
@@ -110,13 +111,11 @@
         }
       }
 			
-console.log(" =================== chords", JSON.stringify(chords, null, 2))
-			
-			// ==================
+// ==========================================================================================
 // console.log(" =================== e_series", JSON.stringify(e_series, null, 2))
 			
      var e_m = e_series.length,
-					e_n = subjectByName.keys().length,
+					e_n = subjectByName.keys().length,		// number of groups
 					e_groupSums = {},
           e_groupIndex = [],
           e_subgroupIndex = [],
@@ -130,87 +129,139 @@ console.log(" =================== chords", JSON.stringify(chords, null, 2))
           e_g,
           e_s
 			
-			// get the slots
-			e_k = 0, e_s = -1; while (++e_s < e_m) {	// series
-				e_x += e_series[e_s]
-				e_groupSums[e_series[e_s]]
-        e_k += e_x;
+			e_k = 0, e_s = -1; while (++e_s < e_m) {	// actions
+        e_k += e_series[e_s].weigh							// number of slots
 			}
 			
-      e_k = max(0, tau - padAngle * e_n) / e_k;
-      e_dx = e_k ? padAngle : tau / e_n;
-			
-			var subgroups2 = []
-      e_x0 = x, e_g = -1; while (++e_g < e_n) {	// groups e_l
-					var subject = subjectByIndex[e_g]
-					subgroups2[e_g] = []
-					e_x = 0, e_s = -1; while (++e_s < e_m) {		// actions e_s
+      e_k = max(0, tau - padAngle * e_n) / e_k;		// radians per slot
+      e_dx = e_k ? padAngle : tau / e_n;					// radians per pad
+		
+			var e_subgroups = []
+      e_x0 = e_x = 0, e_g = -1; while (++e_g < e_n) {			// for each group e_g
+				var subject = subjectByIndex[e_g]									
+				e_subgroups[e_g] = []
+				e_x0 = e_x, e_s = -1; while (++e_s < e_m) {				// for each action e_s
+					var action = e_series[e_s]											// set action
 
-// console.log(" =================== subject", JSON.stringify(subject, null, 2))
-					
-					 var action = e_series[e_s]
-            var v = e_series[e_s]
-            var a0 = x
-            var a1 = x += v * k
-						if (subject.name === action.source.name) {
-							subgroups2[e_g].push(action)
-							subgroups2[e_g].index = di
-							subgroups2[e_g].subindex = dj
-							subgroups2[e_g].startAngle = a0
-							subgroups2[e_g].endAngle = a1
-							subgroups2[e_g].value = v
+						if (subject.name === action.source.name					//       1 0
+								&& subject.name !== action.target.name
+							) {		// if group is subject of action
+
+							var v = action.weigh												// slots of action per source
+							var a0 = e_x																// start action where we finished
+							e_x = e_x + v * e_k													// end action per slots
+							var a1 = e_x																// end action per slots
+	
+								var sg = Object.assign({}, action, {					// base subgroup on action
+									index: action.source.index,							// set source group index
+									subindex: action.target.index,					// set target group index
+									startAngleSource: a0,
+									endAngleSource: a1,
+									value: v,															// set action value - weigh
+							})
+							e_subgroups[e_g].push(sg)										// add subgroup to group array
 						}
-						// subgroups[e_g] = {
-							// index: di,
-							// subindex: dj,
-							// startAngle: a0,
-							// endAngle: a1,
-							// value: v
-						// }
-					}
-					groups[e_g] = {
-						index: e_g,
-						startAngle: x0,
-						endAngle: x,
-						value: groupSums[e_g],
-						subgroups: subgroups2[e_g],
-					}
-        // x += dx;
-			}
 
-	console.log(" =================== groups", JSON.stringify(groups, null, 2))
+						if (subject.name === action.source.name					//       1 1
+								&& subject.name === action.target.name
+							) {		// if group is subject of action
+						var v = action.weigh												// slots of action per source
+							var a0, a1
+							a0 = e_x																// start action where we finished
+							// e_x += e_x + v * e_k													// end action per slots
+							a1 = e_x += v * e_k												// end action per slots
+	
+								var sg = Object.assign({}, action, {					// base subgroup on action
+									index: action.source.index,							// set source group index
+									subindex: action.target.index,					// set target group index
+									startAngleSource: a0,
+									endAngleSource: a1,
+									startAngleTarget: a1,
+									endAngleTarget: a1,
+									value: v,															// set action value - weigh
+							})
+							e_subgroups[e_g].push(sg)										// add subgroup to group array
+						}
+						
+						if (subject.name !== action.source.name					//       0 1
+								&& subject.name === action.target.name
+							) {		// if group is subject of action
+							var v = 0												// slots of action per source
+							var a0 = e_x																// start action where we finished
+							e_x = e_x + v * e_k													// end action per slots
+							var a1 = e_x																// end action per slots
+	
+								var sg = Object.assign({}, action, {					// base subgroup on action
+									index: action.source.index,							// set source group index
+									subindex: action.target.index,					// set target group index
+									startAngleTarget: a0,
+									endAngleTarget: a1,
+									value: v,															// set action value - weigh
+							})
+							e_subgroups[e_g].push(sg)										// add subgroup to group array
+						}
+						
+							
+				}
 			
-			e_x = 0, e_s = -1; while (++e_s < e_m) {		// actions e_s
+				e_groups[e_g] = {
+					index: e_g,
+					startAngle: e_x0,
+					endAngle: e_x,
+					value: groupSums[e_g],
+					subgroups: e_subgroups[e_g],
+				}
+								
+        e_x += e_dx									// increment angle with pad		
+			}
 			
-				// for action e_s get 
-					//	group, prx
-					// in group get subgroup prx
-					// ass chord of that subgroup
-				// var source = groups[e_g].subgroups[e_s],
-						// target = subgroups[i * n + j];
-				// if (source.value || target.value) {
-					// chords.push(source.value < target.value
-							// ? {source: target, target: source}
-							// : {source: source, target: target});
-				// }
+			e_s = -1; while (++e_s < e_m) {												// for each actions e_s
 				
-				var actionThis = e_series[e_s]
-				var actionSourceGroup = 			groups[e_series[e_s].source.index]
-				var actionSubgroups = 				groups[e_series[e_s].source.index].subgroups
-				var c = actionSubgroups.filter(function(d) {
-							console.log(d.prx, actionThis.prx)
+				var actionThis = e_series[e_s]																				// action		
+				var actionSourceGroup = 			e_groups[e_series[e_s].source.index]		// source group
+				var actionTargetGroup = 			e_groups[e_series[e_s].target.index]		// target group
+				
+				var actionSubgroupsSource = 				e_groups[e_series[e_s].source.index].subgroups	// source subgroups
+				var indexSource = actionSubgroupsSource.filter(function(d) {		// source subgroup
 							return d.prx == actionThis.prx
-				})
-				// get subgroup with action index
-console.log(" =================== action",							 		JSON.stringify(actionThis, null, 2))					
-console.log(" =================== actionSourceGroup ", 			JSON.stringify(actionSourceGroup, null, 2))					
-console.log(" =================== actionSubgroups ", 				JSON.stringify(actionSubgroups, null, 2))					
-console.log(" =================== actionSourceGroupIndex ", JSON.stringify(c, null, 2))
-
+				})[0]
+				
+				var actionSubgroupsTarget = 				e_groups[e_series[e_s].target.index].subgroups	// target subgroups
+				var indexTarget = actionSubgroupsTarget.filter(function(d) {		// target subgroup
+							return d.prx == actionThis.prx
+				})[0]
+				
+				e_chords.push(
+					{
+						prx: actionThis.prx,
+						predicate: actionThis.predicate,
+						weigh: actionThis.weigh,
+						source: {
+							index: actionThis.source.index,
+							subindex: indexSource.source.index,
+							startAngle: indexSource.startAngleSource,
+							endAngle: indexSource.endAngleSource,
+							value: actionThis, 
+						},
+						target: {
+							index: actionThis.target.index,
+							subindex: indexSource.target.index,
+							startAngle: indexTarget.startAngleTarget,
+							endAngle: indexTarget.endAngleTarget,
+							value: actionThis,
+						}
+					}
+				)			
 			}
+
  			
 			// ==================
-      return sortChords ? chords.sort(sortChords) : chords;
+	// console.log(" =================== e_groups ", JSON.stringify(e_groups, null, 2))
+ // console.log(" =================== e_chords ", JSON.stringify(e_chords, null, 2))
+     // return sortChords ? chords.sort(sortChords) : chords;
+			// chords.groups = groups
+			e_chords.groups = e_groups
+    return sortChords ? e_chords.sort(sortChords) : e_chords;
     }
 
     chord.padAngle = function(_) {

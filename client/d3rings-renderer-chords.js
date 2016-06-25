@@ -51,9 +51,14 @@ var intransition = false
 		var _svgid = state.reducerConfig.container
 		var _currentView = state.reducerCourt.currentView
 
-		var subjectByNameAll = state.reducerChords.subjectByNameAll
-		var subjectByIndexAll = state.reducerChords.subjectByIndexAll
-		var actionsListAll = state.reducerChords.actionsListAll
+		var subjectByName = state.reducerChords.subjectByName
+		var subjectByIndex = state.reducerChords.subjectByIndex
+		var actionsSeries = state.reducerChords.actionsSeries
+		
+// console.log("======== subjectByName", JSON.stringify(subjectByName, null, 2))
+// console.log("======== subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
+// console.log("======== actionsSeries", JSON.stringify(actionsSeries, null, 2))
+		
 		var outerRate = state.reducerChords.outerRate
 		var outerDelta = state.reducerChords.outerDelta
 		// 
@@ -112,7 +117,6 @@ var intransition = false
 			var format = d3.format(",.3r");
 			// var formatValue = d3.formatPrefix(",.0", 1e3);
 
-		
 						
 			// The arc generator, for the groups.
 			var arc = d3.arc()
@@ -122,243 +126,90 @@ var intransition = false
 			var ribbon = d3.ribbon()
 					.radius(innerRadius);
 
-					
-			// The color scale, for different categories of risk.
-			// var fill = d3ringsChordsUtils.d3_scale_ordinal()
-					// .domain([0, 1, 2, 3])
-					// .range(["#F8EDD3", "#ECD08D", "#D2D0C6", "#DB704D"]);
-
 				var fill = d3.scaleLinear()
 						.domain([0, 9])
 						.range(["#F8EDD3", "#DB704D"])					
-				// var fill =  d3.scaleCategory20c()
-						// .domain([0, 10])
-						// .range(["#F8EDD3", "#DB704D"])					
 
 				var color = d3.scaleOrdinal()
 						.domain(d3.range(4))
 						.range(["#000000", "#FFDD89", "#957244", "#F26223"]);
 		
-			// -------------------------------------------
-				var subjectByName = d3.map(),
-						subjectIndex = -1,
-						actionsList = []
 
-				function subjectByNameCreate (dataParam) {
-						var ci = -1
-						var d3map = d3.map()
-						var cidx = dataParam
-						cidx.forEach(function(d) {
-								if (!d3map.has(d.source)) d3map.set(d.source, {name: d.source, index: ++ci})
-								if (!d3map.has(d.target)) d3map.set(d.target, {name: d.target, index: ++ci})
-						})
-						return d3map
-				}
-				subjectByName = subjectByNameCreate(data)
-// console.log("subjectByName", JSON.stringify(subjectByName, null, 2))
-	
-// console.log("data", JSON.stringify(data, null, 2))
-				function subjectByIndexCreate (dataParam) {
-						var ci = -1
-						var subjectIndex = {}
-						var d3map = d3.map()
-						dataParam.forEach(function(d) {
-								if (!d3map.has(d.source)) {
-										++ci; 
-										d3map.set(d.source, {
-													index: ci
-										})
-										subjectIndex[ci] = {
-											name: d.source, 
-											index: ci,
-											weigh: d.weigh,
-										}
-								}
-								if (d3map.has(d.source)) {
-										var e = d3map.get(d.source);
-										subjectIndex[e.index] = {
-											name: d.source, 
-											index: ci,
-											weigh: d.weigh
-										}
-								}
-								if (!d3map.has(d.target)) {
-									++ci; 
-									d3map.set(d.target, {
-											index: ci
-									})
-									subjectIndex[ci] = {
-											name: d.target
-									}
-								}
-						})
-						return subjectIndex
-				}
-				var subjectByIndex = subjectByIndexCreate(data)
-// console.log("^^^^^^^^^^^ subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
-				
-				function actionsListCreate (dataParam) {
-						var cbn = []
-						var ci = -1
-						var d3map = d3.map()
-						dataParam.forEach(function(d) {
-							var cr = {}
-							if (d3map.has(d.source)) cr.source = d3map.get(d.source);
-							 else {
-											++ci
-											cr.source = {
-													name: d.source, 
-													index: ci
-											}
-											d3map.set(d.source, cr.source)
-									}
-							if (d3map.has(d.target)) cr.target = d3map.get(d.target)
-							 else {
-											++ci
-											cr.target = {
-													name: d.target, 
-													index: ci
-											}
-											d3map.set(d.target, cr.target)
-									}
-							cr.prx = d.prx;
-							cr.predicate = d.predicate;
-							cr.weigh = d.weigh;
-							cr.valueOf = d.valueOf;
-							cbn.push(cr)
-						})
-						return cbn
-				}
-				actionsList = actionsListCreate(data)
-// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^ actionsList", JSON.stringify(actionsList, null, 2))
-			
-			var actionsSeries = []
-				function actionsSeriesCreate (dataParam) {
-						var cbn = []
-						var ci = -1
-						var d3map = d3.map()
-						dataParam.forEach(function(d) {
-						
-// console.log(JSON.stringify(d, null, 2))						
-							var cr = {}
-							if (d3map.has(d.source)) {
-									cr.source = d3map.get(d.source)
-							} else {
-									++ci
-									cr.source = {name: d.source, index: ci}
-									d3map.set(d.source, cr.source)
-							}
-							if (d3map.has(d.target)) {
-									cr.target = d3map.get(d.target)
-							} else {
-									++ci
-									cr.target = {name: d.target, index: ci}
-									d3map.set(d.target, cr.target)
-							}
-							cr.prx = d.prx;
-							cr.predicate = d.predicate;
-							cr.weigh = d.weigh;
-							cr.valueOf = d.valueOf;
-							cbn.push(cr)
-						})
-						return cbn
-				}
-				actionsSeries = actionsSeriesCreate(data)
-// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^ actionsSeries", JSON.stringify(actionsSeries, null, 2))
-			
 			// ================================
 				var matrix = []
-
 				for (var i = 0; i < subjectByName.size(); i++) {
 					matrix[i] = [];
 					for (var j = 0; j < subjectByName.size(); j++) {
 						matrix[i][j] = 0;
 					}
 				}		
-				actionsList.forEach(function(d) {
-								matrix[d.source.index][d.target.index] = d;
+				actionsSeries.forEach(function(d) {
+						console.log(" ======== matrix d.source.index", JSON.stringify(d.source.index, null, 2))
+							matrix[d.source.index][d.target.index] = d;
 				})
-				// console.log("renderer matrix", JSON.stringify(matrix, null, 2))
 
-			// The chord generator (quadratic Bezier), for the chords.
-			var chord = d3.chord()
+				var chord = d3.chord()
 					// .radius(innerRadius);
 						.padAngle(0.05)
 					// .sortSubgroups(d3.descending);
-
-					// The chord layout, for computing the angles of chords and groups.
 				var chordsMatrix = chord(matrix, actionsSeries, subjectByName, subjectByIndex)
 						// .sortChords(d3.descending)
 						// .padding(.07);
-
-				// chords.matrix(entries)		
-
-
-					// console.log("chords", JSON.stringify(chordsMatrix, null, 2))
-					// console.log("chordsMatrix.groups", JSON.stringify(chordsMatrix.groups, null, 2))
-					// console.log("chordsMatrix.chords", JSON.stringify(chordsMatrix.chords, null, 2))
+					console.log(" ======== chordsMatrix.groups", JSON.stringify(chordsMatrix.groups, null, 2))
+					console.log(" ======== chordsMatrix ribons", JSON.stringify(chordsMatrix, null, 2))
 
 
-var ribbon = d3.ribbon()
-    .radius(innerRadius);			
+				var ribbon = d3.ribbon()
+						.radius(innerRadius);			
 
 // ---------------------------------------				
+				// CHORDS GROUP
+				var chordsGroup = svgContainer
+						.selectAll('g.chords')		// items
+						.data(['chords group'])
 
-	
-		var chordsGroup = d3.select('svg')
-							.selectAll('g.chords')		// items
-							.data([1])
-
-			chordsGroup.enter()
-				.append("g")
-				.classed("chords", true)	// items
-				.attr("transform", "translate(" + _width / 2 + "," + _height / 2 + ")")
-				.datum(chordsMatrix);
-		
-					
+					var chordsGroupNew = chordsGroup.enter()
+						.append("g")
+						.classed("chords", true)	// items
+						.attr("transform", "translate(" + _width / 2 + "," + _height / 2 + ")")
+						.datum(chordsMatrix);
+							
 // ---------------------------------------				
-					// console.log("chordsMatrix.groups()", JSON.stringify(chordsMatrix.groups(), null, 2))
-					// console.log("subjectByIndex", JSON.stringify(subjectByIndex, null, 2))
+					// GROUPS GROUP
+					var groupsGroup = svgContainer
+						.select('g.chords')		
+						.selectAll('g.groups')
+						.data(['groups group'])
+							
+					var groupsGroupNew = groupsGroup.enter()	
+						.append("g")
+							.classed("groups", true)
 
-// console.log("groups chordsMatrix.groups(): ", JSON.stringify(chordsMatrix.groups(), null, 2))	
-// console.log("==================== 1")
-					// GROUPS DATA
-						var groupsGroup = chordsGroup
-							.selectAll('g.groups')		// items
-							.data('g')
-								
-						groupsGroup.enter()	
-							.append("g")
-								.classed("groups", true)	// items
-// console.log("==================== 2")
-
+// ---------------------------------------				
+					// GROUPS ELEMS		
 				var groupElems = svgContainer
-							.select("g.groups")
-							.selectAll("g.group")
-							.data(chordsMatrix.groups, function(d) { // groups data by group name
-// console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^ d", JSON.stringify(d, null, 2))
-								var r = subjectByIndex[d.index].name || d.index
-								return r
-							})		
+						.select("g.groups")
+						.selectAll("g.group")
+						.data(chordsMatrix.groups, function(d) { 
+								return d.index })		
 
-					// GROUPS EXIT			
+					// GROUPS ELEMS EXIT			
 					groupElems.exit()
 						.remove()
-						
-					// GROUPS ENTER
-					var groupsElemsNew = groupElems
-						.enter().append("g")
-						.classed("group", true)
 
-					// GROUPS ARCS, NAMES, TITLES APPEND
-					groupsElemsNew
+						// GROUPS ELEMS ENTER
+				var	groupElemsEnter = groupElems.enter()
+						.append("g")
+							.classed("group", true)		
+						
+					groupElemsEnter
 						.append("path")
 			        .style("fill", function(d) { 		// arcs - new by index in chart
-										var r = fill(d.index)
-										if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorFrom
-										// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
-										return r
-									})			
+								var r = fill(d.index)
+								if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorTo
+								// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
+								return r
+							})			
 							.style("stroke", _groupToolTipColorOther)
 							.style("stroke-width", 1)
 							.attr("id", function(d, i) { return "group" + d.index; })
@@ -368,8 +219,23 @@ var ribbon = d3.ribbon()
 									return subjectByIndex[d.index].name + " predicates " + format(d.value) + "with weigh " + subjectByIndex[d.index].weigh; 
 						})
 					
+				 // GROUPS ARCS UPDATE
+					groupElems
+						.select('path')
+							.attr("d", arc)
+							.style("fill", function(d) { 				// group arcs update
+									var r =  fill(d.index)
+									// r = 'green'
+									if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorTo
+									// if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
+									return r
+								})			
+						.style("stroke", _groupBorderColor)
+						.style("stroke-width", 1)
+							
+						
 					// GROUPS NAMES ENTER
-					groupsElemsNew.append("text")
+					groupElems.append("text")
 						.attr("x", 6)
 						.attr("dy", 15)
 						.append("textPath")
@@ -403,49 +269,36 @@ var ribbon = d3.ribbon()
 						groupElems
 							.select('title')
 			        .text(function(d) { return subjectByIndex[d.index].name + " " + " predicates " + format(d.value) + "with weigh " + subjectByIndex[d.index].weigh; });
-							
-				 // GROUPS ARCS UPDATE
-						groupElems
-							.select('path')
-								.attr("d", arc)
-				        .style("fill", function(d) { 				// group arcs update
-										var r =  fill(d.index)
-										if (subjectByIndex[d.index].name == lastDataItem.source) r = _groupArcColorFrom
-										if (subjectByIndex[d.index].name == lastDataItem.target) r = _groupArcColorTo
-										return r
-									})			
-							.style("stroke", _groupBorderColor)
-							.style("stroke-width", 1)
+
 				
 	// ===========================				
-					// RIBBONS
-					var ribbonsGroup = chordsGroup
-						.selectAll('g.ribbons')		// items
-						.data('r')
+					// RIBBONS GROUP
+					var ribbonsGroup = svgContainer
+						.select('g.ribbons')		
+						.selectAll('g.ribbons')
+						.data(['ribbons group'])
 							
-					ribbonsGroup.enter()	
+					var ribbonsGroupNew = ribbonsGroup.enter()	
 						.append("g")
-							.classed("ribbons", true)	// items
+							.classed("ribbons", true)
 
-
+	// ===========================				
+				// RIBBONS ELEMS
 					var ribbonsElems = svgContainer
-						.select("g.ribbons")
+						.select("g.chords")
 						.selectAll("g.ribbon")
-								.data(chordsMatrix, function(d) {
-									var r = d.source.value.prx
-									return r
-							})
-																	
-				// RIBBONS EXIT
+						.data(chordsMatrix, function(d, i) { return d.prx })
+																
+				// RIBBONS ELEMS EXIT
 					ribbonsElems.exit()
 						.remove()
 						
-							// RIBBONS ENTER
-					var ribbonsElemsNew = ribbonsElems					
-							.enter().append("g")
+					// RIBBONS ELEMS ENTER
+					var ribbonsElemsEnter = ribbonsElems.enter()
+						.append("g")
 							.classed("ribbon", true)
 							
-						ribbonsElemsNew	
+						ribbonsElemsEnter	
 							.append("path")
 							.attr("id", function(d, i) { return "ribbon" + d.source.value.prx })
 							.attr("d", ribbon)
@@ -461,7 +314,7 @@ var ribbon = d3.ribbon()
 									return d.source.value.source.name + " to " + d.source.value.target.name + ":" + format(d.source.value)})
 	
 	
-				 //  RIBBONS UPDATE
+				 //  RIBBONS ELEMS UPDATE
 					ribbonsElems
 						.select("path")
 							.attr("d", ribbon)	
@@ -481,33 +334,33 @@ var ribbon = d3.ribbon()
 							return r})
 
 	// =============================================
-					// PREDICATES
-					var predicatesGroup = chordsGroup
+					// PREDICATES GROUP
+					var predicatesGroup = svgContainer
+						.select('g.chords')		
 							.selectAll("g.predicates")
-						.data('p')
+						.data(['predicates group'])
 
-						predicatesGroup.enter()	
+						var predicatesGroupNew = predicatesGroup.enter()	
 						.append("g")
 						.classed("predicates", true)	// items
 
-					var predicatesElems = chordsGroup
+// ---------------------------------------				
+					// PREDICATES ELEMS		
+					var predicatesElems = svgContainer
 						.select("g.predicates")
 						.selectAll("g.predicate")
-								.data(chordsMatrix, function(d) { // *******************
-// console.log("^^^^^^^^^^ d ", JSON.stringify(d, null, 2))	
-// console.log("^^^^^^^^^^ prx ", JSON.stringify(d.source.value.prx, null, 2))	
-									return	d.source.value.prx})		// chords data by chords abs index
-								
+								.data(chordsMatrix, function(d) { return	d.source.value.prx})
+
+					// PREDICATES EXTI						
+					predicatesElems.exit()
+						.remove()
+						
 					// PREDICATES ENTER
-					var predicatesElemsNew = predicatesElems			// ^^^^^^^^^^^^^^ CONVERSATION
-						.enter()
+					var predicatesElemsNew = predicatesElems.enter()		// ^^^^^^^^^^^^^^ CONVERSATION
 							.append("g")
 							.attr("class","predicate")
 							.append("text")
 								.attr("class","predicate")	
-									// .style("stroke", function(d) { return d3.rgb(fill(d.source.value.weigh)).darker(); })
-									// .style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
-										// .attr("d", ribbon)
 										.text(function(d) {
 											var r = "[" + d.source.value.source.name + ":" + d.source.value.target.name + "]:" + d.source.value.predicate
 											// var r = d.source.value.predicate
@@ -519,13 +372,7 @@ var ribbon = d3.ribbon()
 											// })										
 										.attr("transform", function(d) {
 											var angle = (d.source.startAngle + d.source.endAngle) / 2
-// console.log("^^^^^^^^^^ d ", JSON.stringify(d, null, 2))	
-// console.log("^^^^^^^^^^ startAngle ", d.source.startAngle)	
-// console.log("^^^^^^^^^^ endAngle ", d.source.endAngle)	
-// console.log("^^^^^^^^^^ midAngle ", (d.source.startAngle + d.source.endAngle) / 2)	
-							
 											var d3Angle =  - (Math.PI / 2) + (d.source.startAngle + d.source.endAngle) / 2
-// console.log("^^^^^^^^^^ d3Angle ", d3Angle)	
 											var rotate = "rotate(" + (angle * 180 / Math.PI - 90) + ") "
 											var translate = "translate(" + (innerRadius + 26) + ") "
 											var mirror = (angle > Math.PI ? "rotate(180)" : "")
@@ -578,9 +425,6 @@ var ribbon = d3.ribbon()
 																return 0.7
 								})
 
-					// PREDICATES EXTI						
-					predicatesElems.exit()
-						.remove()
 
 	}
 	

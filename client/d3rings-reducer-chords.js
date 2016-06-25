@@ -14,6 +14,111 @@ if (typeof require === "function") {
   (factory((global.d3ringsReducerChords = global.d3ringsReducerChords || {})));
 }(this, function (exports) { 'use strict';
 
+				var actionsSeriesCreate = function actionsSeriesCreate (dataParam) {
+						var cbn = []
+						var ci = -1
+						var d3map = d3.map()
+						dataParam.forEach(function(d) {
+						
+							var cr = {}
+							if (d3map.has(d.source)) {
+									cr.source = d3map.get(d.source)
+							} else {
+									++ci
+									cr.source = {name: d.source, index: ci}
+									d3map.set(d.source, cr.source)
+							}
+							if (d3map.has(d.target)) {
+									cr.target = d3map.get(d.target)
+							} else {
+									++ci
+									cr.target = {name: d.target, index: ci}
+									d3map.set(d.target, cr.target)
+							}
+							cr.prx = d.prx
+							cr.predicate = d.predicate
+							cr.weigh = d.weigh
+							cr.valueOf = d.valueOf
+							cbn.push(cr)
+						})
+						return cbn
+				}
+
+
+
+					var subjectByNameCreate = function subjectByNameCreate (dataParam) {
+						var ci = -1
+						var d3map = d3.map()
+						var cidx = dataParam
+						cidx.forEach(function(d) {
+								if (!d3map.has(d.source)) d3map.set(d.source, {name: d.source, index: ++ci})
+								if (!d3map.has(d.target)) d3map.set(d.target, {name: d.target, index: ++ci})
+						})
+						return d3map
+					}
+			
+					var subjectByIndexCreate = function subjectByIndexCreate (dataParam) {		// source, weigh, ???
+						var ci = -1
+						var subjectIndex = {}
+						var d3map = d3.map()
+						dataParam.forEach(function(d) {
+								if (!d3map.has(d.source)) {
+										++ci; 
+										d3map.set(d.source, {
+													index: ci
+										})
+										subjectIndex[ci] = {
+											name: d.source, 
+											index: ci,
+											weigh: d.weigh,
+										}
+								}
+								if (d3map.has(d.source)) {
+										var e = d3map.get(d.source);
+										subjectIndex[e.index] = {
+											name: d.source, 
+											index: ci,
+											weigh: d.weigh
+										}
+								}
+								if (!d3map.has(d.target)) {
+									++ci; 
+									d3map.set(d.target, {
+											index: ci
+									})
+									subjectIndex[ci] = {
+											name: d.target
+									}
+								}
+						})
+						return subjectIndex
+					}
+			
+					var actionsListCreate = function actionsListCreate (dataParam) {		// source, target, predicate, weigh, value
+						var cbn = []
+						var ci = -1
+						var d3map = d3.map()
+						dataParam.forEach(function(d) {
+							var cr = {}
+							if (d3map.has(d.source)) cr.source = d3map.get(d.source);
+							 else {
+											++ci
+											cr.source = {name: d.source, index: ci}
+											d3map.set(d.source, cr.source)
+									}
+							if (d3map.has(d.target)) cr.target = d3map.get(d.target)
+							 else {
+											++ci
+											cr.target = {name: d.target, index: ci}
+											d3map.set(d.target, cr.target)
+									}
+							cr.predicate = d.predicate;
+							cr.weigh = d.weigh;
+							cr.valueOf = d.valueOf;
+							cbn.push(cr)
+						})
+						return cbn
+				}		
 
 // _____________ CHORDS
 var initialStateThis = {
@@ -33,10 +138,10 @@ var initialStateThis = {
 			subjectByIndexAll: {},
 			actionsListAll: [],
 			chordsCollection: [
-				 {source: "faraon", target: "faraon", predicate: "", weigh: 1},
-				 {source: "friend", target: "friend", predicate: "", weigh: 1},
-				 {source: "girl", target: "girl", predicate: "", weigh: 1},
-				 {source: "architect", target: "architect", predicate: "", weigh: 1},
+				 // {source: "faraon", target: "faraon", predicate: "", weigh: 1},
+				 // {source: "friend", target: "friend", predicate: "", weigh: 1},
+				 // {source: "girl", target: "girl", predicate: "", weigh: 1},
+				 // {source: "architect", target: "architect", predicate: "", weigh: 1},
 				 {source: "architect", target: "faraon", predicate: "village .. tebas .. workers", weigh: 1},
 				 {source: "faraon", target: "architect", predicate: "uhmm", weigh: 1},
 				 {source: "friend", target: "architect", predicate: "wasteful", weigh: 1},
@@ -77,14 +182,11 @@ function reducerThis(state = initialStateThis, action) {
 										predicate: d.predicate,
 										weigh: +d.weigh,
 										valueOf: function value() {
-											return Math.max(this.weigh, 1)
+											return this.weigh
 										},
 									})
 								})
 								if (itemSpan > cc.length) itemSpan = cc.length
-
-console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
-								
 								r = Object.assign({}, state, {
 										chordsCollection: cc,
 										areChordsFetched: true,
@@ -103,6 +205,7 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
 					
 					var r = Object.assign({}, state)			
 					if (areChordsFetched === false && typeof data !== 'undefined' && data.length) {
+							var actionListAll = actionsListCreate(data)	// source, target
 							var subjectByNameAll = subjectByNameCreate(data)	// source, target
 							var subjectByIndexAll = subjectByIndexCreate(data)
 							var actionsListAll = actionsListCreate(data)
@@ -111,6 +214,7 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
 								{
 									chordsCollection: data,
 									areChordsFetched: true,
+									actionListAll: actionListAll,
 									subjectByNameAll: subjectByNameAll,
 									subjectByIndexAll: subjectByIndexAll,
 									actionsListAll: actionsListAll,
@@ -127,8 +231,8 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
 						var mode = action.payload.currentMode
 						var r = state
 						if (mode == 'autoMode') {
-							var chords = state.chordsCollection
-							var numChords = chords.length
+							var chordsCollection = state.chordsCollection
+							var numChords = chordsCollection.length
 							if (vHigh >= vLow) vHigh = vHigh + 1	// add one to upper border
 							if (vHigh > numChords) vHigh = -1		// upper border
 							if (((vHigh - vLow) > itemSpan) 			// all spteps full
@@ -137,11 +241,17 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
 									) vLow = vLow + 1									// increase lower border
 							if (vLow > numChords) vLow = -1			// reset at end of cycle
 
-					var rs = state.chordsCollection.slice(vLow, vHigh)		
-							r = Object.assign({}, state, {
-								chords: rs,
-								itemsCursorLow: vLow,
-								itemsCursorHigh: vHigh,
+								var chords = state.chordsCollection.slice(vLow, vHigh)
+								var actionsSeries = actionsSeriesCreate(chords)	// source, target
+								var subjectByName = subjectByNameCreate(chords)	// source, target
+								var subjectByIndex = subjectByIndexCreate(chords)
+								r = Object.assign({}, state, {
+									chords: chords,
+									itemsCursorLow: vLow,
+									itemsCursorHigh: vHigh,
+									actionsSeries: actionsSeries,
+									subjectByName: subjectByName,
+									subjectByIndex: subjectByIndex,
 							})
 						}
 						return r
@@ -163,11 +273,18 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
 							if (keyEventsOnChords.upArrow !== null && keyEventsOnChords.upArrow !== action.payload.keyEvents.upArrow) {			// upArrow
 										keyEventsOnChords.upArrow = action.payload.keyEvents.upArrow
 										vLow = Math.max(0, --vLow)
-										r = Object.assign({}, state, keyEventsOnChords) 
+										var chords = state.chordsCollection.slice(vLow, vHigh)
+										var actionsSeries = actionsSeriesCreate(chords)	// source, target
+										var subjectByName = subjectByNameCreate(chords)	// source, target
+										var subjectByIndex = subjectByIndexCreate(chords)
+
 										r = Object.assign({}, state, {
-											chords: state.chordsCollection.slice(vLow, vHigh),
+											chords: chords,
 											itemsCursorLow: vLow,
 											itemsCursorHigh: vHigh,
+									actionsSeries: actionsSeries,
+									subjectByName: subjectByName,
+									subjectByIndex: subjectByIndex,
 									})
 								}
 						}
@@ -192,10 +309,17 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
 								r = Object.assign({}, state, keyEventsOnChords) 
 								if ((vHigh - vLow)  >= itemSpan) ++vLow
 								++vHigh
+									var chords = state.chordsCollection.slice(vLow, vHigh)
+										var actionsSeries = actionsSeriesCreate(chords)	// source, target
+										var subjectByName = subjectByNameCreate(chords)	// source, target
+										var subjectByIndex = subjectByIndexCreate(chords)
 									r = Object.assign({}, state, {
-										chords: state.chordsCollection.slice(vLow, vHigh),
+										chords: chords,
 										itemsCursorLow: vLow,
 										itemsCursorHigh: vHigh,
+									actionsSeries: actionsSeries,
+										subjectByName: subjectByName,
+										subjectByIndex: subjectByIndex,
 								})
 							}
 						}
@@ -204,65 +328,7 @@ console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
             return state
     }
 		
-					var subjectByNameCreate = function subjectByNameCreate (dataParam) {
-							var ci = -1
-							var d3map = d3.map()
-							var cidx = dataParam
-							cidx.forEach(function(d) {
-									if (!d3map.has(d.source)) d3map.set(d.source, {name: d.source, index: ++ci})
-									if (!d3map.has(d.target)) d3map.set(d.target, {name: d.target, index: ++ci})
-							})
-							return d3map
-					}
-			
-					var subjectByIndexCreate = function subjectByIndexCreate (dataParam) {		// source, weigh, ???
-							var ci = -1
-							var subjectIndex = {}
-							var d3map = d3.map()
-							dataParam.forEach(function(d) {
-									if (!d3map.has(d.source)) {
-											++ci; 
-											d3map.set(d.source, {index: ci}); 
-											subjectIndex[ci] = {name: d.source, weigh: d.weigh};
-									}
-									if (d3map.has(d.source)) {
-											var e = d3map.get(d.source);
-											subjectIndex[e.index] = {name: d.source, weigh: d.weigh};
-									}
-									if (!d3map.has(d.target)) {
-										++ci; 
-										d3map.set(d.target, {index: ci}); 
-										subjectIndex[ci] = {name: d.target};
-									}
-							})
-							return subjectIndex
-						}
-			
-					var actionsListCreate = function actionsListCreate (dataParam) {		// source, target, predicate, weigh, value
-						var cbn = []
-						var ci = -1
-						var d3map = d3.map()
-						dataParam.forEach(function(d) {
-							var cr = {}
-							if (d3map.has(d.source)) cr.source = d3map.get(d.source);
-							 else {
-											++ci
-											cr.source = {name: d.source, index: ci}
-											d3map.set(d.source, cr.source)
-									}
-							if (d3map.has(d.target)) cr.target = d3map.get(d.target)
-							 else {
-											++ci
-											cr.target = {name: d.target, index: ci}
-											d3map.set(d.target, cr.target)
-									}
-							cr.predicate = d.predicate;
-							cr.weigh = d.weigh;
-							cr.valueOf = d.valueOf;
-							cbn.push(cr)
-						})
-						return cbn
-				}		
+
 }
 
 exports.reducer = reducerThis;

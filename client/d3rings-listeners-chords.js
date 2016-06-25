@@ -85,7 +85,7 @@ if (typeof require === "function") {
 											d.predicate = d.predicate
 											d.weigh = +d.weigh
 											d.valueOf = function value() {
-												return Math.max(this.weigh, 1)
+												return this.weigh
 											}	
 											return d;
 										}
