@@ -4,7 +4,7 @@
 /* 																				*/
 
 if (typeof require === "function") {
-	var d3 = require('./d3.v4.0.0-alpha.50.js')
+	var d3 = require('./d3.v4.0.0-rc.2.js')
 
 	var d3ringsRendererCourt = require('./d3rings-renderer-court.js')
 	var d3ringsRendererLanes = require('./d3rings-renderer-lanes.js')

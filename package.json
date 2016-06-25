@@ -1,8 +1,8 @@
 {
-  "name": "d3rings",
+  "name": "d3chords",
   "version": "0.0.1",
   "private": true,
-  "description": "the big listener, irritating game but needed template to probe #d3js transitions and actions travelling through an unwired #redux store",
+  "description": "unwired #redux stored #d3js essay on disacchords",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

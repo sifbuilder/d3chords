@@ -4,7 +4,7 @@
 /* 																	*/
 
 if (typeof require === "function") {
-	var d3 = require('./d3.v4.0.0-alpha.50.js')
+	var d3 = require('./d3.v4.0.0-rc.2.js')
 }	
 
 (function (global, factory) {
@@ -12,7 +12,6 @@ if (typeof require === "function") {
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (factory((global.d3ringsControls = global.d3ringsControls || {})));
 }(this, function (exports) { 'use strict';
-
 
 /*  -------------          */
 /*    timeControls        */

@@ -4,7 +4,7 @@
 /* 																*/
 
 	if (typeof require === "function") {
-		var d3 = require('./d3.v4.0.0-alpha.50.js')
+		var d3 = require('./d3.v4.0.0-rc.2.js')
 		var d3ringsActions = require('./d3rings-actions-court.js')
 	}
 	
@@ -31,7 +31,7 @@ var initialStateCourt = {
 			keys: [],
 			keysEvents: {},
 			notice: 'auto lanes',
-			currentMode: 'walkMode',
+			currentMode: 'autoMode',
 			currentView: 'chordsView',
 			arrowKeysStarted: false,
 			keybKeyEventsStarted: false,
