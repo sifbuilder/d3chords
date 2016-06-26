@@ -91,8 +91,6 @@ function reducerThis(state = initialStateThis, action) {
 								})
 								if (itemSpan > cc.length) itemSpan = cc.length
 
-console.log("itemSpan", JSON.stringify(itemSpan, null, 2))
-								
 								r = Object.assign({}, state, {
 										chordsCollection: cc,
 										areChordsFetched: true,
