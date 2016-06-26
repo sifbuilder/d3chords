@@ -4,13 +4,13 @@
 /* 																	*/
 
 if (typeof require === "function") {
-	var redux3dActionsCourt = require('./redux3d-actions-court.js')
-	var redux3dActionsDebug = require('./redux3d-actions-debug.js')
-	var redux3dActionsLanes = require('./redux3d-actions-lanes.js')
-	var redux3dActionsParticles = require('./redux3d-actions-particles.js')
-	var redux3dActionsWhirls = require('./redux3d-actions-whirls.js')
-	var redux3dActionsChords = require('./redux3d-actions-chords.js')
-	var redux3dActionsMaps = require('./redux3d-actions-maps.js')
+	var redux3dActionsCourt = require('./court/redux3d-actions-court.js')
+	var redux3dActionsDebug = require('./debug/redux3d-actions-debug.js')
+	var redux3dActionsLanes = require('./lanes/redux3d-actions-lanes.js')
+	var redux3dActionsParticles = require('./particles/redux3d-actions-particles.js')
+	var redux3dActionsWhirls = require('./rings/redux3d-actions-whirls.js')
+	var redux3dActionsChords = require('./chords/redux3d-actions-chords.js')
+	var redux3dActionsMaps = require('./maps/redux3d-actions-maps.js')
 }	
 
 

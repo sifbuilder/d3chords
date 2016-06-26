@@ -4,13 +4,13 @@
 /* 														*/
 
 if (typeof require === "function") {
-	var redux3dReducerConfig = 		require('./redux3d-reducer-config.js')
-	var redux3dReducerCourt = 		require('./redux3d-reducer-court.js')
-	var redux3dReducerDebug = 		require('./redux3d-reducer-debug.js')
-	var redux3dReducerLanes = 		require('./redux3d-reducer-lanes.js')
-	var redux3dReducerParticles = require('./redux3d-reducer-particles.js')
-	var redux3dReducerWhirls = 		require('./redux3d-reducer-whirls.js')
-	var redux3dReducerChords = 		require('./redux3d-reducer-chords.js')
+	var redux3dReducerConfig = 		require('./confg/redux3d-reducer-config.js')
+	var redux3dReducerCourt = 		require('./court/redux3d-reducer-court.js')
+	var redux3dReducerDebug = 		require('./debug/redux3d-reducer-debug.js')
+	var redux3dReducerLanes = 		require('./lanes/redux3d-reducer-lanes.js')
+	var redux3dReducerParticles = require('./particles/redux3d-reducer-particles.js')
+	var redux3dReducerWhirls = 		require('./rings/redux3d-reducer-whirls.js')
+	var redux3dReducerChords = 		require('./chords/redux3d-reducer-chords.js')
 }
 	
 (function (global, factory) {
