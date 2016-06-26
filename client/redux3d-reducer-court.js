@@ -5,13 +5,13 @@
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-rc.2.js')
-		var d3ringsActions = require('./redux3d-actions-court.js')
+		var redux3dActions = require('./redux3d-actions-court.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsReducerCourt = global.d3ringsReducerCourt || {})));
+  (factory((global.redux3dReducerCourt = global.redux3dReducerCourt || {})));
 }(this, function (exports) { 'use strict';
 
 // http://stackoverflow.com/questions/31381129/assign-new-id-attribute-to-each-element-created
@@ -42,7 +42,7 @@ var initialStateCourt = {
 
 function reducerCourt(state = initialStateCourt, action) {
 	if (action == null) return state
-	var ActionTypes = d3ringsActions.ActionTypes
+	var ActionTypes = redux3dActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_KEYBKEY_EVENTS:	// startKeybKeyEvents
 						// console.log('START_KEYBKEY_EVENTS')

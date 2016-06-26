@@ -5,13 +5,13 @@
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-rc.2.js')
-		var d3ringsActions = require('./redux3d-actions-particles.js')
+		var redux3dActions = require('./redux3d-actions-particles.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsReducerParticles = global.d3ringsReducerParticles || {})));
+  (factory((global.redux3dReducerParticles = global.redux3dReducerParticles || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -27,7 +27,7 @@ var initialStateParticles = {
 
 function reducerParticles(state = initialStateParticles, action) {
 	if (action == null) return state
-	var ActionTypes = d3ringsActions.ActionTypes
+	var ActionTypes = redux3dActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
 					// console.log("START_PARTICLES")

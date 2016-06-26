@@ -6,10 +6,10 @@
 
 
 if (typeof require === "function") {
-	var d3ringsReducer = require('./redux3d-reducer.js')
-	var d3ringsStore = require('./redux3d-store.js')
-	var d3ringsActions = require('./redux3d-actions.js')
-	var d3ringsControls = require('./redux3d-controls.js')
+	var redux3dReducer = require('./redux3d-reducer.js')
+	var redux3dStore = require('./redux3d-store.js')
+	var redux3dActions = require('./redux3d-actions.js')
+	var redux3dControls = require('./redux3d-controls.js')
 }
 	
 
@@ -17,7 +17,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsStore = global.d3ringsStore || {})));
+  (factory((global.redux3dStore = global.redux3dStore || {})));
 }(this, function (exports) { 'use strict';
 
 		var createStore = function createStore(reducer, initialState) {
@@ -114,7 +114,7 @@ if (typeof require === "function") {
 	}
 	
 			/* store */
-		var store = createStore(d3ringsReducer.reducer, d3ringsReducer.reducer())
+		var store = createStore(redux3dReducer.reducer, redux3dReducer.reducer())
 
 		exports.createStore = createStore
 		exports.store = store

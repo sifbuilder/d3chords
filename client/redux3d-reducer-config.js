@@ -5,13 +5,13 @@
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-rc.2.js')
-	var d3ringsActions = require('./redux3d-actions.js')
+	var redux3dActions = require('./redux3d-actions.js')
 }
 	
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsReducerConfig = global.d3ringsReducerConfig || {})));
+  (factory((global.redux3dReducerConfig = global.redux3dReducerConfig || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -95,7 +95,7 @@ var initialStateConfig = {
 }
 function reducerConfig(state = initialStateConfig, action) {
 	if (action == null) return state
-	var ActionTypes = d3ringsActions.ActionTypes
+	var ActionTypes = redux3dActions.ActionTypes
     switch (action.type) {
 					default:
             return state;

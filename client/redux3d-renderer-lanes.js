@@ -9,7 +9,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsRendererLanes = global.d3ringsRendererLanes || {})));
+  (factory((global.redux3dRendererLanes = global.redux3dRendererLanes || {})));
 }(this, function (exports) { 'use strict';
 
 // _____________ coordsUtils
@@ -219,7 +219,7 @@ var intransition = false
 							x0: x0})})
 								
 					// laneElems trasition
-						var d3ringsTransition = d3.transition()
+						var redux3dTransition = d3.transition()
 							.duration(_fadeTime)
 							.ease(d3.easeLinear)
 	
@@ -231,7 +231,7 @@ var intransition = false
 					
 					// laneElements EXIT
 							laneElements.exit()
-									.transition(d3ringsTransition)
+									.transition(redux3dTransition)
 										.style("opacity", function(d) {
 														store.dispatch(actions.deleteLane(d))
 											return 0
@@ -247,7 +247,7 @@ var intransition = false
 													})
 											.text(function(d) { return d.name })
 											.attr("dy", "20")
-									.transition(d3ringsTransition)
+									.transition(redux3dTransition)
 										.attr("x", function(d, i) {
 												var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
 												return r
@@ -271,7 +271,7 @@ var intransition = false
 								return text_bbox.y + text_bbox.height;
 							})
 							.attr("y2", "100%")
-							.transition(d3ringsTransition)
+							.transition(redux3dTransition)
 									.attrTween("x1", function(d, i, a) {
 											return function (t) {
 													var r = parseFloat(coordsUtils().hcoord_pct(_laneItems1, d.name)
@@ -318,7 +318,7 @@ var intransition = false
 								var r =  coordsUtils().hcoord_tagged_pct(_laneItems1, d.name)
 								return r
 							})
-							.transition(d3ringsTransition)
+							.transition(redux3dTransition)
 									.style("fill", "black")
 									.on("start", function start() {		
 											intransition = true
@@ -367,7 +367,7 @@ var intransition = false
 
 					// runner elems UPDATE texts
 							runnerElements.select('text')
-								.transition(d3ringsTransition)
+								.transition(redux3dTransition)
 										.attr("x", function(d, i) {
 											var r1 = coordsUtils().hcoord_pct(_laneItems1, d.from)
 											var r2 = coordsUtils().hcoord_pct(_laneItems1, d.to)
@@ -387,7 +387,7 @@ var intransition = false
 									
 					// runnerElems UPDATE lines
 							runnerElements.select('line')						 
-							.transition(d3ringsTransition)
+							.transition(redux3dTransition)
 								.attr("x1", function(d, i, a) { 
 											var r = coordsUtils().hcoord_tagged_pct(_laneItems1, d.from)
 											return r
@@ -413,7 +413,7 @@ var intransition = false
 									
 					// runnerElems UPDATE paths
 							runnerElements.select("path")
-								.transition(d3ringsTransition)
+								.transition(redux3dTransition)
 									.attr("d", function(d, i) { 			
 											var	x_pc = coordsUtils().hcoord_tagged_pct(_laneItems1, d.from)
 											var xScrollWidth = parseInt(svgContainer.style("width"))
@@ -462,7 +462,7 @@ var intransition = false
 													var r = coordsUtils().hcenter_tagged_pct(x1, x2)
 													return r
 												})
-											.transition(d3ringsTransition)
+											.transition(redux3dTransition)
 													.style("fill", "grey")
 													.on("start", function start() {		
 															intransition = true
@@ -497,7 +497,7 @@ var intransition = false
 															].join(" ");														
 														return r
 													})
-													.transition(d3ringsTransition)
+													.transition(redux3dTransition)
 														.attr("stroke", "grey")
 														.attr("fill", "grey")
 														.attrTween("marker-end", function(d) {
@@ -532,7 +532,7 @@ var intransition = false
 												})	
 												.attr("x1", coordsUtils().hcoord_tagged_pct(_laneItems1, d.from))
 												.attr("x2", coordsUtils().hcoord_tagged_pct(_laneItems1, d.to))
-												.transition(d3ringsTransition)
+												.transition(redux3dTransition)
 															.attr("stroke", "gray")
 															.attr("fill", "grey")
 															.attrTween("marker-end", function() {

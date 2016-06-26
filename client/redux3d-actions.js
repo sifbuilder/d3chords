@@ -4,19 +4,19 @@
 /* 																	*/
 
 if (typeof require === "function") {
-	var d3ringsActionsCourt = require('./redux3d-actions-court.js')
-	var d3ringsActionsDebug = require('./redux3d-actions-debug.js')
-	var d3ringsActionsLanes = require('./redux3d-actions-lanes.js')
-	var d3ringsActionsParticles = require('./redux3d-actions-particles.js')
-	var d3ringsActionsWhirls = require('./redux3d-actions-whirls.js')
-	var d3ringsActionsChords = require('./redux3d-actions-chords.js')
+	var redux3dActionsCourt = require('./redux3d-actions-court.js')
+	var redux3dActionsDebug = require('./redux3d-actions-debug.js')
+	var redux3dActionsLanes = require('./redux3d-actions-lanes.js')
+	var redux3dActionsParticles = require('./redux3d-actions-particles.js')
+	var redux3dActionsWhirls = require('./redux3d-actions-whirls.js')
+	var redux3dActionsChords = require('./redux3d-actions-chords.js')
 }	
 
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsActions = global.d3ringsActions || {})));
+  (factory((global.redux3dActions = global.redux3dActions || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -30,21 +30,21 @@ function merge_objects(ctt1,ctt2){
 }
 
 var ActionTypes = merge_objects(
-		d3ringsActionsCourt.ActionTypes,
-		d3ringsActionsDebug.ActionTypes,
-		d3ringsActionsLanes.ActionTypes,
-		d3ringsActionsParticles.ActionTypes,
-		d3ringsActionsWhirls.ActionTypes,
-		d3ringsActionsChords.ActionTypes
+		redux3dActionsCourt.ActionTypes,
+		redux3dActionsDebug.ActionTypes,
+		redux3dActionsLanes.ActionTypes,
+		redux3dActionsParticles.ActionTypes,
+		redux3dActionsWhirls.ActionTypes,
+		redux3dActionsChords.ActionTypes
 	)
 		
 var ActionCreators = merge_objects(
-		d3ringsActionsCourt.ActionCreators,
-		d3ringsActionsDebug.ActionCreators, 
-		d3ringsActionsLanes.ActionCreators, 
-		d3ringsActionsParticles.ActionCreators,
-		d3ringsActionsWhirls.ActionCreators,
-		d3ringsActionsChords.ActionCreators
+		redux3dActionsCourt.ActionCreators,
+		redux3dActionsDebug.ActionCreators, 
+		redux3dActionsLanes.ActionCreators, 
+		redux3dActionsParticles.ActionCreators,
+		redux3dActionsWhirls.ActionCreators,
+		redux3dActionsChords.ActionCreators
 	)
 
 exports.ActionTypes = ActionTypes;

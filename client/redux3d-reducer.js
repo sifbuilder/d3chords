@@ -4,19 +4,19 @@
 /* 														*/
 
 if (typeof require === "function") {
-	var d3ringsReducerConfig = 		require('./redux3d-reducer-config.js')
-	var d3ringsReducerCourt = 		require('./redux3d-reducer-court.js')
-	var d3ringsReducerDebug = 		require('./redux3d-reducer-debug.js')
-	var d3ringsReducerLanes = 		require('./redux3d-reducer-lanes.js')
-	var d3ringsReducerParticles = require('./redux3d-reducer-particles.js')
-	var d3ringsReducerWhirls = 		require('./redux3d-reducer-whirls.js')
-	var d3ringsReducerChords = 		require('./redux3d-reducer-chords.js')
+	var redux3dReducerConfig = 		require('./redux3d-reducer-config.js')
+	var redux3dReducerCourt = 		require('./redux3d-reducer-court.js')
+	var redux3dReducerDebug = 		require('./redux3d-reducer-debug.js')
+	var redux3dReducerLanes = 		require('./redux3d-reducer-lanes.js')
+	var redux3dReducerParticles = require('./redux3d-reducer-particles.js')
+	var redux3dReducerWhirls = 		require('./redux3d-reducer-whirls.js')
+	var redux3dReducerChords = 		require('./redux3d-reducer-chords.js')
 }
 	
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsReducer = global.d3ringsReducer || {})));
+  (factory((global.redux3dReducer = global.redux3dReducer || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -53,13 +53,13 @@ function combineReducers(reducers) {
 
 // _____________ combined reducer
 var reducer = combineReducers({
-		reducerConfig: d3ringsReducerConfig.reducerConfig,
-		reducerCourt: d3ringsReducerCourt.reducerCourt,
-		reducerDebug: d3ringsReducerDebug.reducerDebug,
-		reducerLanes: d3ringsReducerLanes.reducerLanes,
-		reducerParticles: d3ringsReducerParticles.reducerParticles,
-		reducerWhirls: d3ringsReducerWhirls.reducer,
-		reducerChords: d3ringsReducerChords.reducer,
+		reducerConfig: redux3dReducerConfig.reducerConfig,
+		reducerCourt: redux3dReducerCourt.reducerCourt,
+		reducerDebug: redux3dReducerDebug.reducerDebug,
+		reducerLanes: redux3dReducerLanes.reducerLanes,
+		reducerParticles: redux3dReducerParticles.reducerParticles,
+		reducerWhirls: redux3dReducerWhirls.reducer,
+		reducerChords: redux3dReducerChords.reducer,
 })
 
 var r = reducer()

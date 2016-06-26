@@ -5,13 +5,13 @@
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-rc.2.js')
-		var d3ringsActions = require('./redux3d-actions-lanes.js')
+		var redux3dActions = require('./redux3d-actions-lanes.js')
 	}
 	
 	(function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsReducerLanes = global.d3ringsReducerLanes || {})));
+  (factory((global.redux3dReducerLanes = global.redux3dReducerLanes || {})));
 }(this, function (exports) { 'use strict';
 
 
@@ -30,7 +30,7 @@ var initialStateLanes = {
 	
 function reducerLanes(state = initialStateLanes, action) {
 	if (action == null) return state
-	var ActionTypes = d3ringsActions.ActionTypes
+	var ActionTypes = redux3dActions.ActionTypes
     switch (action.type) {
 				case ActionTypes.DELETE_LANE:		// deleteLane
 					var lanes = state.lanes

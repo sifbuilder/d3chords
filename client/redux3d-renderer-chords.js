@@ -13,7 +13,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsRendererChords = global.d3ringsRendererChords || {})));
+  (factory((global.redux3dRendererChords = global.redux3dRendererChords || {})));
 }(this, function (exports) { 'use strict';
 
 // _____________ context

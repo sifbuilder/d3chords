@@ -6,7 +6,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3ringsActionsChords = global.d3ringsActionsChords || {})));
+  (factory((global.redux3dActionsChords = global.redux3dActionsChords || {})));
 }(this, function (exports) { 'use strict';
 
 // ____________________ keyMirror
