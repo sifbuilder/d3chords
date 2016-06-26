@@ -94,13 +94,34 @@ if (typeof require === "function") {
 			actions.stopRings
 		)	
 
-
-		// renderers
+				
+			/* payloads renderers */
+			var logicAndData_Payload = function () { return {
+				store: store,
+				actions: actions
+			}}
 		
+		// renderers
 		var renderer_whirls_Listener = store.compose(
 			d3ringsRendererWhirls.renderer,
 			logicAndData_Payload
 		)	
+
+		/* launchers */
+		var mouseDown_Launcher = 	d3ringsControls.mouseDownControl(logicAndData_Payload()).start(d3.select('svg'))
+		var touchStart_Launcher = d3ringsControls.touchStartControl(logicAndData_Payload()).start(d3.select('svg'))
+		var mouseMove_Launcher = 	d3ringsControls.mouseMoveControl(logicAndData_Payload()).start(d3.select('svg'))
+		var touchMove_Launcher = 	d3ringsControls.touchMoveControl(logicAndData_Payload()).start(d3.select('svg'))
+		var mouseUp_Launcher =		d3ringsControls.mouseUpControl(logicAndData_Payload()).start(d3.select('svg'))
+		var touchEnd_Launcher = 	d3ringsControls.touchEndControl(logicAndData_Payload()).start(d3.select('svg'))
+		var mouseLeave_Launcher = d3ringsControls.mouseLeaveControl(logicAndData_Payload()).start(d3.select('svg'))
+		var mouseEnter_Launcher = d3ringsControls.mouseEnterControl(logicAndData_Payload()).start(d3.select('svg'))
+		var ticker_Launcher = 		d3ringsControls.tickControls(logicAndData_Payload()).start()
+		var d3timer_Launcher = 			d3ringsControls.timeControls(logicAndData_Payload()).start()
+		var stepper_Launcher =		d3ringsControls.stepControls(logicAndData_Payload()).start()
+		var keyDown_Launcher = 		d3ringsControls.keyDownControl(logicAndData_Payload()).start()
+		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(logicAndData_Payload()).start()
+		var keyRelease_Launcher = d3ringsControls.keyReleaseControl(logicAndData_Payload()).start()
 
 		
 		/* listeners */
