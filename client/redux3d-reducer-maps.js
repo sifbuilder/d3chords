@@ -5,7 +5,7 @@
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-rc.2.js')
-	var redux3dActions = require('./redux3d-actions-maps.js')
+	var redux3dActions = require('./redux3d-actions.js')
 }
 	
 (function (global, factory) {
@@ -70,14 +70,14 @@ function reducerThis(state = initialStateThis, action) {
 	var ActionTypes = redux3dActions.ActionTypes
     switch (action.type) {
 
-				case ActionTypes.SET_CHORDS_COLLECTION:	// setChordsCollection
-					// console.log("SET_CHORDS_COLLECTION", action)
+				case ActionTypes.SET_MAPS_COLLECTION:	// setMapsCollection
+					// console.log("SET_MAPS_COLLECTION", action)
 						var r = Object.assign({}, state)			
-						if (state.areChordsFetched == false) {
+						if (state.areMapsFetched == false) {
 							var chordsCollection = action.payload.chordsCollection
 							var itemSpan = state.itemSpan
-							if (chordsCollection.length) {
-								var cc = chordsCollection.map(function(d, i) {
+							if (mapsCollection.length) {
+								var cc = mapsCollection.map(function(d, i) {
 									return({
 										prx: i,
 										source: d.source,
@@ -92,8 +92,8 @@ function reducerThis(state = initialStateThis, action) {
 								if (itemSpan > cc.length) itemSpan = cc.length
 
 								r = Object.assign({}, state, {
-										chordsCollection: cc,
-										areChordsFetched: true,
+										mapsCollection: cc,
+										areMapsFetched: true,
 										itemSpan: itemSpan,
 								})
 							}
@@ -101,22 +101,22 @@ function reducerThis(state = initialStateThis, action) {
 						return r
 
 		
-				case ActionTypes.FETCH_CHORDS_COLLECTION:	// fetchChordsCollection
+				case ActionTypes.FETCH_MAPS_COLLECTION:	// fetchMapsCollection
 				
-					var data = action.payload.chords
-					var areChordsFetched = state.areChordsFetched
+					var data = action.payload.maps
+					var areMapsFetched = state.areMapsFetched
 					var itemSpan = state.itemSpan
 					
 					var r = Object.assign({}, state)			
-					if (areChordsFetched === false && typeof data !== 'undefined' && data.length) {
+					if (areMapsFetched === false && typeof data !== 'undefined' && data.length) {
 							var subjectByNameAll = subjectByNameCreate(data)	// source, target
 							var subjectByIndexAll = subjectByIndexCreate(data)
 							var actionsListAll = actionsListCreate(data)
 							if (itemSpan > data.length) itemSpan = data.length
 							r = Object.assign({}, state,
 								{
-									chordsCollection: data,
-									areChordsFetched: true,
+									mapsCollection: data,
+									areMapsFetched: true,
 									subjectByNameAll: subjectByNameAll,
 									subjectByIndexAll: subjectByIndexAll,
 									actionsListAll: actionsListAll,
@@ -125,36 +125,36 @@ function reducerThis(state = initialStateThis, action) {
 					}
 				 return r
 						
-				case ActionTypes.SET_CHORDS:	// setChords
-					// console.log("SET_CHORDS")
+				case ActionTypes.SET_MAPS:	// setMaps
+					// console.log("SET_MAPS")
 						var vLow = state.itemsCursorLow
 						var vHigh = state.itemsCursorHigh
 						var itemSpan = state.itemSpan
 						var mode = action.payload.currentMode
 						var r = state
 						if (mode == 'autoMode') {
-							var chords = state.chordsCollection
-							var numChords = chords.length
+							var maps = state.mapsCollection
+							var numMaps = maps.length
 							if (vHigh >= vLow) vHigh = vHigh + 1	// add one to upper border
-							if (vHigh > numChords) vHigh = -1		// upper border
+							if (vHigh > numMaps) vHigh = -1		// upper border
 							if (((vHigh - vLow) > itemSpan) 			// all spteps full
 									|| (vHigh == -1) 									// infinitum with vLow active
 									|| (vLow == -1) 									// get always from reset
 									) vLow = vLow + 1									// increase lower border
-							if (vLow > numChords) vLow = -1			// reset at end of cycle
+							if (vLow > numMaps) vLow = -1			// reset at end of cycle
 
-					var rs = state.chordsCollection.slice(vLow, vHigh)		
+					var rs = state.mapsCollection.slice(vLow, vHigh)		
 							r = Object.assign({}, state, {
-								chords: rs,
+								maps: rs,
 								itemsCursorLow: vLow,
 								itemsCursorHigh: vHigh,
 							})
 						}
 						return r
 
-				case ActionTypes.WALK_UP_CHORDS:			// walkUpChords
-						// console.log("WALK_UP_CHORDS", action)
-					var keyEventsOnChords = state.keyEventsOnChords
+				case ActionTypes.WALK_UP_MAPS:			// walkUpMaps
+						// console.log("WALK_UP_MAPS", action)
+					var keyEventsOnMaps = state.keyEventsOnMaps
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
@@ -166,12 +166,12 @@ function reducerThis(state = initialStateThis, action) {
 						var currentMode = action.payload.mode
 						var r = state
 						if (currentMode == 'walkMode') {
-							if (keyEventsOnChords.upArrow !== null && keyEventsOnChords.upArrow !== action.payload.keyEvents.upArrow) {			// upArrow
-										keyEventsOnChords.upArrow = action.payload.keyEvents.upArrow
+							if (keyEventsOnMaps.upArrow !== null && keyEventsOnMaps.upArrow !== action.payload.keyEvents.upArrow) {			// upArrow
+										keyEventsOnMaps.upArrow = action.payload.keyEvents.upArrow
 										vLow = Math.max(0, --vLow)
-										r = Object.assign({}, state, keyEventsOnChords) 
+										r = Object.assign({}, state, keyEventsOnMaps) 
 										r = Object.assign({}, state, {
-											chords: state.chordsCollection.slice(vLow, vHigh),
+											maps: state.mapsCollection.slice(vLow, vHigh),
 											itemsCursorLow: vLow,
 											itemsCursorHigh: vHigh,
 									})
@@ -179,9 +179,9 @@ function reducerThis(state = initialStateThis, action) {
 						}
 						return r
 						
-				case ActionTypes.WALK_DOWN_CHORDS:			// walkDownChords
-						// console.log("WALK_DOWN_CHORDS")
-						var keyEventsOnChords = state.keyEventsOnChords
+				case ActionTypes.WALK_DOWN_MAPS:			// walkDownMaps
+						// console.log("WALK_DOWN_MAPS")
+						var keyEventsOnMaps = state.keyEventsOnMaps
 						var altKeyCode = 18, ctrlKeyCode = 17 
 						var vKeyCode = 86, dKeyCode = 68, fKeyCode = 70
 						var leftArrow = 37, rightArrow = 39, leftArrow = 37, upArrow = 38, downArrow = 40
@@ -193,13 +193,13 @@ function reducerThis(state = initialStateThis, action) {
 						var currentMode = action.payload.currentMode
 						var r = Object.assign({}, state)
 						if (currentMode == 'walkMode') {
-							if (keyEventsOnChords.downArrow !== null && keyEventsOnChords.downArrow !== action.payload.keyEvents.downArrow) {			// downArrow
-								keyEventsOnChords.downArrow = action.payload.keyEvents.downArrow
-								r = Object.assign({}, state, keyEventsOnChords) 
+							if (keyEventsOnMaps.downArrow !== null && keyEventsOnMaps.downArrow !== action.payload.keyEvents.downArrow) {			// downArrow
+								keyEventsOnMaps.downArrow = action.payload.keyEvents.downArrow
+								r = Object.assign({}, state, keyEventsOnMaps) 
 								if ((vHigh - vLow)  >= itemSpan) ++vLow
 								++vHigh
 									r = Object.assign({}, state, {
-										chords: state.chordsCollection.slice(vLow, vHigh),
+										maps: state.mapsCollection.slice(vLow, vHigh),
 										itemsCursorLow: vLow,
 										itemsCursorHigh: vHigh,
 								})

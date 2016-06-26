@@ -95,8 +95,13 @@ if (typeof require === "function") {
 			store.dispatch,
 			actions.stopParticles
 		)		
-		
 
+			/* payloads renderers */
+			var logicAndData_Payload = function () { return {
+				store: store,
+				actions: actions
+			}}
+		
 		// renderers
 		var renderer_particles_Listener = store.compose(
 			redux3dRendererParticles.renderer,

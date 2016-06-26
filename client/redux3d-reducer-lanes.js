@@ -5,7 +5,7 @@
 
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-rc.2.js')
-		var redux3dActions = require('./redux3d-actions-lanes.js')
+		var redux3dActions = require('./redux3d-actions.js')
 	}
 	
 	(function (global, factory) {

@@ -10,6 +10,7 @@ if (typeof require === "function") {
 	var redux3dActionsParticles = require('./redux3d-actions-particles.js')
 	var redux3dActionsWhirls = require('./redux3d-actions-whirls.js')
 	var redux3dActionsChords = require('./redux3d-actions-chords.js')
+	var redux3dActionsMaps = require('./redux3d-actions-maps.js')
 }	
 
 
