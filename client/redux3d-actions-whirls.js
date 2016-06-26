@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions-whirls.js   			*/
+/* redux3d-actions-whirls.js   			*/
 /* 																	*/
 
 (function (global, factory) {

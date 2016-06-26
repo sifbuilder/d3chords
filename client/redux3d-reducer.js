@@ -1,16 +1,16 @@
 
 /* 														*/
-/*    d3rings-reducer.js      */
+/*    redux3d-reducer.js      */
 /* 														*/
 
 if (typeof require === "function") {
-	var d3ringsReducerConfig = 		require('./d3rings-reducer-config.js')
-	var d3ringsReducerCourt = 		require('./d3rings-reducer-court.js')
-	var d3ringsReducerDebug = 		require('./d3rings-reducer-debug.js')
-	var d3ringsReducerLanes = 		require('./d3rings-reducer-lanes.js')
-	var d3ringsReducerParticles = require('./d3rings-reducer-particles.js')
-	var d3ringsReducerWhirls = 		require('./d3rings-reducer-whirls.js')
-	var d3ringsReducerChords = 		require('./d3rings-reducer-chords.js')
+	var d3ringsReducerConfig = 		require('./redux3d-reducer-config.js')
+	var d3ringsReducerCourt = 		require('./redux3d-reducer-court.js')
+	var d3ringsReducerDebug = 		require('./redux3d-reducer-debug.js')
+	var d3ringsReducerLanes = 		require('./redux3d-reducer-lanes.js')
+	var d3ringsReducerParticles = require('./redux3d-reducer-particles.js')
+	var d3ringsReducerWhirls = 		require('./redux3d-reducer-whirls.js')
+	var d3ringsReducerChords = 		require('./redux3d-reducer-chords.js')
 }
 	
 (function (global, factory) {

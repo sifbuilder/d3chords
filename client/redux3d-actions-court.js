@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions-court.js   			*/
+/* redux3d-actions-court.js   			*/
 /* 																	*/
 
 (function (global, factory) {

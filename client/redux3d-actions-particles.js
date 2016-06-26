@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions-particles.js 		*/
+/* redux3d-actions-particles.js 		*/
 /* 																	*/
 
 (function (global, factory) {

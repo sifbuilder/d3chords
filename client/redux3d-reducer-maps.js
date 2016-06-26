@@ -1,11 +1,11 @@
 
 /* 													  			*/
-/*    d3rings-reducer-maps.js     */
+/*    redux3d-reducer-maps.js     */
 /* 																	*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-rc.2.js')
-	var d3ringsActions = require('./d3rings-actions-maps.js')
+	var d3ringsActions = require('./redux3d-actions-maps.js')
 }
 	
 (function (global, factory) {

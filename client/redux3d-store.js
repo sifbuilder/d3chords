@@ -1,15 +1,15 @@
 
 /* 														*/
-/*    d3rings-store.js        */
+/*    redux3d-store.js        */
 /* 														*/
 
 
 
 if (typeof require === "function") {
-	var d3ringsReducer = require('./d3rings-reducer.js')
-	var d3ringsStore = require('./d3rings-store.js')
-	var d3ringsActions = require('./d3rings-actions.js')
-	var d3ringsControls = require('./d3rings-controls.js')
+	var d3ringsReducer = require('./redux3d-reducer.js')
+	var d3ringsStore = require('./redux3d-store.js')
+	var d3ringsActions = require('./redux3d-actions.js')
+	var d3ringsControls = require('./redux3d-controls.js')
 }
 	
 

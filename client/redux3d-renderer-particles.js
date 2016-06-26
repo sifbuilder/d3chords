@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-renderer-particles.js    */
+/* redux3d-renderer-particles.js    */
 /* 																	*/
 
 if (typeof require === "function") {

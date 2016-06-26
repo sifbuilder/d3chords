@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-renderer-whirls.js   		*/
+/* redux3d-renderer-whirls.js   		*/
 /* 																	*/
 
 if (typeof require === "function") {

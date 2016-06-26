@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* 				d3rings-controls.js   		*/
+/* 				redux3d-controls.js   		*/
 /* 																	*/
 
 if (typeof require === "function") {

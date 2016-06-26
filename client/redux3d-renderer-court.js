@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-renderer-court.js   			*/
+/* redux3d-renderer-court.js   			*/
 /* 																	*/
 
 if (typeof require === "function") {

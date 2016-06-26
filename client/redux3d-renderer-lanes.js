@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-renderer-lanes.js   			*/
+/* redux3d-renderer-lanes.js   			*/
 /* 																	*/
 
 if (typeof require === "function") {

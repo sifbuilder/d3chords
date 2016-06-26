@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions-chords.js   		  */
+/* redux3d-actions-chords.js   		  */
 /* 																	*/
 
 (function (global, factory) {

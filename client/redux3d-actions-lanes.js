@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions-lanes.js   			*/
+/* redux3d-actions-lanes.js   			*/
 /* 																	*/
 
 (function (global, factory) {

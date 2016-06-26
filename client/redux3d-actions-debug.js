@@ -1,6 +1,6 @@
 
 /* 																	*/
-/* d3rings-actions-debug.js					*/
+/* redux3d-actions-debug.js					*/
 /* 																	*/
 
 (function (global, factory) {

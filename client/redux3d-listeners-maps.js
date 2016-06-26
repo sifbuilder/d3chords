@@ -1,22 +1,22 @@
 
 /* 																				*/
-/*    		 d3rings-listeners-maps.js    */
+/*    		 redux3d-listeners-maps.js    */
 /* 																				*/
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-rc.2.js')
 
-	var d3ringsRendererCourt = require('./d3rings-renderer-court.js')
-	var d3ringsRendererLanes = require('./d3rings-renderer-lanes.js')
-	var d3ringsRendererParticles = require('./d3rings-renderer-particles.js')
-	var d3ringsRendererWhirls = require('./d3rings-renderer-whirls.js')
-	var d3ringsRendererChords = require('./d3rings-renderer-chords.js')
-	var d3ringsRendererMaps = require('./d3rings-renderer-maps.js')
+	var d3ringsRendererCourt = require('./redux3d-renderer-court.js')
+	var d3ringsRendererLanes = require('./redux3d-renderer-lanes.js')
+	var d3ringsRendererParticles = require('./redux3d-renderer-particles.js')
+	var d3ringsRendererWhirls = require('./redux3d-renderer-whirls.js')
+	var d3ringsRendererChords = require('./redux3d-renderer-chords.js')
+	var d3ringsRendererMaps = require('./redux3d-renderer-maps.js')
 
-	var d3ringsReducer = require('./d3rings-reducer.js')
-	var d3ringsStore = require('./d3rings-store.js')
-	var d3ringsActions = require('./d3rings-actions.js')
-	var d3ringsControls = require('./d3rings-controls.js')
+	var d3ringsReducer = require('./redux3d-reducer.js')
+	var d3ringsStore = require('./redux3d-store.js')
+	var d3ringsActions = require('./redux3d-actions.js')
+	var d3ringsControls = require('./redux3d-controls.js')
 	
 }	
 		/* actions */

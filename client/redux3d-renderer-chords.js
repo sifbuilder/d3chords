@@ -1,6 +1,6 @@
 	
 /* 																						*/
-/* d3rings-renderer-chords.js   							*/
+/* redux3d-renderer-chords.js   							*/
 /* ref. https://bl.ocks.org/mbostock/1308257	*/
 // http://circos.ca/guide/tables/
 // http://bl.ocks.org/mbostock/4062006
